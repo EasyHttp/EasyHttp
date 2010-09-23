@@ -10,13 +10,12 @@ namespace EasyHttp
 {
     public class EasyHttp
     {
-        // TODO: Implement DELETE
         // TODO: Move Request into own object and clean up
         readonly DataReaderProvider _readerProvider;
         readonly DataWriterProvider _writerProvider;
         readonly Response _response;
         HttpWebRequest _internalRequest;
-
+        readonly Request _request; 
         public string Accept { get; set; }
         public string ContentType { get; set; }
 
@@ -48,17 +47,16 @@ namespace EasyHttp
 
         public void Get(string uri)
         {
-            CreateRequest(uri);
+            CreateRequest(uri, HttpMethod.GET);
 
             GetResponse();
         }
 
         public void Post(string uri, object data)
         {
-            CreateRequest(uri);
+            CreateRequest(uri, HttpMethod.POST);
 
-            _internalRequest.Method = "POST";
-
+    
             CreateRequestData(data);
 
             GetResponse();
@@ -114,12 +112,13 @@ namespace EasyHttp
             }
         }
 
-        HttpWebRequest CreateRequest(string uri)
+        HttpWebRequest CreateRequest(string uri, HttpMethod method)
         {
             _internalRequest = (HttpWebRequest) WebRequest.Create(uri);
 
             _internalRequest.ContentType = ContentType;
             _internalRequest.Accept = Accept;
+            _internalRequest.Method = method.ToString();
 
             return _internalRequest;
         }
@@ -127,16 +126,18 @@ namespace EasyHttp
 
         public void Put(string uri, object data)
         {
-            CreateRequest(uri);
-
-            _internalRequest.Method = "PUT";
+            CreateRequest(uri, HttpMethod.PUT);
 
             CreateRequestData(data);
 
             GetResponse();
 
         }
+
+        public void Delete(string uri)
+        {
+            CreateRequest(uri, HttpMethod.DELETE);
+            GetResponse();
+        }
     }
-
-
 }

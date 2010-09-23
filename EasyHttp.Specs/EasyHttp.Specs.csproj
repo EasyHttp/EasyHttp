@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EasyHttpDELETESpecifications.cs" />
     <Compile Include="EasyHttpInitSpecifications.cs" />
     <Compile Include="EasyHttpGETSpecifications.cs" />
     <Compile Include="EasyHttpPOSTSpecifications.cs" />
@@ -57,7 +58,7 @@
     <Content Include="Lib\Machine.Specifications.pdb" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RestClient\EasyHttp.csproj">
+    <ProjectReference Include="..\EasyHttp\EasyHttp.csproj">
       <Project>{9239DA70-1736-4291-8D18-266999E54445}</Project>
       <Name>EasyHttp</Name>
     </ProjectReference>
