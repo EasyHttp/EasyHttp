@@ -1,15 +1,7 @@
 ﻿namespace EasyHttp
 {
-    public class Response
+    public class Response : HttpBaseData
     {
-        public Body Body { get; set; }
-        public Header Header { get; set; }
-        
-        public Response()
-        {
-            Header = new Header();
-            Body = new Body();
-        }
 
     }
 }

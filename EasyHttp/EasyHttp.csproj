@@ -47,7 +47,9 @@
     <Compile Include="Body.cs" />
     <Compile Include="Header.cs" />
     <Compile Include="EasyHttp.cs" />
+    <Compile Include="HttpBaseData.cs" />
     <Compile Include="HttpMethod.cs" />
+    <Compile Include="Request.cs" />
     <Compile Include="Response.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

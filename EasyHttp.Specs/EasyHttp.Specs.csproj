@@ -45,13 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EasyHttpDELETESpecifications.cs" />
-    <Compile Include="EasyHttpInitSpecifications.cs" />
-    <Compile Include="EasyHttpGETSpecifications.cs" />
-    <Compile Include="EasyHttpPOSTSpecifications.cs" />
+    <Compile Include="EasyHTTP\DELETEFeature.cs" />
+    <Compile Include="EasyHTTP\GETFeature.cs" />
+    <Compile Include="EasyHTTP\InitFeature.cs" />
+    <Compile Include="EasyHTTP\POSTFeature.cs" />
+    <Compile Include="EasyHTTP\PUTFeature.cs" />
     <Compile Include="Helpers\Customer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="EasyHttpPUTSpecifications.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Lib\Machine.Specifications.dll" />
@@ -63,6 +63,7 @@
       <Name>EasyHttp</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

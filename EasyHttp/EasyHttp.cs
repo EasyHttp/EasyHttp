@@ -10,18 +10,18 @@ namespace EasyHttp
 {
     public class EasyHttp
     {
-        // TODO: Move Request into own object and clean up
+        // TODO: Move all encoding and request/response stuff to the classes now created
         readonly DataReaderProvider _readerProvider;
         readonly DataWriterProvider _writerProvider;
         readonly Response _response;
+        readonly Request _request;
+
         HttpWebRequest _internalRequest;
-        readonly Request _request; 
-        public string Accept { get; set; }
-        public string ContentType { get; set; }
 
         
         public Response Response { get { return _response;  } }
- 
+        public Request Request { get { return _request; } }
+
         public EasyHttp()
         {
             var readerSettings = new DataReaderSettings();
@@ -42,7 +42,7 @@ namespace EasyHttp
             _writerProvider = new DataWriterProvider(new List<IDataWriter>() {jsonWriter, xmlWriter});
             
             _response = new Response();
-
+            _request = new Request();
         }
 
         public void Get(string uri)
@@ -55,17 +55,13 @@ namespace EasyHttp
         public void Post(string uri, object data)
         {
             CreateRequest(uri, HttpMethod.POST);
-
-    
             CreateRequestData(data);
-
             GetResponse();
-
         }
 
         void CreateRequestData(object data)
         {
-            var serializer = _writerProvider.Find(Accept, ContentType);
+            var serializer = _writerProvider.Find(_request.Header.Accept, _request.Header.ContentType);
           
 
             if (serializer == null)
@@ -116,8 +112,8 @@ namespace EasyHttp
         {
             _internalRequest = (HttpWebRequest) WebRequest.Create(uri);
 
-            _internalRequest.ContentType = ContentType;
-            _internalRequest.Accept = Accept;
+            _internalRequest.ContentType = _request.Header.ContentType;
+            _internalRequest.Accept = _request.Header.Accept;
             _internalRequest.Method = method.ToString();
 
             return _internalRequest;
@@ -138,6 +134,16 @@ namespace EasyHttp
         {
             CreateRequest(uri, HttpMethod.DELETE);
             GetResponse();
+        }
+
+        public void SetContentType(string contentType)
+        {
+            _request.Header.ContentType = contentType;
+        }
+
+        public void SetAccept(string accept)
+        {
+            _request.Header.Accept = accept;
         }
     }
 }
