@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EasyHTTP\HEADFeatures.cs" />
     <Compile Include="EasyHTTP\DELETEFeature.cs" />
     <Compile Include="EasyHTTP\GETFeature.cs" />
     <Compile Include="EasyHTTP\InitFeature.cs" />

@@ -82,9 +82,10 @@ namespace EasyHttp
 
         void GetResponse()
         {
-            var webResponse = _internalRequest.GetResponse();
+            var webResponse = (HttpWebResponse)_internalRequest.GetResponse();
 
             Response.Header.ContentType = webResponse.ContentType;
+            Response.Header.StatusDescription = webResponse.StatusDescription;
 
             using (var stream = webResponse.GetResponseStream())
             {
@@ -144,6 +145,12 @@ namespace EasyHttp
         public void SetAccept(string accept)
         {
             _request.Header.Accept = accept;
+        }
+
+        public void Head(string uri)
+        {
+            CreateRequest(uri, HttpMethod.HEAD);
+            GetResponse();
         }
     }
 }
