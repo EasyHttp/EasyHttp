@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using JsonFx.Serialization;
@@ -50,6 +51,7 @@ namespace EasyHttp
             }
         }
 
-      
+
+       
     }
 }

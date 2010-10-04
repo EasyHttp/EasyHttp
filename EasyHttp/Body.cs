@@ -13,7 +13,7 @@ namespace EasyHttp
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             result = _properties[binder.Name.ToLower()];
-            return true;
+            return result != null;
         }
 
         public override bool TrySetMember(SetMemberBinder binder, object value)

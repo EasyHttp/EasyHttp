@@ -9,14 +9,16 @@ namespace EasyHttp.Specs.EasyHTTP
         Establish context = () =>
         {
             _easyHttp = new EasyHttp()
-                         .WithAccept("application/json")
-                         .WithContentType("application/json");
+                            .WithAccept("application/json")
+                .WithContentType("application/json");
+
         };
 
         Because of = () =>
         {
 
-            _easyHttp.Post("http://127.0.0.1:5984/customers", new Customer() { Name = "Hadi", Email = "test@test.com" });
+            _easyHttp.Post("http://127.0.0.1:5984/customers", new Customer() {Name = "Hadi", Email = "test@test.com"});
+
             response = _easyHttp.Response;
         };
 

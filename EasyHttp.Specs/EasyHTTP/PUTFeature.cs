@@ -10,14 +10,16 @@ namespace EasyHttp.Specs.EasyHTTP
         Establish context = () =>
         {
             _easyHttp = new EasyHttp()
-                         .WithAccept("application/json")
-                         .WithContentType("application/json");
+                .WithAccept("application/json")
+                .WithContentType("application/json");
         };
 
         Because of = () =>
         {
             Guid guid = Guid.NewGuid();
-            _easyHttp.Put(string.Format("{0}/{1}", "http://127.0.0.1:5984/customers",guid), new Customer() { Name = "Put", Email = "test@test.com" });
+            _easyHttp.Put(string.Format("{0}/{1}", "http://127.0.0.1:5984/customers", guid),
+                          new Customer() {Name = "Put", Email = "test@test.com"});
+
             response = _easyHttp.Response;
         };
 

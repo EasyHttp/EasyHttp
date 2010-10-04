@@ -14,7 +14,7 @@ namespace EasyHttp.Specs.EasyHTTP
 
         Because of = () =>
         {
-            response = _easyHttp.Get("http://localhost:5984");
+            response = _easyHttp.Get("http://localhost:5984").Response;
 
         };
 
@@ -31,13 +31,15 @@ namespace EasyHttp.Specs.EasyHTTP
         Establish context = () =>
         {
             _easyHttp = new EasyHttp()
-                .WithAccept("application/json");
+                            .WithAccept("application/json");
+
         };
 
         Because of = () =>
         {
 
             _easyHttp.Get("http://127.0.0.1:5984/");
+            
             response = _easyHttp.Response;
         };
 

@@ -20,11 +20,10 @@ namespace EasyHttp
             request = new Request();
         }
 
-        public Response Get(string uri)
+        public EasyHttp Get(string uri)
         {
             Response = request.MakeRequest(uri, HttpMethod.GET);
-
-            return Response;
+            return this;
         }
 
         public void Post(string uri, object data)
@@ -44,14 +43,13 @@ namespace EasyHttp
             Response = request.MakeRequest(uri, HttpMethod.DELETE);
         }
 
-        // TODO: Fix this up. Shouldn't be here
         public EasyHttp WithContentType(string contentType)
         {
             request.Header.ContentType = contentType;
             return this;
         }
 
-        // TODO: Fix this up. Shouldn't be here
+
         public EasyHttp WithAccept(string accept)
         {
             request.Header.Accept = accept;

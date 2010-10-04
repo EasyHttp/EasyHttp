@@ -15,7 +15,9 @@ namespace EasyHttp.Specs.EasyHTTP
 
             // First create customer in order to then delete it
             guid = Guid.NewGuid();
-            _easyHttp.Put(string.Format("{0}/{1}", "http://127.0.0.1:5984/customers", guid), new Customer() { Name = "ToDelete", Email = "test@test.com" });
+            _easyHttp.Put(string.Format("{0}/{1}", "http://127.0.0.1:5984/customers", guid),
+                          new Customer() {Name = "ToDelete", Email = "test@test.com"});
+
             response = _easyHttp.Response;
 
             rev = response.Body.rev;
