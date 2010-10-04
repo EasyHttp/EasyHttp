@@ -10,147 +10,57 @@ namespace EasyHttp
 {
     public class EasyHttp
     {
-        // TODO: Move all encoding and request/response stuff to the classes now created
-        readonly DataReaderProvider _readerProvider;
-        readonly DataWriterProvider _writerProvider;
-        readonly Response _response;
-        readonly Request _request;
+        readonly Request request;
 
-        HttpWebRequest _internalRequest;
-
-        
-        public Response Response { get { return _response;  } }
-        public Request Request { get { return _request; } }
+        public Response Response { get; private set; }
+        public Request Request { get { return request; } }
 
         public EasyHttp()
         {
-            var readerSettings = new DataReaderSettings();
-          
-            var jsonReader = new JsonFx.Json.JsonReader(readerSettings);
-          
-            var xmlReader = new JsonFx.Xml.XmlReader(readerSettings);
-
-            _readerProvider = new DataReaderProvider(new List<IDataReader>() {jsonReader, xmlReader});
-
-
-            var writerSettings = new DataWriterSettings();
-
-            var jsonWriter = new JsonFx.Json.JsonWriter(writerSettings);
-
-            var xmlWriter = new JsonFx.Xml.XmlWriter(writerSettings);
-
-            _writerProvider = new DataWriterProvider(new List<IDataWriter>() {jsonWriter, xmlWriter});
-            
-            _response = new Response();
-            _request = new Request();
+            request = new Request();
         }
 
-        public void Get(string uri)
+        public Response Get(string uri)
         {
-            CreateRequest(uri, HttpMethod.GET);
+            Response = request.MakeRequest(uri, HttpMethod.GET);
 
-            GetResponse();
+            return Response;
         }
 
         public void Post(string uri, object data)
         {
-            CreateRequest(uri, HttpMethod.POST);
-            CreateRequestData(data);
-            GetResponse();
+            Response = request.MakeRequest(uri, HttpMethod.POST, data);
         }
 
-        void CreateRequestData(object data)
-        {
-            var serializer = _writerProvider.Find(_request.Header.Accept, _request.Header.ContentType);
-          
-
-            if (serializer == null)
-            {
-                throw new SerializationException("Cannot Serialize Data");
-            }
-
-            var requestStream = _internalRequest.GetRequestStream();
-                
-            var serialized = serializer.Write(data);
-
-            var bytes = System.Text.Encoding.UTF8.GetBytes(serialized);
-                
-            requestStream.Write(bytes, 0, bytes.Length);
-                
-            requestStream.Close();
-        }
-
-        void GetResponse()
-        {
-            var webResponse = (HttpWebResponse)_internalRequest.GetResponse();
-
-            Response.Header.ContentType = webResponse.ContentType;
-            Response.Header.StatusDescription = webResponse.StatusDescription;
-
-            using (var stream = webResponse.GetResponseStream())
-            {
-                if (stream != null)
-                {
-                    using (var reader = new StreamReader(stream))
-                    {
-                        var deserializer = _readerProvider.Find(Response.Header.ContentType);
-
-                        if (deserializer == null)
-                        {
-                            _response.Body.RawText = reader.ReadToEnd();
-                        }
-                        else
-                        {
-                            _response.Body = deserializer.Read<Body>(reader);
-                        }
-                    }
-                        
-                }
-            }
-        }
-
-        HttpWebRequest CreateRequest(string uri, HttpMethod method)
-        {
-            _internalRequest = (HttpWebRequest) WebRequest.Create(uri);
-
-            _internalRequest.ContentType = _request.Header.ContentType;
-            _internalRequest.Accept = _request.Header.Accept;
-            _internalRequest.Method = method.ToString();
-
-            return _internalRequest;
-        }
-
+      
 
         public void Put(string uri, object data)
         {
-            CreateRequest(uri, HttpMethod.PUT);
-
-            CreateRequestData(data);
-
-            GetResponse();
-
+            Response = request.MakeRequest(uri, HttpMethod.PUT, data);
         }
 
         public void Delete(string uri)
         {
-            CreateRequest(uri, HttpMethod.DELETE);
-            GetResponse();
+            Response = request.MakeRequest(uri, HttpMethod.DELETE);
         }
 
-        public void SetContentType(string contentType)
+        // TODO: Fix this up. Shouldn't be here
+        public EasyHttp WithContentType(string contentType)
         {
-            _request.Header.ContentType = contentType;
+            request.Header.ContentType = contentType;
+            return this;
         }
 
-        public void SetAccept(string accept)
+        // TODO: Fix this up. Shouldn't be here
+        public EasyHttp WithAccept(string accept)
         {
-            _request.Header.Accept = accept;
+            request.Header.Accept = accept;
+            return this;
         }
 
         public void Head(string uri)
         {
-            CreateRequest(uri, HttpMethod.HEAD);
-            GetResponse();
+            Response = request.MakeRequest(uri, HttpMethod.HEAD);
         }
     }
 }

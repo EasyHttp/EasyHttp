@@ -9,9 +9,9 @@ namespace EasyHttp.Specs.EasyHTTP
     {
         Establish context = () =>
         {
-            _easyHttp = new EasyHttp();
-            _easyHttp.SetContentType("application/json");
-            _easyHttp.SetAccept("application/json");
+            _easyHttp = new EasyHttp()
+                .WithAccept("application/json")
+                .WithContentType("application/json");
 
             // First create customer in order to then delete it
             guid = Guid.NewGuid();
