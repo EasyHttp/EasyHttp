@@ -14,15 +14,15 @@ namespace EasyHttp.Specs.EasyHTTP
 
         Because of = () =>
         {
-            response = _easyHttp.Get("http://localhost:5984").Response;
+            _httpResponse = _easyHttp.Get("http://localhost:5984");
 
         };
 
         It should_return_body_with_rawtext =
-            () => response.Body.RawText.ShouldEqual("{\"couchdb\":\"Welcome\",\"version\":\"1.0.0\"}\n");
+            () => _httpResponse.Body.RawText.ShouldEqual("{\"couchdb\":\"Welcome\",\"version\":\"1.0.0\"}\n");
 
         static EasyHttp _easyHttp;
-        static Response response;
+        static HttpResponse _httpResponse;
     }
 
     [Subject("Working with GET")]
@@ -58,6 +58,5 @@ namespace EasyHttp.Specs.EasyHTTP
         static EasyHttp _easyHttp;
         static dynamic response;
     }
-
 
 }

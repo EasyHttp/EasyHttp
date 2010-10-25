@@ -10,8 +10,7 @@ namespace EasyHttp.Specs.EasyHTTP
         Establish context = () =>
         {
             _easyHttp = new EasyHttp()
-                .WithAccept("application/json")
-                .WithContentType("application/json");
+                .WithAccept("application/json");
         };
 
         Because of = () =>

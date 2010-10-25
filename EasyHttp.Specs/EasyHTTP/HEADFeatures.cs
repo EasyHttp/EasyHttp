@@ -15,15 +15,15 @@ namespace EasyHttp.Specs.EasyHTTP
         Because of = () =>
         {
             _easyHttp.Head("http://localhost:5984");
-            response = _easyHttp.Response;
+            _httpResponse = _easyHttp.Response;
 
         };
 
         It should_return_correct_header =
-            () => response.Header.StatusDescription.ShouldEqual("OK");
+            () => _httpResponse.StatusDescription.ShouldEqual("OK");
 
         static EasyHttp _easyHttp;
-        static Response response;
+        static HttpResponse _httpResponse;
     }
 
    

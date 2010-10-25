@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using EasyHttp;
 using JsonFx.Serialization;
 using JsonFx.Serialization.Providers;
 using SerializationException = System.Runtime.Serialization.SerializationException;
@@ -10,55 +11,61 @@ namespace EasyHttp
 {
     public class EasyHttp
     {
-        readonly Request request;
+        
 
-        public Response Response { get; private set; }
-        public Request Request { get { return request; } }
+        public HttpResponse Response { get; private set; }
+        public HttpRequest Request { get; private set;  }
 
         public EasyHttp()
         {
-            request = new Request();
+            Request = new HttpRequest();
+        }
+        
+        
+        public EasyHttp WithBasicAuthentication(string username, string password)
+        {
+            Request.SetBasicAuthentication(username, password);    
+            return this;
         }
 
-        public EasyHttp Get(string uri)
+        
+
+        public HttpResponse Get(string uri)
         {
-            Response = request.MakeRequest(uri, HttpMethod.GET);
-            return this;
+            Response = Request.MakeRequest(uri, HttpMethod.GET);
+            return Response;
         }
 
         public void Post(string uri, object data)
         {
-            Response = request.MakeRequest(uri, HttpMethod.POST, data);
+            Response = Request.MakeRequest(uri, HttpMethod.POST, data);
         }
 
       
 
         public void Put(string uri, object data)
         {
-            Response = request.MakeRequest(uri, HttpMethod.PUT, data);
+            Response = Request.MakeRequest(uri, HttpMethod.PUT, data);
         }
 
         public void Delete(string uri)
         {
-            Response = request.MakeRequest(uri, HttpMethod.DELETE);
+            Response = Request.MakeRequest(uri, HttpMethod.DELETE);
         }
 
-        public EasyHttp WithContentType(string contentType)
-        {
-            request.Header.ContentType = contentType;
-            return this;
-        }
-
-
+      
         public EasyHttp WithAccept(string accept)
         {
-            request.Header.Accept = accept;
+            Request.Accept = accept;
             return this;
         }
 
+  
         public void Head(string uri)
         {
-            Response = request.MakeRequest(uri, HttpMethod.HEAD);
+            Response = Request.MakeRequest(uri, HttpMethod.HEAD);
         }
     }
+
+   
 }
