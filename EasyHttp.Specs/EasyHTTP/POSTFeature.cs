@@ -8,7 +8,7 @@ namespace EasyHttp.Specs.EasyHTTP
     {
         Establish context = () =>
         {
-            _easyHttp = new EasyHttp()
+            _httpClient = new HttpClient()
                 .WithAccept("application/json");
 
         };
@@ -16,9 +16,9 @@ namespace EasyHttp.Specs.EasyHTTP
         Because of = () =>
         {
 
-            _easyHttp.Post("http://127.0.0.1:5984/customers", new Customer() {Name = "Hadi", Email = "test@test.com"});
+            _httpClient.Post("http://127.0.0.1:5984/customers", new Customer() {Name = "Hadi", Email = "test@test.com"}, "application/json");
 
-            response = _easyHttp.Response;
+            response = _httpClient.Response;
         };
 
 
@@ -35,7 +35,7 @@ namespace EasyHttp.Specs.EasyHTTP
 
 
 
-        static EasyHttp _easyHttp;
+        static HttpClient _httpClient;
         static dynamic response;
     }
 }

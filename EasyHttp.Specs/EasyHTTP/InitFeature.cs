@@ -2,16 +2,16 @@
 
 namespace EasyHttp.Specs.EasyHTTP
 {
-    [Subject("EasyHttp")]
+    [Subject("HttpClient")]
     public class when_creating_a_new_instance
     {
         Because of = () =>
         {
-            _easyHttp = new EasyHttp(); ;
+            _httpClient = new HttpClient(); ;
         };
 
-        It should_return_new_instance = () => _easyHttp.ShouldNotBeNull();
+        It should_return_new_instance = () => _httpClient.ShouldNotBeNull();
 
-        static EasyHttp _easyHttp;
+        static HttpClient _httpClient;
     }
 }

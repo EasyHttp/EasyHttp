@@ -9,15 +9,15 @@ namespace EasyHttp.Specs.EasyHTTP
     {
         Establish context = () =>
         {
-            _easyHttp = new EasyHttp()
+            _httpClient = new HttpClient()
                 .WithAccept("application/json");
 
             // First create customer in order to then delete it
             guid = Guid.NewGuid();
-            _easyHttp.Put(string.Format("{0}/{1}", "http://127.0.0.1:5984/customers", guid),
-                          new Customer() {Name = "ToDelete", Email = "test@test.com"});
+            _httpClient.Put(string.Format("{0}/{1}", "http://127.0.0.1:5984/customers", guid),
+                          new Customer() {Name = "ToDelete", Email = "test@test.com"}, "application/json");
 
-            response = _easyHttp.Response;
+            response = _httpClient.Response;
 
             rev = response.Body.rev;
         };
@@ -25,8 +25,8 @@ namespace EasyHttp.Specs.EasyHTTP
         Because of = () =>
         {
 
-            _easyHttp.Delete(String.Format("http://127.0.0.1:5984/customers/{0}?rev={1}", guid, rev));
-            response = _easyHttp.Response;
+            _httpClient.Delete(String.Format("http://127.0.0.1:5984/customers/{0}?rev={1}", guid, rev));
+            response = _httpClient.Response;
         };
         It should_delete_the_specified_resource = () =>
         {
@@ -41,7 +41,7 @@ namespace EasyHttp.Specs.EasyHTTP
         };
 
 
-        static EasyHttp _easyHttp;
+        static HttpClient _httpClient;
         static dynamic response;
         static string rev;
         static Guid guid;

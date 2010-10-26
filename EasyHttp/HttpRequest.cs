@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Text;
 using JsonFx.Serialization;
@@ -9,48 +9,41 @@ namespace EasyHttp
 {
     public class HttpRequest
     {
-        readonly DataWriterProvider writerProvider;
 
-        public string ContentType { get; protected set; }
-        public string Accept { get; set; }
+        public string Accept { get ; set; }
+        public string CachePolicy { get; set; }
+        public string Connection { get; set; }
+        public string ContentLength { get; set; }
+        public string ContentType { get; set; }
+
+
+        public IDictionary<string, string> RawHeaders { get; private set; }
         public string UserAgent { get; protected set; }
-        public IDictionary<string, string> ExtraHeaders { get; private set; }
 
         HttpWebRequest httpWebRequest;
 
         public HttpRequest()
         {
             //Accept = new List<string>();
-            ExtraHeaders = new Dictionary<string, string>();
+            RawHeaders = new Dictionary<string, string>();
 
-            var writerSettings = new DataWriterSettings();
-
-            var jsonWriter = new JsonFx.Json.JsonWriter(writerSettings);
-
-            var xmlWriter = new JsonFx.Xml.XmlWriter(writerSettings);
-
-            writerProvider = new DataWriterProvider(new List<IDataWriter>() { jsonWriter, xmlWriter });
         }
 
 
         public void SetBasicAuthentication(string username, string password)
         {
-            var authData = String.Format("{0}:{1}", username, password);
+            var networkCredential = new NetworkCredential(username, password);
 
-            var bytes = Encoding.UTF8.GetBytes(authData);
-
-            var base64Encoded = Convert.ToBase64String(bytes);
-
-            ExtraHeaders.Add("Authorization",base64Encoded);   
+            httpWebRequest.Credentials = networkCredential;
         }
 
-        void SetupRequestHeader(string uri, HttpMethod method)
+        void SetupRequestHeader(HttpMethod method)
         {
             httpWebRequest.ContentType = ContentType;
             httpWebRequest.Accept = Accept;
             httpWebRequest.Method = method.ToString();
 
-            foreach (var header in ExtraHeaders)
+            foreach (var header in RawHeaders)
             {
                 httpWebRequest.Headers.Add(header.Key, header.Value);
             }
@@ -63,13 +56,7 @@ namespace EasyHttp
                 return;
             }
 
-            var serializer = writerProvider.Find(httpWebRequest.Accept, httpWebRequest.ContentType);
-
-
-            if (serializer == null)
-            {
-                throw new SerializationException("Cannot Serialize Data");
-            }
+            var serializer = GetSerializer();
 
             var requestStream = httpWebRequest.GetRequestStream();
 
@@ -82,11 +69,36 @@ namespace EasyHttp
             requestStream.Close();
         }
 
+        IDataWriter GetSerializer()
+        {
+            var writerSettings = new DataWriterSettings();
+
+            
+            var jsonWriter = new JsonFx.Json.JsonWriter(writerSettings);
+
+            var xmlWriter = new JsonFx.Xml.XmlWriter(writerSettings);
+
+            var urlencoderWriter = new UrlEncoderWriter(writerSettings);
+
+            var writerProvider = new DataWriterProvider(new List<IDataWriter>() { jsonWriter, xmlWriter, urlencoderWriter });
+
+            var serializer = writerProvider.Find(httpWebRequest.ContentType, httpWebRequest.ContentType);
+
+          //  Have to add support for xxx-form-encoding
+
+            if (serializer == null)
+            {
+                throw new EncoderFallbackException("Serializer not located");
+            }
+
+            return serializer;
+        }
+
         public HttpResponse MakeRequest(string uri, HttpMethod method, object data = null)
         {
             httpWebRequest = (HttpWebRequest) WebRequest.Create(uri);
 
-            SetupRequestHeader(uri, method);
+            SetupRequestHeader(method);
             SetupRequestBody(data);
 
             var response = new HttpResponse();

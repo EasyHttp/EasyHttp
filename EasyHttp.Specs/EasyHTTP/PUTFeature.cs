@@ -9,17 +9,17 @@ namespace EasyHttp.Specs.EasyHTTP
     {
         Establish context = () =>
         {
-            _easyHttp = new EasyHttp()
+            _httpClient = new HttpClient()
                 .WithAccept("application/json");
         };
 
         Because of = () =>
         {
             Guid guid = Guid.NewGuid();
-            _easyHttp.Put(string.Format("{0}/{1}", "http://127.0.0.1:5984/customers", guid),
-                          new Customer() {Name = "Put", Email = "test@test.com"});
+            _httpClient.Put(string.Format("{0}/{1}", "http://127.0.0.1:5984/customers", guid),
+                          new Customer() {Name = "Put", Email = "test@test.com"}, "application/json");
 
-            response = _easyHttp.Response;
+            response = _httpClient.Response;
         };
 
 
@@ -36,7 +36,7 @@ namespace EasyHttp.Specs.EasyHTTP
 
 
 
-        static EasyHttp _easyHttp;
+        static HttpClient _httpClient;
         static dynamic response;
     }
 }

@@ -9,19 +9,19 @@ namespace EasyHttp.Specs.EasyHTTP
     {
         Establish context = () =>
         {
-            _easyHttp = new EasyHttp();
+            _httpClient = new HttpClient();
         };
 
         Because of = () =>
         {
-            _httpResponse = _easyHttp.Get("http://localhost:5984");
+            _httpResponse = _httpClient.Get("http://localhost:5984");
 
         };
 
         It should_return_body_with_rawtext =
             () => _httpResponse.Body.RawText.ShouldEqual("{\"couchdb\":\"Welcome\",\"version\":\"1.0.0\"}\n");
 
-        static EasyHttp _easyHttp;
+        static HttpClient _httpClient;
         static HttpResponse _httpResponse;
     }
 
@@ -30,7 +30,7 @@ namespace EasyHttp.Specs.EasyHTTP
     {
         Establish context = () =>
         {
-            _easyHttp = new EasyHttp()
+            _httpClient = new HttpClient()
                             .WithAccept("application/json");
 
         };
@@ -38,9 +38,9 @@ namespace EasyHttp.Specs.EasyHTTP
         Because of = () =>
         {
 
-            _easyHttp.Get("http://127.0.0.1:5984/");
+            _httpClient.Get("http://127.0.0.1:5984/");
             
-            response = _easyHttp.Response;
+            response = _httpClient.Response;
         };
 
 
@@ -55,7 +55,7 @@ namespace EasyHttp.Specs.EasyHTTP
             version.ShouldEqual("1.0.0");
         };
 
-        static EasyHttp _easyHttp;
+        static HttpClient _httpClient;
         static dynamic response;
     }
 

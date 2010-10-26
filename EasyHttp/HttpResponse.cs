@@ -12,9 +12,11 @@ namespace EasyHttp
         public string ContentType { get; set; }
         public int StatusCode { get; set; }
         public string StatusDescription { get; set; }
+        public CookieCollection Cookie { get; set; }
         
         public Body Body { get; set; }
-        
+
+
         readonly DataReaderProvider readerProvider;
 
         public HttpResponse()
@@ -26,6 +28,8 @@ namespace EasyHttp
             var xmlReader = new JsonFx.Xml.XmlReader(readerSettings);
 
             readerProvider = new DataReaderProvider(new List<IDataReader>() { jsonReader, xmlReader });
+
+            Body = new Body();
         }
 
         public void GetResponse(HttpWebRequest request)
@@ -34,6 +38,7 @@ namespace EasyHttp
 
             ContentType = webResponse.ContentType;
             StatusDescription = webResponse.StatusDescription;
+            Cookie = webResponse.Cookies;
 
             using (var stream = webResponse.GetResponseStream())
             {

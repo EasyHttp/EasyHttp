@@ -6,18 +6,18 @@ using Machine.Specifications;
 
 namespace EasyHttp.Specs.EasyHTTP
 {
-
+    [Ignore()]
     [Subject("Authentication")]
     public class when_performing_a_get_that_requires_authentication_with_valid_data
     {
         Establish context = () =>
         {
-            easyHttp = new EasyHttp();
+            _httpClient = new HttpClient();
         };
 
         Because of = () =>
         {
-            _httpResponse = easyHttp.WithBasicAuthentication("iis_test_user", "logitech100!!!")
+            _httpResponse = _httpClient.WithBasicAuthentication("iis_test_user", "logitech100!!!")
                 .Get("http://localhost/testsite");
 
         };
@@ -27,7 +27,7 @@ namespace EasyHttp.Specs.EasyHTTP
             
         };
 
-        static EasyHttp easyHttp;
+        static HttpClient _httpClient;
         static HttpResponse _httpResponse;
     }
 

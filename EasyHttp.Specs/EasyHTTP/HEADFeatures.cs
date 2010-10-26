@@ -9,20 +9,20 @@ namespace EasyHttp.Specs.EasyHTTP
     {
         Establish context = () =>
         {
-            _easyHttp = new EasyHttp();
+            _httpClient = new HttpClient();
         };
 
         Because of = () =>
         {
-            _easyHttp.Head("http://localhost:5984");
-            _httpResponse = _easyHttp.Response;
+            _httpClient.Head("http://localhost:5984");
+            _httpResponse = _httpClient.Response;
 
         };
 
         It should_return_correct_header =
             () => _httpResponse.StatusDescription.ShouldEqual("OK");
 
-        static EasyHttp _easyHttp;
+        static HttpClient _httpClient;
         static HttpResponse _httpResponse;
     }
 
