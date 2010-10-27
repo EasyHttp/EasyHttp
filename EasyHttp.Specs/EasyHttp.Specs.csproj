@@ -53,6 +53,8 @@
     <Compile Include="EasyHTTP\POSTFeature.cs" />
     <Compile Include="EasyHTTP\PUTFeature.cs" />
     <Compile Include="Helpers\Customer.cs" />
+    <Compile Include="Helpers\DynamicClass.cs" />
+    <Compile Include="Helpers\StaticClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -46,7 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthenticationFeatures.cs" />
-    <Compile Include="IssueFeatures.cs" />
+    <Compile Include="CreatingIssues.cs" />
+    <Compile Include="RetrievingIssueFeatures.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

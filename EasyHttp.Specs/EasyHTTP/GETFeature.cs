@@ -38,9 +38,8 @@ namespace EasyHttp.Specs.EasyHTTP
         Because of = () =>
         {
 
-            _httpClient.Get("http://127.0.0.1:5984/");
+            response = _httpClient.Get("http://127.0.0.1:5984/");
             
-            response = _httpClient.Response;
         };
 
 

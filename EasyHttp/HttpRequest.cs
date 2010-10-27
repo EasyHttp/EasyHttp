@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Net;
 using System.Text;
@@ -78,9 +79,9 @@ namespace EasyHttp
 
             var xmlWriter = new JsonFx.Xml.XmlWriter(writerSettings);
 
-            var urlencoderWriter = new UrlEncoderWriter(writerSettings);
+            var urlEncoderWriter = new UrlEncoderWriter(writerSettings);
 
-            var writerProvider = new DataWriterProvider(new List<IDataWriter>() { jsonWriter, xmlWriter, urlencoderWriter });
+            var writerProvider = new DataWriterProvider(new List<IDataWriter>() { jsonWriter, xmlWriter, urlEncoderWriter });
 
             var serializer = writerProvider.Find(httpWebRequest.ContentType, httpWebRequest.ContentType);
 

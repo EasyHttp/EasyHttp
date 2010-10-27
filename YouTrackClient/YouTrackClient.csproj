@@ -40,7 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Credentials.cs" />
     <Compile Include="Issue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="YouTrack.cs" />

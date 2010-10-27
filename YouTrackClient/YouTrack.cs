@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Net;
 using System.Security.Authentication;
 using EasyHttp;
@@ -29,23 +30,29 @@ namespace YouTrackClient
             }
         }
 
-        public bool IsAuthenticated
-        {
-            get { return authenticationCookie["JSESSIONID"] != null;  }
-        }
+        public bool IsAuthenticated { get; private set; }
 
         public IList<Issue> GetIssues(string projectIdentifier)
         {
             var httpClient = new HttpClient();
 
-            var response = httpClient
-                .WithAccept("application/xml")
+            dynamic response = httpClient
+                .WithAccept("application/json")
                 .Get(ConstructUri("rest/project/issues/DCVR"));
-                
+
+            
+            dynamic issues = response.Body.issue;
 
             var list = new List<Issue>();
 
-            list.Add(new Issue());
+            foreach (dynamic entry in issues)
+            {
+                var issue = new Issue();
+
+                issue.Summary = entry.summary;
+
+                list.Add(issue);
+            }
 
             return list;
         }
@@ -59,20 +66,31 @@ namespace YouTrackClient
         {
             var httpClient = new HttpClient();
 
-            var credentials = new Credentials() { Username = username, Password = password};
+            dynamic credentials = new ExpandoObject();
 
-            httpClient
-                .WithAccept("application/json")
-                .Post(ConstructUri("rest/user/login"), credentials, "application/x-www-form-encoded");
+            credentials.login = "youtrackapi";
+            credentials.password = "youtrackapi";
 
-            dynamic result = httpClient.Response.Body; 
-
-            if (String.Compare(result.login, "ok", StringComparison.CurrentCultureIgnoreCase) != 0)
+            try
             {
-                throw new AuthenticationException("Authentication Failed");
+                httpClient
+                    .WithAccept("application/xml")
+                    .Post(ConstructUri("rest/user/login"), credentials, "application/x-www-form-urlencoded");
+
+                dynamic result = httpClient.Response.Body;
+
+                if (String.Compare(result.login, "ok", StringComparison.CurrentCultureIgnoreCase) != 0)
+                {
+                    throw new AuthenticationException("Authentication Failed");
+                }
+                IsAuthenticated = true;
+                authenticationCookie = httpClient.Response.Cookie;
+            }
+            catch (HttpException)
+            {
+                IsAuthenticated = false;
             }
 
-            authenticationCookie = httpClient.Response.Cookie;
 
         }
     }

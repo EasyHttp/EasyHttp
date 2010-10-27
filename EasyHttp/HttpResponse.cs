@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using JsonFx.Serialization;
@@ -10,7 +9,7 @@ namespace EasyHttp
     public class HttpResponse
     {
         public string ContentType { get; set; }
-        public int StatusCode { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
         public string StatusDescription { get; set; }
         public CookieCollection Cookie { get; set; }
         
@@ -34,31 +33,49 @@ namespace EasyHttp
 
         public void GetResponse(HttpWebRequest request)
         {
-            var webResponse = (HttpWebResponse)request.GetResponse();
-
-            ContentType = webResponse.ContentType;
-            StatusDescription = webResponse.StatusDescription;
-            Cookie = webResponse.Cookies;
-
-            using (var stream = webResponse.GetResponseStream())
+            try
             {
-                if (stream != null)
+                var response = (HttpWebResponse)request.GetResponse();
+
+                ContentType = response.ContentType;
+                StatusCode = response.StatusCode;
+                StatusDescription = response.StatusDescription;
+                Cookie = response.Cookies;
+
+                using (var stream = response.GetResponseStream())
                 {
-                    using (var reader = new StreamReader(stream))
+                    if (stream != null)
                     {
-                        var deserializer = readerProvider.Find(ContentType);
+                        using (var reader = new StreamReader(stream))
+                        {
+                            var deserializer = readerProvider.Find(ContentType);
 
-                        if (deserializer == null)
-                        {
-                            Body.RawText = reader.ReadToEnd();
+                            if (deserializer == null)
+                            {
+                                Body.RawText = reader.ReadToEnd();
+                            }
+                            else
+                            {
+                                // TODO HACK: Dynamic objects don't support @ in property names. Stripping this out for now here for YouTrack support 
+                                // Fork JsonFX and do this in the JsonReader (JsonFormatter)
+                                string readToEnd = reader.ReadToEnd();
+                                var newstr = readToEnd.Replace("\"@", "\"");
+                                Body = deserializer.Read<Body>(newstr);
+                            }
                         }
-                        else
-                        {
-                            Body = deserializer.Read<Body>(reader);
-                        }
+
                     }
-
                 }
+
+            }
+            catch (WebException webException)
+            {
+                var respone = (HttpWebResponse)webException.Response;
+
+                StatusCode = respone.StatusCode;
+                StatusDescription = respone.StatusDescription;
+
+                throw new HttpException(StatusCode, StatusDescription);
             }
         }
 
