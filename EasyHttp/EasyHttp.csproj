@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Body.cs" />
+    <Compile Include="RemoveAmerpsandFromNameJsonResolverStrategy.cs" />
     <Compile Include="HttpClient.cs" />
     <Compile Include="HttpException.cs" />
     <Compile Include="HttpMethod.cs" />

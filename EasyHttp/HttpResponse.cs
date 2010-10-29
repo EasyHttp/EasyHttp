@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using JsonFx.Serialization;
 using JsonFx.Serialization.Providers;
+using JsonFx.Serialization.Resolvers;
 
 namespace EasyHttp
 {
@@ -20,7 +22,7 @@ namespace EasyHttp
 
         public HttpResponse()
         {
-            var readerSettings = new DataReaderSettings();
+            var readerSettings = new DataReaderSettings(new RemoveAmerpsandFromNameJsonResolverStrategy());
 
             var jsonReader = new JsonFx.Json.JsonReader(readerSettings);
 
@@ -56,11 +58,16 @@ namespace EasyHttp
                             }
                             else
                             {
-                                // TODO HACK: Dynamic objects don't support @ in property names. Stripping this out for now here for YouTrack support 
-                                // Fork JsonFX and do this in the JsonReader (JsonFormatter)
+
+
+                                // TODO HACK: The Custom Resolver Strategy doesn't work...so we have to hack it to remove @ from property names
+                                
                                 string readToEnd = reader.ReadToEnd();
+                                
                                 var newstr = readToEnd.Replace("\"@", "\"");
+                            
                                 Body = deserializer.Read<Body>(newstr);
+                            
                             }
                         }
 

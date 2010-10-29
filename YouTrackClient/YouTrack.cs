@@ -14,7 +14,12 @@ namespace YouTrackClient
         readonly int port;
         CookieCollection authenticationCookie;
 
-
+        /// <summary>
+        /// Creates a new instance of YouTrack setting the appropriate host and port for successive calls. 
+        /// </summary>
+        /// <param name="host"></param>
+        /// <param name="port"></param>
+        /// <param name="useSsl"></param>
         public YouTrack(string host, int port = 80, bool useSsl = false)
         {
             this.host = host;
@@ -30,8 +35,17 @@ namespace YouTrackClient
             }
         }
 
+        /// <summary>
+        /// Indicates whether a successful login has already taken place
+        /// <seealso cref="Login"/>
+        /// </summary>
         public bool IsAuthenticated { get; private set; }
 
+        /// <summary>
+        /// Retrieves a list of issues 
+        /// </summary>
+        /// <param name="projectIdentifier">Project Identifier</param>
+        /// <returns>List of Issues</returns>
         public IList<Issue> GetIssues(string projectIdentifier)
         {
             var httpClient = new HttpClient();
@@ -57,11 +71,25 @@ namespace YouTrackClient
             return list;
         }
 
+
+
+
+
+        /// <summary>
+        /// Create base Uri for YouTrack containing host, port and specific request
+        /// </summary>
+        /// <param name="request">Specific request</param>
+        /// <returns>Uri</returns>
         string ConstructUri(string request)
         {
             return String.Format("{0}://{1}:{2}/{3}", protocol, host, port, request);
         }
 
+        /// <summary>
+        /// Logs in to YouTrack provided the correct username and password. If successful, <see cref="IsAuthenticated"/>will be true
+        /// </summary>
+        /// <param name="username">Username</param>
+        /// <param name="password">Passowrd</param>
         public void Login(string username, string password)
         {
             var httpClient = new HttpClient();
