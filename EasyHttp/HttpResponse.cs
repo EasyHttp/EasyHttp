@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using EasyHttp.JsonFXExtensions;
 using JsonFx.Serialization;
 using JsonFx.Serialization.Providers;
 using JsonFx.Serialization.Resolvers;
@@ -81,8 +82,6 @@ namespace EasyHttp
 
                 StatusCode = respone.StatusCode;
                 StatusDescription = respone.StatusDescription;
-
-                throw new HttpException(StatusCode, StatusDescription);
             }
         }
 

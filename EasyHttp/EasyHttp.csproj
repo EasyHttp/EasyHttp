@@ -46,15 +46,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Body.cs" />
-    <Compile Include="RemoveAmerpsandFromNameJsonResolverStrategy.cs" />
+    <Compile Include="JsonFXExtensions\RemoveAmerpsandFromNameJsonResolverStrategy.cs" />
+    <Compile Include="JsonFXExtensions\UrlEncoderTextFormatter.cs" />
+    <Compile Include="JsonFXExtensions\UrlEncoderWriter.cs" />
     <Compile Include="HttpClient.cs" />
     <Compile Include="HttpException.cs" />
     <Compile Include="HttpMethod.cs" />
     <Compile Include="HttpRequest.cs" />
     <Compile Include="HttpResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UrlEncoderWriter.cs" />
-    <Compile Include="UrlEncoderTextFormatter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Lib\JsonFx.dll" />

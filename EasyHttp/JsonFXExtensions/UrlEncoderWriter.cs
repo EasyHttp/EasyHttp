@@ -2,15 +2,15 @@
 using JsonFx.Common;
 using JsonFx.Serialization;
 
-namespace EasyHttp
+namespace EasyHttp.JsonFXExtensions
 {
     public class UrlEncoderWriter:CommonWriter 
     {
-        DataWriterSettings writerSettings;
+        DataWriterSettings _writerSettings;
 
         public UrlEncoderWriter(DataWriterSettings writerSettings)
         {
-            this.writerSettings = writerSettings;
+            _writerSettings = writerSettings;
         }
 
         protected override ITextFormatter<CommonTokenType> GetFormatter()

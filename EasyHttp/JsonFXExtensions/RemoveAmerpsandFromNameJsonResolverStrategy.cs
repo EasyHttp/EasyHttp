@@ -3,7 +3,7 @@ using System.Reflection;
 using JsonFx.Json.Resolvers;
 using JsonFx.Serialization;
 
-namespace EasyHttp
+namespace EasyHttp.JsonFXExtensions
 {
     public class RemoveAmerpsandFromNameJsonResolverStrategy: JsonResolverStrategy
     {

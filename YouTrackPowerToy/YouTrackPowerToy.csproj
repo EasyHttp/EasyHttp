@@ -87,9 +87,14 @@
     <Compile Include="SearchBox.Designer.cs">
       <DependentUpon>SearchBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="YouTrackAction.cs">
+    <Compile Include="TreeModelBrowserDescriptorYouTrack.cs" />
+    <Compile Include="TreeModelPanelYouTrack.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="YouTrackAction.cs" />
+    <Compile Include="YouTrackSolutionInitialization.cs" />
+    <Compile Include="YouTrackTreeModel.cs" />
+    <Compile Include="YouTrackTreeModelNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

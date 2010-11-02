@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Net;
 using System.Text;
+using EasyHttp.JsonFXExtensions;
 using JsonFx.Serialization;
 using JsonFx.Serialization.Providers;
+using SerializationException = System.Runtime.Serialization.SerializationException;
 
 namespace EasyHttp
 {
@@ -17,9 +19,15 @@ namespace EasyHttp
         public string ContentLength { get; set; }
         public string ContentType { get; set; }
 
-
         public IDictionary<string, string> RawHeaders { get; private set; }
-        public string UserAgent { get; protected set; }
+        
+        public string UserAgent { get; set; }
+
+        public HttpMethod Method { get; set; }
+
+        public object Data { get; set; }
+
+        public string Uri { get; set; }
 
         HttpWebRequest httpWebRequest;
 
@@ -33,16 +41,19 @@ namespace EasyHttp
 
         public void SetBasicAuthentication(string username, string password)
         {
-            var networkCredential = new NetworkCredential(username, password);
+            if (!String.IsNullOrEmpty(username) && !String.IsNullOrEmpty(password))
+            {
+                var networkCredential = new NetworkCredential(username, password);
 
-            httpWebRequest.Credentials = networkCredential;
+                httpWebRequest.Credentials = networkCredential;
+            }
         }
 
-        void SetupRequestHeader(HttpMethod method)
+        void SetupRequestHeader()
         {
             httpWebRequest.ContentType = ContentType;
             httpWebRequest.Accept = Accept;
-            httpWebRequest.Method = method.ToString();
+            httpWebRequest.Method = Method.ToString();
 
             foreach (var header in RawHeaders)
             {
@@ -50,9 +61,9 @@ namespace EasyHttp
             }
         }
 
-        void SetupRequestBody(object data)
+        void SetupRequestBody()
         {
-            if (data == null)
+            if (Data == null)
             {
                 return;
             }
@@ -61,7 +72,7 @@ namespace EasyHttp
 
             var requestStream = httpWebRequest.GetRequestStream();
 
-            var serialized = serializer.Write(data);
+            var serialized = serializer.Write(Data);
 
             var bytes = Encoding.UTF8.GetBytes(serialized);
 
@@ -85,22 +96,20 @@ namespace EasyHttp
 
             var serializer = writerProvider.Find(httpWebRequest.ContentType, httpWebRequest.ContentType);
 
-          //  Have to add support for xxx-form-encoding
-
             if (serializer == null)
             {
-                throw new EncoderFallbackException("Serializer not located");
+                throw new SerializationException("The encoding requested does not have a corresponding serializer");
             }
 
             return serializer;
         }
 
-        public HttpResponse MakeRequest(string uri, HttpMethod method, object data = null)
+        public HttpResponse MakeRequest()
         {
-            httpWebRequest = (HttpWebRequest) WebRequest.Create(uri);
+            httpWebRequest = (HttpWebRequest) WebRequest.Create(Uri);
 
-            SetupRequestHeader(method);
-            SetupRequestBody(data);
+            SetupRequestHeader();
+            SetupRequestBody();
 
             var response = new HttpResponse();
 

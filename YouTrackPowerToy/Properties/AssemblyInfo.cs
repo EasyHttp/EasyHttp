@@ -6,6 +6,7 @@ using JetBrains.ComponentModel;
 using JetBrains.UI.Application.PluginSupport;
 using JetBrains.WindowManagement;
 using YouTrackPowerToy;
+using YouTrackPowerToy.YouTrackPowerToy;
 
 [assembly: AssemblyTitle("ReSharper PowerToys: YouTrack PowerToy")]
 [assembly: AssemblyDescription("")]

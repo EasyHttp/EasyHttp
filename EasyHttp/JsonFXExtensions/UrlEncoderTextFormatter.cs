@@ -4,7 +4,7 @@ using System.IO;
 using JsonFx.Common;
 using JsonFx.Serialization;
 
-namespace EasyHttp
+namespace EasyHttp.JsonFXExtensions
 {
     public class UrlEncoderTextFormatter : ITextFormatter<CommonTokenType>
     {
