@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<actions>
-  <insert group-id="ReSharper" position="last">
-    <action-group id="PowerToys" text="Power Toys" shared="true">
-      <action id="YouTrack" text="YouTrack..." shortcut="Control+Shift+Y"/>
-    </action-group>
-  </insert>
-</actions>
-
