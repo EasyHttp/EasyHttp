@@ -11,7 +11,7 @@ TODO
 USAGE
 =====
 
-Do do a POST with JSON:
+To do a POST with JSON:
 
 
   var customer = new Customer();
@@ -25,7 +25,7 @@ Do do a POST with JSON:
   http.Post("url", customer, "application/json");
   
  
-Do get some data in JSON format:
+To get some data in JSON format:
 
   var http = new HttpClient();
 
@@ -38,6 +38,8 @@ Do get some data in JSON format:
   dynamic customer = response.Body;
 
   Console.WriteLine(String.Format("Name: {0} - Email: {1}, customer.Name, customer.Email));
+
+EasyHttp's Body is dynamic. It will automatically decode json, xml for you so you can just access the properties. 
 
 
 Encoding
