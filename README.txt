@@ -6,7 +6,7 @@ TODO
 
 - Needs clean-up
 - Authentication needs to be better implemented
-
+- Add other TODO's items here... (i.e. not even close to finished but functional)
 
 USAGE
 =====
