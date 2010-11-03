@@ -1,0 +1,3 @@
+An HTTP Client for .NET. Allows you to easily make HTTP calls. 
+
+And that's all I gotta say about that right now....
