@@ -60,6 +60,7 @@
   <ItemGroup>
     <Content Include="Lib\Machine.Specifications.dll" />
     <Content Include="Lib\Machine.Specifications.pdb" />
+    <Content Include="README.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyHttp\EasyHttp.csproj">
