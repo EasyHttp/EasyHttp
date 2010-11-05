@@ -16,7 +16,7 @@ namespace EasyHttp.Specs.EasyHTTP
         Because of = () =>
         {
 
-            _httpClient.Post("http://127.0.0.1:5984/easyhttp", new Customer() { Name = "Hadi", Email = "test@test.com" }, "application/json");
+            _httpClient.Post(TestSettings.CouchDbDatabaseUrl, new Customer() { Name = "Hadi", Email = "test@test.com" }, "application/json");
 
             response = _httpClient.Response;
         };

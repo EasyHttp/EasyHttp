@@ -1,4 +1,5 @@
-﻿using Machine.Specifications;
+﻿using EasyHttp.Specs.Helpers;
+using Machine.Specifications;
 
 namespace EasyHttp.Specs.EasyHTTP
 {
@@ -38,7 +39,7 @@ namespace EasyHttp.Specs.EasyHTTP
         Because of = () =>
         {
 
-            response = _httpClient.Get("http://127.0.0.1:5984/");
+            response = _httpClient.Get(TestSettings.CouchDbRootUrl);
             
         };
 

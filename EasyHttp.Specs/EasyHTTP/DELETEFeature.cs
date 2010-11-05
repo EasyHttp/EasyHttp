@@ -15,7 +15,7 @@ namespace EasyHttp.Specs.EasyHTTP
             // First create customer in order to then delete it
             guid = Guid.NewGuid();
 
-            _httpClient.Put(string.Format("{0}/{1}", "http://127.0.0.1:5984/easyhttp", guid),
+            _httpClient.Put(string.Format("{0}/{1}", TestSettings.CouchDbDatabaseUrl, guid),
                           new Customer() {Name = "ToDelete", Email = "test@test.com"}, "application/json");
 
             response = _httpClient.Response;
@@ -26,9 +26,10 @@ namespace EasyHttp.Specs.EasyHTTP
         Because of = () =>
         {
 
-            _httpClient.Delete(String.Format("http://127.0.0.1:5984/easyhttp/{0}?rev={1}", guid, rev));
+            _httpClient.Delete(String.Format("{0}/{1}?rev={2}", TestSettings.CouchDbDatabaseUrl, guid, rev));
             response = _httpClient.Response;
         };
+
         It should_delete_the_specified_resource = () =>
         {
             bool ok = response.Body.ok;
