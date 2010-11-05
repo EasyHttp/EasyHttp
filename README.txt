@@ -1,12 +1,8 @@
 An HTTP Client for .NET. Allows you to easily make HTTP calls. 
 
 
-TODO
-====
+Please log all issues are tracked here: http://youtrack.codebetter.com/issues/EHTTP
 
-- Needs clean-up
-- Authentication needs to be better implemented
-- Add other TODO's items here... (i.e. not even close to finished but functional)
 
 USAGE
 =====
