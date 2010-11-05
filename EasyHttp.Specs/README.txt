@@ -1,6 +1,8 @@
-﻿
-To run the tests you need CouchDB. Yep. They are integration tests!
+﻿[Note: These are integration tests]
 
-Fire up CouchDB and it should all work with localhost:5984
+To run the tests you need CouchDB. 
 
+1. Fire up CouchDB on localhost:5984
+2. Create a database called easyhttp. 
 
+(I'll make this part of the test setup, but for now it's manual)

@@ -16,7 +16,7 @@ namespace EasyHttp.Specs.EasyHTTP
         Because of = () =>
         {
             Guid guid = Guid.NewGuid();
-            _httpClient.Put(string.Format("{0}/{1}", "http://127.0.0.1:5984/customers", guid),
+            _httpClient.Put(string.Format("{0}/{1}", "http://127.0.0.1:5984/easyhttp", guid),
                           new Customer() {Name = "Put", Email = "test@test.com"}, "application/json");
 
             response = _httpClient.Response;
