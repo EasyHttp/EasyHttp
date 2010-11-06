@@ -11,6 +11,9 @@ namespace EasyHttp
 {
     public class HttpResponse
     {
+        IDataReader _deserializer;
+        string _parsedRawText;
+
         public string ContentType { get; set; }
         public HttpStatusCode StatusCode { get; set; }
         public string StatusDescription { get; set; }
@@ -21,17 +24,12 @@ namespace EasyHttp
         
         public T StaticBody<T>()
         {
-            var deserializer = readerProvider.Find(ContentType);
-
-            if (deserializer != null)
+            if (_deserializer != null)
             {
-                string newstr = RemoveAmpersands();
-
-                return deserializer.Read<T>(newstr);
-
+                return _deserializer.Read<T>(_parsedRawText);
             }
-            throw new SerializationException("The encoding requested does not have a corresponding serializer");
 
+            throw new SerializationException("The encoding requested does not have a corresponding serializer");
         }
 
 
@@ -69,16 +67,14 @@ namespace EasyHttp
                         {
                             RawText = reader.ReadToEnd();
 
+                            _parsedRawText = RawText.Replace("\"@", "\"");
                             
-                            var deserializer = readerProvider.Find(ContentType);
+                            _deserializer = readerProvider.Find(ContentType);
 
                             
-                            if (deserializer != null)
+                            if (_deserializer != null)
                             {
-
-                                string newstr = RemoveAmpersands();
-
-                                DynamicBody = deserializer.Read<Body>(newstr);
+                                DynamicBody = _deserializer.Read<Body>(_parsedRawText);
                             }
                         }
 
@@ -95,12 +91,5 @@ namespace EasyHttp
             }
         }
 
-        string RemoveAmpersands()
-        {
-            // TODO HACK: The Custom Resolver Strategy doesn't work...so we have to hack it to remove @ from property names
-            string readToEnd = RawText;
-
-            return readToEnd.Replace("\"@", "\"");
-        }
     }
 }
