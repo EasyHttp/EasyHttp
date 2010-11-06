@@ -10,10 +10,8 @@ namespace EasyHttp
 {
     public class CoDec : ICoDec
     {
-        readonly IDataReaderProvider _readerProvider;
-        readonly IDataWriterProvider _writerProvider;
-        
-        public CoDec()
+
+        public byte[] Encode(object data, string contentType)
         {
             var writerSettings = new DataWriterSettings();
 
@@ -24,23 +22,9 @@ namespace EasyHttp
 
             var urlEncoderWriter = new UrlEncoderWriter(writerSettings);
 
-            _writerProvider = new DataWriterProvider(new List<IDataWriter>() { jsonWriter, xmlWriter, urlEncoderWriter });
-
-
-            var readerSettings = new DataReaderSettings(new RemoveAmerpsandFromNameJsonResolverStrategy());
-
-            var jsonReader = new JsonFx.Json.JsonReader(readerSettings);
-
-            var xmlReader = new JsonFx.Xml.XmlReader(readerSettings);
-
-            _readerProvider = new DataReaderProvider(new List<IDataReader>() { jsonReader, xmlReader });
-        }
-
-
-        public byte[] Encode(object data, string contentType)
-        {
-
-            var serializer = _writerProvider.Find(contentType, contentType);
+            IDataWriterProvider writerProvider = new DataWriterProvider(new List<IDataWriter>() { jsonWriter, xmlWriter, urlEncoderWriter });
+            
+            var serializer = writerProvider.Find(contentType, contentType);
 
             if (serializer == null)
             {
@@ -55,9 +39,17 @@ namespace EasyHttp
        
         public T Decode<T>(string input, string contentType)
         {
+            var readerSettings = new DataReaderSettings(new RemoveAmerpsandFromNameJsonResolverStrategy());
+
+            var jsonReader = new JsonFx.Json.JsonReader(readerSettings);
+
+            var xmlReader = new JsonFx.Xml.XmlReader(readerSettings);
+
+            IDataReaderProvider readerProvider = new DataReaderProvider(new List<IDataReader>() { jsonReader, xmlReader });
+
             var parsedText = input.Replace("\"@", "\"");
                             
-            var deserializer = _readerProvider.Find(contentType);
+            var deserializer = readerProvider.Find(contentType);
 
                             
             if (deserializer == null)
