@@ -20,7 +20,7 @@ namespace EasyHttp.Specs.EasyHTTP
         };
 
         It should_return_body_with_rawtext =
-            () => _httpResponse.Body.RawText.ShouldNotBeEmpty();
+            () => _httpResponse.RawText.ShouldNotBeEmpty();
 
         static HttpClient _httpClient;
         static HttpResponse _httpResponse;
@@ -44,11 +44,13 @@ namespace EasyHttp.Specs.EasyHTTP
         };
 
 
-        It should_return_body_with_json_object = () =>
+        It should_return_dynamic_body_with_json_object = () =>
         {
-            string couchdb = response.Body.couchdb;
-      
-            string version = response.Body.version;
+            dynamic body = response.DynamicBody;
+
+            string couchdb = body.couchdb;
+
+            string version = body.version;
           
             couchdb.ShouldEqual("Welcome");
             
@@ -56,7 +58,38 @@ namespace EasyHttp.Specs.EasyHTTP
         };
 
         static HttpClient _httpClient;
-        static dynamic response;
+        static HttpResponse response;
+    }
+
+    [Subject("Working with GET")]
+    public class when_requesting_a_valid_uri_in_json_format_for_static_body
+    {
+        Establish context = () =>
+        {
+            _httpClient = new HttpClient()
+                            .WithAccept("application/json");
+
+        };
+
+        Because of = () =>
+        {
+
+            response = _httpClient.Get(TestSettings.CouchDbRootUrl);
+
+        };
+
+
+        It should_return_static_body_with_json_object = () =>
+        {
+            var couchInformation = response.StaticBody<CouchInformation>();
+
+            couchInformation.couchdb.ShouldEqual("Welcome");
+
+            couchInformation.version.ShouldNotBeEmpty();
+        };
+
+        static HttpClient _httpClient;
+        static HttpResponse response;
     }
 
 }

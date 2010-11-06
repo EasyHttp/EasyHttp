@@ -24,9 +24,9 @@ namespace EasyHttp.Specs.EasyHTTP
 
         It should_succeed = () =>
         {
-            bool ok = response.Body.ok;
+            bool ok = response.DynamicBody.ok;
 
-            string id = response.Body.id;
+            string id = response.DynamicBody.id;
 
             ok.ShouldBeTrue();
 

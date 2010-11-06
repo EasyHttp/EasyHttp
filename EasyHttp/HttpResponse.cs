@@ -16,7 +16,23 @@ namespace EasyHttp
         public string StatusDescription { get; set; }
         public CookieCollection Cookie { get; set; }
         
-        public Body Body { get; set; }
+        public Body DynamicBody { get; set; }
+        public string RawText { get; set; }
+        
+        public T StaticBody<T>()
+        {
+            var deserializer = readerProvider.Find(ContentType);
+
+            if (deserializer != null)
+            {
+                string newstr = RemoveAmpersands();
+
+                return deserializer.Read<T>(newstr);
+
+            }
+            throw new SerializationException("The encoding requested does not have a corresponding serializer");
+
+        }
 
 
         readonly DataReaderProvider readerProvider;
@@ -31,7 +47,7 @@ namespace EasyHttp
 
             readerProvider = new DataReaderProvider(new List<IDataReader>() { jsonReader, xmlReader });
 
-            Body = new Body();
+            DynamicBody = new Body();
         }
 
         public void GetResponse(HttpWebRequest request)
@@ -51,24 +67,18 @@ namespace EasyHttp
                     {
                         using (var reader = new StreamReader(stream))
                         {
+                            RawText = reader.ReadToEnd();
+
+                            
                             var deserializer = readerProvider.Find(ContentType);
 
-                            if (deserializer == null)
-                            {
-                                Body.RawText = reader.ReadToEnd();
-                            }
-                            else
+                            
+                            if (deserializer != null)
                             {
 
+                                string newstr = RemoveAmpersands();
 
-                                // TODO HACK: The Custom Resolver Strategy doesn't work...so we have to hack it to remove @ from property names
-                                
-                                string readToEnd = reader.ReadToEnd();
-                                
-                                var newstr = readToEnd.Replace("\"@", "\"");
-                            
-                                Body = deserializer.Read<Body>(newstr);
-                            
+                                DynamicBody = deserializer.Read<Body>(newstr);
                             }
                         }
 
@@ -85,7 +95,12 @@ namespace EasyHttp
             }
         }
 
+        string RemoveAmpersands()
+        {
+            // TODO HACK: The Custom Resolver Strategy doesn't work...so we have to hack it to remove @ from property names
+            string readToEnd = RawText;
 
-       
+            return readToEnd.Replace("\"@", "\"");
+        }
     }
 }

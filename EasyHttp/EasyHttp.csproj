@@ -55,6 +55,7 @@
     <Compile Include="HttpRequest.cs" />
     <Compile Include="HttpResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyNotFoundException.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Lib\JsonFx.dll" />

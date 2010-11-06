@@ -20,7 +20,7 @@ namespace EasyHttp.Specs.EasyHTTP
 
             response = _httpClient.Response;
 
-            rev = response.Body.rev;
+            rev = response.DynamicBody.rev;
         };
 
         Because of = () =>
@@ -32,9 +32,9 @@ namespace EasyHttp.Specs.EasyHTTP
 
         It should_delete_the_specified_resource = () =>
         {
-            bool ok = response.Body.ok;
+            bool ok = response.DynamicBody.ok;
 
-            string id = response.Body.id;
+            string id = response.DynamicBody.id;
 
             ok.ShouldBeTrue();
 

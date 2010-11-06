@@ -55,7 +55,7 @@
     <Compile Include="EasyHTTP\PUTFeature.cs" />
     <Compile Include="Helpers\Customer.cs" />
     <Compile Include="Helpers\DynamicClass.cs" />
-    <Compile Include="Helpers\StaticClass.cs" />
+    <Compile Include="Helpers\CouchInformation.cs" />
     <Compile Include="Helpers\TestSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

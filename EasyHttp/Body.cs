@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Dynamic;
 using System.Net;
 using System.Text;
@@ -12,13 +11,15 @@ namespace EasyHttp
     {
         readonly Dictionary<string, object> _properties = new Dictionary<string, object>();
 
-        public string RawText { get; set; }
-
-       
+     
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            result = _properties[binder.Name.ToLower()];
-            return result != null;
+            if (_properties.ContainsKey(binder.Name.ToLower()))
+            {
+                result = _properties[binder.Name.ToLower()];
+                return true;
+            }
+            throw new PropertyNotFoundException(binder.Name);
         }
 
         public override bool TrySetMember(SetMemberBinder binder, object value)
