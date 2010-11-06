@@ -11,41 +11,30 @@ namespace EasyHttp
 {
     public class HttpResponse
     {
-        IDataReader _deserializer;
-        string _parsedRawText;
+        readonly ICoDec _codec;
 
         public string ContentType { get; set; }
         public HttpStatusCode StatusCode { get; set; }
         public string StatusDescription { get; set; }
         public CookieCollection Cookie { get; set; }
         
-        public Body DynamicBody { get; set; }
+        public Body DynamicBody
+        {
+            get { return _codec.Decode<Body>(RawText, ContentType); }
+        }
+
         public string RawText { get; set; }
         
         public T StaticBody<T>()
         {
-            if (_deserializer != null)
-            {
-                return _deserializer.Read<T>(_parsedRawText);
-            }
-
-            throw new SerializationException("The encoding requested does not have a corresponding serializer");
+            return _codec.Decode<T>(RawText, ContentType);
         }
 
 
-        readonly DataReaderProvider readerProvider;
 
-        public HttpResponse()
+        public HttpResponse(ICoDec codec)
         {
-            var readerSettings = new DataReaderSettings(new RemoveAmerpsandFromNameJsonResolverStrategy());
-
-            var jsonReader = new JsonFx.Json.JsonReader(readerSettings);
-
-            var xmlReader = new JsonFx.Xml.XmlReader(readerSettings);
-
-            readerProvider = new DataReaderProvider(new List<IDataReader>() { jsonReader, xmlReader });
-
-            DynamicBody = new Body();
+            _codec = codec;
         }
 
         public void GetResponse(HttpWebRequest request)
@@ -66,18 +55,7 @@ namespace EasyHttp
                         using (var reader = new StreamReader(stream))
                         {
                             RawText = reader.ReadToEnd();
-
-                            _parsedRawText = RawText.Replace("\"@", "\"");
-                            
-                            _deserializer = readerProvider.Find(ContentType);
-
-                            
-                            if (_deserializer != null)
-                            {
-                                DynamicBody = _deserializer.Read<Body>(_parsedRawText);
-                            }
                         }
-
                     }
                 }
 

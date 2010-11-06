@@ -32,6 +32,7 @@ namespace EasyHttp
         public HttpClient()
         {
             _userAgent = String.Format("EasyHttp HttpClient v{0}", Assembly.GetAssembly(typeof (HttpClient)).GetName().Version);
+            
             ThrowExceptionOnHttpError = true;
         }
 
@@ -101,7 +102,7 @@ namespace EasyHttp
 
         void ProcessRequest()
         {
-            Request = new HttpRequest
+            Request = new HttpRequest(new CoDec())
                       {
                           ContentType = _contentType,
                           Accept = _accept,

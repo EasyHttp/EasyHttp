@@ -30,12 +30,13 @@ namespace EasyHttp
         public string Uri { get; set; }
 
         HttpWebRequest httpWebRequest;
+        
+        CoDec _codec;
 
-        public HttpRequest()
+        public HttpRequest(CoDec codec)
         {
-            //Accept = new List<string>();
             RawHeaders = new Dictionary<string, string>();
-
+            _codec = codec;
         }
 
 
@@ -63,55 +64,31 @@ namespace EasyHttp
 
         void SetupRequestBody()
         {
+
             if (Data == null)
             {
                 return;
             }
 
-            var serializer = GetSerializer();
+            var bytes = _codec.Encode(Data, ContentType);
 
             var requestStream = httpWebRequest.GetRequestStream();
-
-            var serialized = serializer.Write(Data);
-
-            var bytes = Encoding.UTF8.GetBytes(serialized);
-
+            
             requestStream.Write(bytes, 0, bytes.Length);
 
             requestStream.Close();
         }
 
-        IDataWriter GetSerializer()
-        {
-            var writerSettings = new DataWriterSettings();
-
-            
-            var jsonWriter = new JsonFx.Json.JsonWriter(writerSettings);
-
-            var xmlWriter = new JsonFx.Xml.XmlWriter(writerSettings);
-
-            var urlEncoderWriter = new UrlEncoderWriter(writerSettings);
-
-            var writerProvider = new DataWriterProvider(new List<IDataWriter>() { jsonWriter, xmlWriter, urlEncoderWriter });
-
-            var serializer = writerProvider.Find(httpWebRequest.ContentType, httpWebRequest.ContentType);
-
-            if (serializer == null)
-            {
-                throw new SerializationException("The encoding requested does not have a corresponding serializer");
-            }
-
-            return serializer;
-        }
 
         public HttpResponse MakeRequest()
         {
             httpWebRequest = (HttpWebRequest) WebRequest.Create(Uri);
 
             SetupRequestHeader();
+
             SetupRequestBody();
 
-            var response = new HttpResponse();
+            var response = new HttpResponse(new CoDec());
 
             response.GetResponse(httpWebRequest);
 

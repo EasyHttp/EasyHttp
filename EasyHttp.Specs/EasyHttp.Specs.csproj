@@ -48,12 +48,14 @@
   <ItemGroup>
     <Compile Include="EasyHTTP\AuthenticationFeatures.cs" />
     <Compile Include="EasyHTTP\HEADFeatures.cs" />
-    <Compile Include="EasyHTTP\DELETEFeature.cs" />
-    <Compile Include="EasyHTTP\GETFeature.cs" />
-    <Compile Include="EasyHTTP\InitFeature.cs" />
-    <Compile Include="EasyHTTP\POSTFeature.cs" />
-    <Compile Include="EasyHTTP\PUTFeature.cs" />
+    <Compile Include="EasyHTTP\DELETEFeatures.cs" />
+    <Compile Include="EasyHTTP\GETFeatures.cs" />
+    <Compile Include="EasyHTTP\InitFeatures.cs" />
+    <Compile Include="EasyHTTP\POSTFeatures.cs" />
+    <Compile Include="EasyHTTP\PUTFeatures.cs" />
+    <Compile Include="EasyHTTP\CodecFeatures.cs" />
     <Compile Include="Helpers\Customer.cs" />
+    <Compile Include="Helpers\CustomCodecClass.cs" />
     <Compile Include="Helpers\DynamicClass.cs" />
     <Compile Include="Helpers\CouchInformation.cs" />
     <Compile Include="Helpers\TestSettings.cs" />
