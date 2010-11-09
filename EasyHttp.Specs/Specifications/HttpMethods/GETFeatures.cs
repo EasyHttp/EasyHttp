@@ -32,7 +32,7 @@ namespace EasyHttp.Specs.Specifications.HttpMethods
         Establish context = () =>
         {
             _httpClient = new HttpClient()
-                            .WithAccept("application/json");
+                            .WithAccept(HttpContentTypes.ApplicationJson);
 
         };
 
@@ -67,7 +67,7 @@ namespace EasyHttp.Specs.Specifications.HttpMethods
         Establish context = () =>
         {
             _httpClient = new HttpClient()
-                            .WithAccept("application/json");
+                            .WithAccept(HttpContentTypes.ApplicationJson);
 
         };
 

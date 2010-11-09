@@ -9,14 +9,14 @@ namespace EasyHttp.Specs.Specifications.HttpMethods
         Establish context = () =>
         {
             _httpClient = new HttpClient()
-                .WithAccept("application/json");
+                .WithAccept(HttpContentTypes.ApplicationJson);
 
         };
 
         Because of = () =>
         {
 
-            _httpClient.Post(TestSettings.CouchDbDatabaseUrl, new Customer() { Name = "Hadi", Email = "test@test.com" }, "application/json");
+            _httpClient.Post(TestSettings.CouchDbDatabaseUrl, new Customer() { Name = "Hadi", Email = "test@test.com" }, HttpContentTypes.ApplicationJson);
 
             response = _httpClient.Response;
         };

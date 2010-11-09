@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="DynamicType.cs" />
     <Compile Include="DefaultCodec.cs" />
+    <Compile Include="HttpContentTypes.cs" />
     <Compile Include="ICodec.cs" />
     <Compile Include="IMemberBehavior.cs" />
     <Compile Include="JsonFXExtensions\RemoveAmerpsandFromNameJsonResolverStrategy.cs" />

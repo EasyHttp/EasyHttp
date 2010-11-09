@@ -18,7 +18,7 @@ To do a POST with JSON:
 
   var http = new HttpClient();
 
-  http.Post("url", customer, "application/json");
+  http.Post("url", customer, HttpContentTypes.ApplicationJson);
   
  
 To get some data in JSON format:
@@ -27,7 +27,7 @@ To get some data in JSON format:
 
   var response = 
 	http
-	.WithAccept("application/json")
+	.WithAccept(HttpContentTypes.ApplicationJson)
 	.Get("url");
 
 
@@ -52,6 +52,6 @@ Encoding
 
 HttpClient will automatically encode it for you to application/json. 
 
-Content-Types currently supported: application/json, application/xml, application/x-www-form-urlencoded
+Content-Types currently supported: application/json, HttpContentTypes.ApplicationXml, application/x-www-form-urlencoded
 
 

@@ -20,14 +20,14 @@ namespace EasyHttp
 
         public bool ThrowExceptionOnHttpError { get; set; }
 
-        string _accept = "text/html;application/xml";
+        string _accept = String.Format("{0};{1};{2}", HttpContentTypes.TextHtml, HttpContentTypes.ApplicationXml,
+                                       HttpContentTypes.ApplicationJson); 
         
         string _password;
         string _username;
 
-        public HttpClient()
+        public HttpClient(): this(new DefaultCodec())
         {
-            _codec = new DefaultCodec();
         }
 
         public HttpClient(ICodec codec)
@@ -89,9 +89,9 @@ namespace EasyHttp
                            });
         }
 
-        public HttpClient WithAccept(string accept)
+        public HttpClient WithAccept(params string []accepts)
         {
-            _accept = accept;
+            _accept = string.Join(";", accepts);
             return this;
         }
 
@@ -110,11 +110,12 @@ namespace EasyHttp
             httpRequest.UserAgent = UserAgent;
             httpRequest.Accept = _accept;
 
+            httpRequest.SetBasicAuthentication(_username, _password);
+
+
             Request = httpRequest;
 
-            Request.SetBasicAuthentication(_username, _password);
-
-            Response = Request.MakeRequest();
+            Response = httpRequest.MakeRequest();
 
 
             if (ThrowExceptionOnHttpError && IsHttpError(Response.StatusCode))
