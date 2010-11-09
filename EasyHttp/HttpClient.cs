@@ -21,11 +21,8 @@ namespace EasyHttp
         public bool ThrowExceptionOnHttpError { get; set; }
 
         string _accept = "text/html;application/xml";
-        string _contentType = "text/plain";
-        object _data;
-        HttpMethod _method;
+        
         string _password;
-        string _uri;
         string _username;
 
         public HttpClient()
@@ -52,36 +49,44 @@ namespace EasyHttp
 
         public HttpResponse Get(string uri)
         {
-            _uri = uri;
-            _method = HttpMethod.GET;
-            ProcessRequest();
+            ProcessRequest(new HttpRequest(_codec)
+                           {
+                               Method = HttpMethod.GET,
+                               Uri = uri,
+                           });
             return Response;
         }
 
         public void Post(string uri, object data, string contentType)
         {
-            _uri = uri;
-            _method = HttpMethod.POST;
-            _contentType = contentType;
-            _data = data;
-            ProcessRequest();
+            ProcessRequest(new HttpRequest(_codec)
+                           {
+                               ContentType = contentType,
+                               Method = HttpMethod.POST,
+                               Data = data,
+                               Uri = uri,
+                           });
         }
 
 
         public void Put(string uri, object data, string contentType)
         {
-            _uri = uri;
-            _contentType = contentType;
-            _method = HttpMethod.PUT;
-            _data = data;
-            ProcessRequest();
+            ProcessRequest(new HttpRequest(_codec)
+                           {
+                               ContentType = contentType,
+                               Method = HttpMethod.PUT,
+                               Data = data,
+                               Uri = uri,
+                           });
         }
 
         public void Delete(string uri)
         {
-            _uri = uri;
-            _method = HttpMethod.DELETE;
-            ProcessRequest();
+            ProcessRequest(new HttpRequest(_codec)
+                           {
+                               Method = HttpMethod.DELETE,
+                               Uri = uri,
+                           });
         }
 
         public HttpClient WithAccept(string accept)
@@ -93,22 +98,19 @@ namespace EasyHttp
 
         public void Head(string uri)
         {
-            _uri = uri;
-            _method = HttpMethod.HEAD;
-            ProcessRequest();
+            ProcessRequest(new HttpRequest(_codec)
+                           {
+                               Method = HttpMethod.HEAD,
+                               Uri = uri,
+                           });
         }
 
-        void ProcessRequest()
+        void ProcessRequest(HttpRequest httpRequest)
         {
-            Request = new HttpRequest(_codec)
-                      {
-                          ContentType = _contentType,
-                          Accept = _accept,
-                          Method = _method,
-                          Data = _data,
-                          Uri = _uri,
-                          UserAgent = UserAgent
-                      };
+            httpRequest.UserAgent = UserAgent;
+            httpRequest.Accept = _accept;
+
+            Request = httpRequest;
 
             Request.SetBasicAuthentication(_username, _password);
 
