@@ -1,7 +1,7 @@
 ﻿using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
 
-namespace EasyHttp.Specs.EasyHTTP
+namespace EasyHttp.Specs.Specifications.HttpMethods
 {
 
 

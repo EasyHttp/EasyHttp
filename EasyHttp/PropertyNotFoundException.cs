@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Net;
 using System.Runtime.Serialization;
 
 namespace EasyHttp
 {
     public class PropertyNotFoundException : Exception
     {
+        public string PropertyName { get; private set; }
+
         public PropertyNotFoundException()
         {
         }
 
-        public PropertyNotFoundException(string message) : base(message)
+        public PropertyNotFoundException(string propertyName) : base(propertyName)
         {
-
+            PropertyName = propertyName;
         }
 
         public PropertyNotFoundException(string message, Exception innerException) : base(message, innerException)

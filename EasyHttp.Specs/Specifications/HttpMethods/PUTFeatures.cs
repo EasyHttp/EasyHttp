@@ -2,7 +2,7 @@
 using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
 
-namespace EasyHttp.Specs.EasyHTTP
+namespace EasyHttp.Specs.Specifications.HttpMethods
 {
     [Subject("Working with PUT")]
     public class when_putting_a_request_in_json_format

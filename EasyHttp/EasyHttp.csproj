@@ -45,9 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Body.cs" />
-    <Compile Include="CoDec.cs" />
-    <Compile Include="ICoDec.cs" />
+    <Compile Include="DynamicType.cs" />
+    <Compile Include="DefaultCodec.cs" />
+    <Compile Include="ICodec.cs" />
+    <Compile Include="IMemberBehavior.cs" />
     <Compile Include="JsonFXExtensions\RemoveAmerpsandFromNameJsonResolverStrategy.cs" />
     <Compile Include="JsonFXExtensions\UrlEncoderTextFormatter.cs" />
     <Compile Include="JsonFXExtensions\UrlEncoderWriter.cs" />
@@ -58,7 +59,6 @@
     <Compile Include="HttpResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyNotFoundException.cs" />
-    <Compile Include="CoDecOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Lib\JsonFx.dll" />

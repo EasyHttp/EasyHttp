@@ -11,6 +11,7 @@ namespace EasyHttp.JsonFXExtensions
         public UrlEncoderWriter(DataWriterSettings writerSettings)
         {
             _writerSettings = writerSettings;
+           
         }
 
         protected override ITextFormatter<CommonTokenType> GetFormatter()

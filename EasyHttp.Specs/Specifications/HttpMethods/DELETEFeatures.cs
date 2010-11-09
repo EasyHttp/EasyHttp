@@ -2,7 +2,7 @@
 using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
 
-namespace EasyHttp.Specs.EasyHTTP
+namespace EasyHttp.Specs.Specifications.HttpMethods
 {
     [Subject("Working with DELETE")]
     public class when_deleting_a_resource 

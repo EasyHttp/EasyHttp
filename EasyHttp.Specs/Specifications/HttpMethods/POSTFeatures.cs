@@ -1,23 +1,22 @@
-﻿using System;
-using EasyHttp.Specs.Helpers;
+﻿using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
 
-namespace EasyHttp.Specs.EasyHTTP
+namespace EasyHttp.Specs.Specifications.HttpMethods
 {
-    [Subject("Working with PUT")]
-    public class when_putting_a_request_in_json_format
+    [Subject("Working with POST")]
+    public class when_posting_a_request_in_json_format
     {
         Establish context = () =>
         {
             _httpClient = new HttpClient()
                 .WithAccept("application/json");
+
         };
 
         Because of = () =>
         {
-            Guid guid = Guid.NewGuid();
-            _httpClient.Put(string.Format("{0}/{1}", TestSettings.CouchDbDatabaseUrl, guid),
-                          new Customer() {Name = "Put", Email = "test@test.com"}, "application/json");
+
+            _httpClient.Post(TestSettings.CouchDbDatabaseUrl, new Customer() { Name = "Hadi", Email = "test@test.com" }, "application/json");
 
             response = _httpClient.Response;
         };

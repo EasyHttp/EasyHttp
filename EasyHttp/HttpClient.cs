@@ -1,47 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Reflection;
-using EasyHttp;
-using JsonFx.Serialization;
-using JsonFx.Serialization.Providers;
-using System.Linq;
-using SerializationException = System.Runtime.Serialization.SerializationException;
 
 namespace EasyHttp
 {
     public class HttpClient
     {
+        readonly ICodec _codec;
 
-        HttpMethod _method;
+        string _userAgent = String.Format("EasyHttp HttpClient v{0}",
+                                      Assembly.GetAssembly(typeof(HttpClient)).GetName().Version);
 
-        string _uri;
+
+        public string UserAgent
+        {
+            get { return _userAgent; }
+            set { _userAgent = value; }
+        }
+
+        public bool ThrowExceptionOnHttpError { get; set; }
+
+        string _accept = "text/html;application/xml";
         string _contentType = "text/plain";
         object _data;
-        string _accept = "text/html;application/xml";
-        string _username;
+        HttpMethod _method;
         string _password;
-        string _userAgent;
-
-
-        public HttpResponse Response { get; private set; }
-        public HttpRequest Request { get; private set;  }
-        public bool ThrowExceptionOnHttpError { get; set; }
+        string _uri;
+        string _username;
 
         public HttpClient()
         {
-            _userAgent = String.Format("EasyHttp HttpClient v{0}", Assembly.GetAssembly(typeof (HttpClient)).GetName().Version);
-            
-            ThrowExceptionOnHttpError = true;
+            _codec = new DefaultCodec();
         }
 
-        public HttpClient(string userAgent): this()
+        public HttpClient(ICodec codec)
         {
-            _userAgent = userAgent;
+            _codec = codec;
         }
-        
-        
+
+        public HttpResponse Response { get; private set; }
+        public HttpRequest Request { get; private set; }
+
+
         public HttpClient WithBasicAuthentication(string username, string password)
         {
             _username = username;
@@ -49,7 +49,6 @@ namespace EasyHttp
             return this;
         }
 
-        
 
         public HttpResponse Get(string uri)
         {
@@ -68,7 +67,6 @@ namespace EasyHttp
             ProcessRequest();
         }
 
-      
 
         public void Put(string uri, object data, string contentType)
         {
@@ -92,7 +90,7 @@ namespace EasyHttp
             return this;
         }
 
-  
+
         public void Head(string uri)
         {
             _uri = uri;
@@ -102,20 +100,19 @@ namespace EasyHttp
 
         void ProcessRequest()
         {
-            Request = new HttpRequest(new CoDec())
+            Request = new HttpRequest(_codec)
                       {
                           ContentType = _contentType,
                           Accept = _accept,
                           Method = _method,
                           Data = _data,
                           Uri = _uri,
-                          UserAgent = _userAgent
+                          UserAgent = UserAgent
                       };
 
             Request.SetBasicAuthentication(_username, _password);
 
             Response = Request.MakeRequest();
-
 
 
             if (ThrowExceptionOnHttpError && IsHttpError(Response.StatusCode))
@@ -131,6 +128,4 @@ namespace EasyHttp
             return (num/100 == 4 || num/100 == 5);
         }
     }
-
-   
 }

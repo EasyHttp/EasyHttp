@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Mime;
 using System.Text;
 using EasyHttp.JsonFXExtensions;
 using JsonFx.Serialization;
@@ -8,13 +7,11 @@ using JsonFx.Serialization.Providers;
 
 namespace EasyHttp
 {
-    public class CoDec : ICoDec
+    public class DefaultCodec : ICodec
     {
-
         public byte[] Encode(object data, string contentType)
         {
             var writerSettings = new DataWriterSettings();
-
 
             var jsonWriter = new JsonFx.Json.JsonWriter(writerSettings);
 
@@ -22,7 +19,7 @@ namespace EasyHttp
 
             var urlEncoderWriter = new UrlEncoderWriter(writerSettings);
 
-            IDataWriterProvider writerProvider = new DataWriterProvider(new List<IDataWriter>() { jsonWriter, xmlWriter, urlEncoderWriter });
+            IDataWriterProvider writerProvider = new DataWriterProvider(new List<IDataWriter> { jsonWriter, xmlWriter, urlEncoderWriter });
             
             var serializer = writerProvider.Find(contentType, contentType);
 
@@ -37,7 +34,7 @@ namespace EasyHttp
         }
 
        
-        public T Decode<T>(string input, string contentType)
+        public T DecodeToStatic<T>(string input, string contentType)
         {
             var readerSettings = new DataReaderSettings(new RemoveAmerpsandFromNameJsonResolverStrategy());
 
@@ -45,8 +42,9 @@ namespace EasyHttp
 
             var xmlReader = new JsonFx.Xml.XmlReader(readerSettings);
 
-            IDataReaderProvider readerProvider = new DataReaderProvider(new List<IDataReader>() { jsonReader, xmlReader });
+            IDataReaderProvider readerProvider = new DataReaderProvider(new List<IDataReader> { jsonReader, xmlReader });
 
+            // TODO: This is a hack...
             var parsedText = input.Replace("\"@", "\"");
                             
             var deserializer = readerProvider.Find(contentType);
@@ -57,10 +55,14 @@ namespace EasyHttp
                 throw new SerializationException("The encoding requested does not have a corresponding decoder");
             }
 
+            
             return deserializer.Read<T>(parsedText);
  
         }
 
-
+        public dynamic DecodeToDynamic(string rawText, string contentType)
+        {
+            return DecodeToStatic<DynamicType>(rawText, contentType);
+        }
     }
 }

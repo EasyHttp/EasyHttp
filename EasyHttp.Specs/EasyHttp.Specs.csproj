@@ -46,14 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EasyHTTP\AuthenticationFeatures.cs" />
-    <Compile Include="EasyHTTP\HEADFeatures.cs" />
-    <Compile Include="EasyHTTP\DELETEFeatures.cs" />
-    <Compile Include="EasyHTTP\GETFeatures.cs" />
-    <Compile Include="EasyHTTP\InitFeatures.cs" />
-    <Compile Include="EasyHTTP\POSTFeatures.cs" />
-    <Compile Include="EasyHTTP\PUTFeatures.cs" />
-    <Compile Include="EasyHTTP\CodecFeatures.cs" />
+    <Compile Include="Specifications\Authentication\BasicAuthFeatures.cs" />
+    <Compile Include="Specifications\CodingDecoding\DynamicFeatures.cs" />
+    <Compile Include="Specifications\HttpMethods\HEADFeatures.cs" />
+    <Compile Include="Specifications\HttpMethods\DELETEFeatures.cs" />
+    <Compile Include="Specifications\HttpMethods\GETFeatures.cs" />
+    <Compile Include="Specifications\HttpMethods\InitFeatures.cs" />
+    <Compile Include="Specifications\HttpMethods\POSTFeatures.cs" />
+    <Compile Include="Specifications\HttpMethods\PUTFeatures.cs" />
     <Compile Include="Helpers\Customer.cs" />
     <Compile Include="Helpers\CustomCodecClass.cs" />
     <Compile Include="Helpers\DynamicClass.cs" />

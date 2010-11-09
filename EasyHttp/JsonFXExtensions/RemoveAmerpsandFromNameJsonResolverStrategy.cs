@@ -13,7 +13,7 @@ namespace EasyHttp.JsonFXExtensions
             {
                 string nameWithoutAmpersand = member.Name.Remove(0);
 
-                return new List<DataName>() {new DataName(nameWithoutAmpersand)};
+                return new List<DataName> {new DataName(nameWithoutAmpersand)};
             }
             return base.GetName(member);
         }

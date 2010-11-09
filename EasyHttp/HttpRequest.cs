@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Net;
-using System.Text;
-using EasyHttp.JsonFXExtensions;
-using JsonFx.Serialization;
-using JsonFx.Serialization.Providers;
-using SerializationException = System.Runtime.Serialization.SerializationException;
 
 namespace EasyHttp
 {
@@ -30,10 +24,10 @@ namespace EasyHttp
         public string Uri { get; set; }
 
         HttpWebRequest httpWebRequest;
-        
-        CoDec _codec;
 
-        public HttpRequest(CoDec codec)
+        readonly ICodec _codec;
+
+        public HttpRequest(ICodec codec)
         {
             RawHeaders = new Dictionary<string, string>();
             _codec = codec;
@@ -88,7 +82,7 @@ namespace EasyHttp
 
             SetupRequestBody();
 
-            var response = new HttpResponse(new CoDec());
+            var response = new HttpResponse(_codec);
 
             response.GetResponse(httpWebRequest);
 

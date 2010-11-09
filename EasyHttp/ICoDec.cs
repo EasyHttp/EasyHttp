@@ -1,10 +1,9 @@
-﻿using System;
-
-namespace EasyHttp
+﻿namespace EasyHttp
 {
-    public interface ICoDec
+    public interface ICodec
     {
         byte[] Encode(object data, string contentType);
-        T Decode<T>(string rawText, string contentType);
+        T DecodeToStatic<T>(string rawText, string contentType);
+        dynamic DecodeToDynamic(string rawText, string contentType);
     }
 }

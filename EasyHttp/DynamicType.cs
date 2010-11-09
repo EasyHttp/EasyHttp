@@ -1,17 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
-using System.Net;
-using System.Text;
-using JsonFx.Serialization;
-using JsonFx.Serialization.Providers;
 
 namespace EasyHttp
 {
-    public class Body: DynamicObject
+    public class DynamicType: DynamicObject
     {
+        //readonly IMemberBehavior _memberBehavior;
+
+        //protected DynamicType(IMemberBehavior memberBehavior)
+        //{
+        //    _memberBehavior = memberBehavior;
+        //}
+
         readonly Dictionary<string, object> _properties = new Dictionary<string, object>();
 
-     
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             if (_properties.ContainsKey(binder.Name.ToLower()))

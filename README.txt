@@ -31,9 +31,18 @@ To get some data in JSON format:
 	.Get("url");
 
 
-  dynamic customer = response.Body;
+  dynamic customer = response.DynamicBody;
 
   Console.WriteLine(String.Format("Name: {0} - Email: {1}, customer.Name, customer.Email));
+
+
+  If you want Static:
+
+  var customer = response.StaticBody<Customer>();
+
+  If you want just raw undecoded text:
+
+  var customer = response.RawText;
 
 EasyHttp's Body is dynamic. It will automatically decode json, xml for you so you can just access the properties. 
 

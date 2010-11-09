@@ -1,0 +1,630 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="livetemplates.csharp.usevar">True</setting>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/f:README.txt" caret="268" fromTop="8" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:Helpers/f:TestSettings.cs" caret="370" fromTop="16" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/f:App.config" caret="248" fromTop="6" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:Methods/f:DELETEFeatures.cs" caret="1369" fromTop="22" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:Methods/f:HEADFeatures.cs" caret="403" fromTop="17" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:Methods/f:InitFeatures.cs" caret="151" fromTop="6" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:Methods/f:POSTFeatures.cs" caret="744" fromTop="28" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:Helpers/f:CouchInformation.cs" caret="65" fromTop="2" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:Helpers/f:Customer.cs" caret="238" fromTop="7" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:Methods/f:GETFeatures.cs" caret="2278" fromTop="14" />
+      <File id="d:Miscellaneous Files/f:DataWriterSettings.cs/l:X!?Libraries?jsonfx?src?JsonFx?Serialization?DataWriterSettings.cs" caret="1713" fromTop="8" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/d:JsonFXExtensions/f:UrlEncoderWriter.cs" caret="223" fromTop="8" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/d:JsonFXExtensions/f:UrlEncoderTextFormatter.cs" caret="1867" fromTop="55" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/d:JsonFXExtensions/f:RemoveAmerpsandFromNameJsonResolverStrategy.cs" caret="628" fromTop="20" />
+      <File id="A6E3480C-C3BD-4AEA-90EA-00D1E9DDEB90/f:README.txt/l:X!?Projects?EasyHttp?README.txt" caret="545" fromTop="10" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:HttpRequest.cs" caret="67" fromTop="2" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:Helpers/f:CustomCodecClass.cs" caret="199" fromTop="9" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:Methods/f:PUTFeatures.cs" caret="258" fromTop="10" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:Authentication/f:BasicAuthFeatures.cs" caret="60" fromTop="2" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:HttpException.cs" caret="163" fromTop="8" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:HttpClient.cs" caret="530" fromTop="21" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:HttpMethod.cs" caret="158" fromTop="11" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:ICodec.cs" caret="204" fromTop="6" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:DefaultCodec.cs" caret="2296" fromTop="34" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:HttpResponse.cs" caret="1275" fromTop="34" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:DynamicType.cs" caret="738" fromTop="23" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:PropertyNotFoundException.cs" caret="253" fromTop="10" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:CodingDecoding/f:DynamicFeatures.cs" caret="1027" fromTop="17" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:DynamicType.cs" caret="442" fromTop="10" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:DynamicType.cs" caret="776" fromTop="18" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:HttpClient.cs" caret="530" fromTop="20" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:HttpClient.cs" caret="164" fromTop="10" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:HttpClient.cs" caret="802" fromTop="24" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:HttpClient.cs" caret="883" fromTop="27" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:HttpClient.cs" caret="3000" fromTop="18" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:HttpClient.cs" caret="2825" fromTop="10" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:ICodec.cs" caret="252" fromTop="7" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:HttpResponse.cs" caret="633" fromTop="14" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:DefaultCodec.cs" caret="2295" fromTop="30" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:DefaultCodec.cs" caret="245" fromTop="11" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:DynamicType.cs" caret="1005" fromTop="31" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:DefaultCodec.cs" caret="2047" fromTop="20" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:DefaultCodec.cs" caret="2147" fromTop="25" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:DefaultCodec.cs" caret="1187" fromTop="10" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:HttpResponse.cs" caret="381" fromTop="11" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:DynamicType.cs" caret="365" fromTop="11" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:CodingDecoding/f:DynamicFeatures.cs" caret="309" fromTop="11" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:CodingDecoding/f:DynamicFeatures.cs" caret="406" fromTop="17" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:CodingDecoding/f:DynamicFeatures.cs" caret="542" fromTop="23" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:CodingDecoding/f:DynamicFeatures.cs" caret="180" fromTop="5" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:CodingDecoding/f:DynamicFeatures.cs" caret="721" fromTop="11" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:CodingDecoding/f:DynamicFeatures.cs" caret="835" fromTop="16" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:PropertyNotFoundException.cs" caret="198" fromTop="8" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:CodingDecoding/f:DynamicFeatures.cs" caret="1305" fromTop="23" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:CodingDecoding/f:DynamicFeatures.cs" caret="937" fromTop="14" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:CodingDecoding/f:DynamicFeatures.cs" caret="1329" fromTop="23" />
+      <File id="6F950A41-727E-4416-8D5B-809946DD2836/d:CodingDecoding/f:DynamicFeatures.cs" caret="1179" fromTop="21" />
+      <File id="9239DA70-1736-4291-8D18-266999E54445/f:PropertyNotFoundException.cs" caret="402" fromTop="15" />
+    </RecentEdits>
+  </RecentFiles>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerNUnit>
+    <NUnitInstallDir>C:\Program Files (x86)\NUnit 2.5.7\bin\net-2.0\</NUnitInstallDir>
+    <UseAddins>Never</UseAddins>
+  </UnitTestRunnerNUnit>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Default">
+      <Item value="Establish`0" priority="0" />
+      <Item value="Because`0" priority="0" />
+      <Item value="_easyHttp" priority="0" />
+      <Item value="when_requesting_valid_uri_in_text_format`0" priority="0" />
+      <Item value="response" priority="11" />
+      <Item value="String`0" priority="15" />
+      <Item value="guid" priority="0" />
+      <Item value="rev" priority="0" />
+      <Item value="_internalRequest" priority="4" />
+      <Item value="HttpWebRequest`0" priority="4" />
+      <Item value="CreateRequest`0" priority="1" />
+      <Item value="return" priority="63" />
+      <Item value="GetResponse`0" priority="1" />
+      <Item value="MethodAccessException`0" priority="0" />
+      <Item value="HttpMethod`0" priority="6" />
+      <Item value="GET" priority="0" />
+      <Item value="Subject" priority="0" />
+      <Item value="readonly" priority="0" />
+      <Item value="public" priority="32" />
+      <Item value="Request`0" priority="4" />
+      <Item value="_request" priority="4" />
+      <Item value="new" priority="74" />
+      <Item value="Request" priority="6" />
+      <Item value="contentType" priority="7" />
+      <Item value="accept" priority="1" />
+      <Item value="HttpBaseData`0" priority="0" />
+      <Item value="string" priority="67" />
+      <Item value="uri" priority="1" />
+      <Item value="HEAD" priority="0" />
+      <Item value="Response`0" priority="8" />
+      <Item value="Response" priority="0" />
+      <Item value="webResponse" priority="8" />
+      <Item value="HttpWebResponse`0" priority="1" />
+      <Item value="request" priority="5" />
+      <Item value="object" priority="6" />
+      <Item value="CreateRequestData`0" priority="1" />
+      <Item value="if" priority="23" />
+      <Item value="data" priority="2" />
+      <Item value="httpRequest" priority="4" />
+      <Item value="var" priority="44" />
+      <Item value="EasyHttp`0" priority="4" />
+      <Item value="this" priority="14" />
+      <Item value="result" priority="3" />
+      <Item value="interface" priority="1" />
+      <Item value="where" priority="0" />
+      <Item value="spec" priority="7" />
+      <Item value="dynamic" priority="4" />
+      <Item value="EasyHTTP" priority="1" />
+      <Item value="easyHttp" priority="1" />
+      <Item value="IAuthenticationMethod`0" priority="0" />
+      <Item value="Header" priority="9" />
+      <Item value="HttpRequest`0" priority="0" />
+      <Item value="HttpResponse`0" priority="0" />
+      <Item value="username" priority="9" />
+      <Item value="int" priority="1" />
+      <Item value="internalRequest" priority="9" />
+      <Item value="void" priority="0" />
+      <Item value="foreach" priority="5" />
+      <Item value="EnvironmentVariableTarget`0" priority="1" />
+      <Item value="IList`0" priority="1" />
+      <Item value="IDictionary`0" priority="0" />
+      <Item value="password" priority="6" />
+      <Item value="ExtraHeader" priority="0" />
+      <Item value="Dictionary&lt;string,string&gt;" priority="0" />
+      <Item value="Accept" priority="0" />
+      <Item value="List&lt;string&gt;" priority="0" />
+      <Item value="authData" priority="0" />
+      <Item value="Convert`0" priority="2" />
+      <Item value="Encoding`0" priority="1" />
+      <Item value="bytes" priority="0" />
+      <Item value="base64encoded" priority="0" />
+      <Item value="header" priority="1" />
+      <Item value="httpWebRequest" priority="6" />
+      <Item value="protected" priority="0" />
+      <Item value="WebRequest`0" priority="0" />
+      <Item value="Body`0" priority="2" />
+      <Item value="serializer" priority="6" />
+      <Item value="throw" priority="4" />
+      <Item value="EncoderFallbackException" priority="0" />
+      <Item value="prop" priority="22" />
+      <Item value="NetworkCredential`0" priority="0" />
+      <Item value="networkCredential" priority="0" />
+      <Item value="GetIndexBinder`0" priority="0" />
+      <Item value="value" priority="5" />
+      <Item value="YouTrackClient" priority="0" />
+      <Item value="issues" priority="0" />
+      <Item value="youtrack" priority="1" />
+      <Item value="httpClient" priority="5" />
+      <Item value="in" priority="2" />
+      <Item value="List&lt;Issue&gt;" priority="0" />
+      <Item value="Issue" priority="1" />
+      <Item value="list" priority="2" />
+      <Item value="YouTrack`0" priority="5" />
+      <Item value="host" priority="1" />
+      <Item value="port" priority="0" />
+      <Item value="bool" priority="4" />
+      <Item value="useSsl" priority="0" />
+      <Item value="protocol" priority="2" />
+      <Item value="else" priority="2" />
+      <Item value="youTrack" priority="0" />
+      <Item value="Issue`0" priority="3" />
+      <Item value="HttpClient`0" priority="1" />
+      <Item value="mnp" priority="1" />
+      <Item value="DataMisalignedException`0" priority="0" />
+      <Item value="CurrentCultureIgnoreCase" priority="0" />
+      <Item value="AuthenticationException" priority="0" />
+      <Item value="Cookie" priority="0" />
+      <Item value="authenticationCookie" priority="0" />
+      <Item value="ConstructUri`0" priority="1" />
+      <Item value="Body" priority="0" />
+      <Item value="Ignore" priority="0" />
+      <Item value="JsonFx" priority="2" />
+      <Item value="Xml" priority="0" />
+      <Item value="writerSettings" priority="6" />
+      <Item value="List" priority="5" />
+      <Item value="null" priority="5" />
+      <Item value="Settings" priority="2" />
+      <Item value="settings" priority="0" />
+      <Item value="Username" priority="0" />
+      <Item value="Password" priority="0" />
+      <Item value="credentials" priority="2" />
+      <Item value="Html" priority="0" />
+      <Item value="HtmlTokenizer`0" priority="0" />
+      <Item value="base" priority="4" />
+      <Item value="CommonTokenType`0" priority="0" />
+      <Item value="MarkupTokenType`0" priority="0" />
+      <Item value="Result`0" priority="0" />
+      <Item value="Serializer" priority="1" />
+      <Item value="couchDb" priority="0" />
+      <Item value="SampleData" priority="0" />
+      <Item value="couchdb" priority="0" />
+      <Item value="version" priority="0" />
+      <Item value="class" priority="3" />
+      <Item value="Serializer`0" priority="0" />
+      <Item value="JavaScriptSerializer`0" priority="1" />
+      <Item value="javaScriptSerializer" priority="5" />
+      <Item value="SampleData`0" priority="0" />
+      <Item value="output" priority="2" />
+      <Item value="JsonDecoder`0" priority="0" />
+      <Item value="SampleClass`0" priority="0" />
+      <Item value="input" priority="2" />
+      <Item value="XmlSerializer" priority="0" />
+      <Item value="obj" priority="1" />
+      <Item value="XmlWriter`0" priority="0" />
+      <Item value="XmlSerializationCollectionFixupCallback`0" priority="0" />
+      <Item value="stringWriter" priority="1" />
+      <Item value="xmlnsEmpty" priority="0" />
+      <Item value="XmlSerializer`0" priority="1" />
+      <Item value="typeof" priority="13" />
+      <Item value="T`0" priority="10" />
+      <Item value="xmlSerializer" priority="0" />
+      <Item value="stringReader" priority="0" />
+      <Item value="ExpandoObject`0" priority="2" />
+      <Item value="DynamicObject`0" priority="5" />
+      <Item value="CreateDynamicFromObjectGraph`0" priority="0" />
+      <Item value="is" priority="0" />
+      <Item value="JsonCodec`0" priority="1" />
+      <Item value="dictionary" priority="0" />
+      <Item value="type" priority="0" />
+      <Item value="Activator`0" priority="0" />
+      <Item value="JavaScriptConverter`0" priority="0" />
+      <Item value="Type`0" priority="2" />
+      <Item value="StaticClass`0" priority="0" />
+      <Item value="DynamicJsonConverter`0" priority="0" />
+      <Item value="XmlCodec`0" priority="0" />
+      <Item value="override" priority="0" />
+      <Item value="ArgumentNullException" priority="0" />
+      <Item value="urlEncoderWriter" priority="0" />
+      <Item value="switch" priority="0" />
+      <Item value="writer" priority="7" />
+      <Item value="token" priority="1" />
+      <Item value="continue" priority="0" />
+      <Item value="break" priority="0" />
+      <Item value="DataWriterSettings`0" priority="0" />
+      <Item value="dataWriterSettings" priority="1" />
+      <Item value="true" priority="8" />
+      <Item value="firstProperty" priority="2" />
+      <Item value="false" priority="3" />
+      <Item value="IsAuthenticated" priority="1" />
+      <Item value="try" priority="2" />
+      <Item value="Console`0" priority="0" />
+      <Item value="e" priority="0" />
+      <Item value="WebException`0" priority="1" />
+      <Item value="webException" priority="6" />
+      <Item value="WebExceptionStatus`0" priority="0" />
+      <Item value="StatusCode" priority="3" />
+      <Item value="StatusDescription" priority="2" />
+      <Item value="statusCode" priority="1" />
+      <Item value="statusDescription" priority="1" />
+      <Item value="HttpStatusCode`0" priority="0" />
+      <Item value="HttpException`0" priority="0" />
+      <Item value="httpException" priority="0" />
+      <Item value="respone" priority="1" />
+      <Item value="reader" priority="1" />
+      <Item value="TextWriter`0" priority="0" />
+      <Item value="StringWriter`0" priority="0" />
+      <Item value="stringWRiter" priority="1" />
+      <Item value="StreamWriter`0" priority="0" />
+      <Item value="issue" priority="1" />
+      <Item value="entry" priority="1" />
+      <Item value="Array`0" priority="0" />
+      <Item value="issueList" priority="0" />
+      <Item value="readToEnd" priority="1" />
+      <Item value="newstr" priority="0" />
+      <Item value="Login`0" priority="0" />
+      <Item value="namingStrategy" priority="0" />
+      <Item value="member" priority="2" />
+      <Item value="DataName" priority="0" />
+      <Item value="LocalName" priority="0" />
+      <Item value="CustomJsonResolverStrategy`0" priority="0" />
+      <Item value="using" priority="1" />
+      <Item value="SearchBox`0" priority="0" />
+      <Item value="searchBox" priority="1" />
+      <Item value="textFilter" priority="0" />
+      <Item value="TreeModelBrowser" priority="0" />
+      <Item value="browser" priority="1" />
+      <Item value="TreeModelBrowserDescriptor`0" priority="0" />
+      <Item value="browserDescriptor" priority="1" />
+      <Item value="List&lt;TreeModelNode&gt;" priority="0" />
+      <Item value="parent" priority="0" />
+      <Item value="context" priority="0" />
+      <Item value="DataConstants`0" priority="0" />
+      <Item value="solution" priority="2" />
+      <Item value="MessageBox`0" priority="0" />
+      <Item value="TreeModelBrowser`0" priority="0" />
+      <Item value="YouTrackBrowserWindowID" priority="1" />
+      <Item value="YouTrackPowerToy" priority="1" />
+      <Item value="nguid" priority="0" />
+      <Item value="browserPanel" priority="0" />
+      <Item value="requestData" priority="0" />
+      <Item value="_userAgent" priority="5" />
+      <Item value="userAgent" priority="2" />
+      <Item value="TestSettings`0" priority="3" />
+      <Item value="const" priority="0" />
+      <Item value="couchDbUrl" priority="2" />
+      <Item value="ConfigurationManager`0" priority="0" />
+      <Item value="couchDatabase" priority="0" />
+      <Item value="couchDbDatabaseUrl" priority="1" />
+      <Item value="CouchDbRootUrl" priority="0" />
+      <Item value="CouchDbDatabaseUrl" priority="1" />
+      <Item value="_properties" priority="0" />
+      <Item value="binder" priority="1" />
+      <Item value="SettingsPropertyNotFoundException" priority="0" />
+      <Item value="PropertyNotFoundException`0" priority="3" />
+      <Item value="RawText" priority="3" />
+      <Item value="deserializer" priority="2" />
+      <Item value="CouchInformation`0" priority="1" />
+      <Item value="couchInformation" priority="2" />
+      <Item value="IDataReader`0" priority="0" />
+      <Item value="_decodedResponseString" priority="2" />
+      <Item value="HttpClient" priority="0" />
+      <Item value="http" priority="1" />
+      <Item value="customer" priority="3" />
+      <Item value="CustomSerializationClass`0" priority="1" />
+      <Item value="POST" priority="0" />
+      <Item value="ContentType" priority="2" />
+      <Item value="CoDec`0" priority="0" />
+      <Item value="byte" priority="0" />
+      <Item value="_contentType" priority="3" />
+      <Item value="CoDec" priority="2" />
+      <Item value="DataWriterProvider`0" priority="0" />
+      <Item value="DynamicBody" priority="0" />
+      <Item value="ICoDec`0" priority="0" />
+      <Item value="_codec" priority="3" />
+      <Item value="JsonFXExtensions" priority="1" />
+      <Item value="Serialization" priority="0" />
+      <Item value="Markup" priority="0" />
+      <Item value="HttpSettings" priority="0" />
+      <Item value="IHttpSettings`0" priority="0" />
+      <Item value="DefaultHttpSettings`0" priority="0" />
+      <Item value="_httpSettings" priority="2" />
+      <Item value="_handleUnkownDynamicMember" priority="1" />
+      <Item value="ICodec`0" priority="2" />
+      <Item value="DecodeStatic`1" priority="0" />
+      <Item value="DynamicType`0" priority="1" />
+      <Item value="rawText" priority="0" />
+      <Item value="memberBehavior" priority="0" />
+      <Item value="codec" priority="0" />
+      <Item value="dynamicObject" priority="3" />
+      <Item value="PropertyName" priority="1" />
+      <Item value="ExceptionResult`0" priority="0" />
+      <Item value="Exception`0" priority="1" />
+      <Item value="exception" priority="2" />
+      <Item value="Action" priority="0" />
+      <Item value="propertyName" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:EasyHttp.EasyHttp">
+      <Item value="Post`0" priority="0" />
+      <Item value="WithAccept`0" priority="0" />
+      <Item value="Response" priority="0" />
+      <Item value="WithAuthentication`1" priority="0" />
+      <Item value="Get`0" priority="1" />
+      <Item value="WithBaiscAuthentication`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Object">
+      <Item value="ShouldBeOfType`1" priority="0" />
+      <Item value="GetType`0" priority="0" />
+      <Item value="version" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.String">
+      <Item value="Format`0" priority="13" />
+      <Item value="Compare`0" priority="0" />
+      <Item value="IsNullOrEmpty`0" priority="1" />
+      <Item value="Empty" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Net.HttpWebRequest">
+      <Item value="Method" priority="1" />
+      <Item value="Headers" priority="2" />
+      <Item value="Credentials" priority="0" />
+      <Item value="RequestUri" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@EasyHttp.HttpMethod">
+      <Item value="PUT" priority="0" />
+      <Item value="DELETE" priority="0" />
+      <Item value="POST" priority="0" />
+      <Item value="GET" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:EasyHttp.HttpMethod">
+      <Item value="ToString`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:EasyHttp.Request">
+      <Item value="ContentType" priority="0" />
+      <Item value="Accept" priority="0" />
+      <Item value="MakeRequest`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:EasyHttp.Response">
+      <Item value="Header" priority="1" />
+      <Item value="GetResponse`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:EasyHttp.Header">
+      <Item value="StatusCode" priority="1" />
+      <Item value="Accept" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Net.WebResponse">
+      <Item value="Headers" priority="6" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.String">
+      <Item value="ShouldEqual`1" priority="4" />
+      <Item value="Trim`0" priority="0" />
+      <Item value="Contains`0" priority="0" />
+      <Item value="StartsWith`0" priority="0" />
+      <Item value="Remove`0" priority="0" />
+      <Item value="ShouldNotBeEmpty`0" priority="1" />
+      <Item value="ToLower`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Net.HttpWebResponse">
+      <Item value="StatusDescription" priority="1" />
+      <Item value="Cookies" priority="0" />
+      <Item value="StatusCode" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Net.WebHeaderCollection">
+      <Item value="Add`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.IDictionary`2">
+      <Item value="Add`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.IList`1">
+      <Item value="ToString`0" priority="0" />
+      <Item value="ShouldNotBeNull`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Convert">
+      <Item value="ToBase64String`0" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Text.Encoding">
+      <Item value="UTF8" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Text.Encoding">
+      <Item value="GetBytes`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.KeyValuePair`2">
+      <Item value="ToString`0" priority="0" />
+      <Item value="Key" priority="0" />
+      <Item value="Value" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Net.WebRequest">
+      <Item value="Create`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:EasyHttp.HttpRequest">
+      <Item value="Accept" priority="0" />
+      <Item value="httpWebRequest" priority="0" />
+      <Item value="ContentType" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:EasyHttp.HttpClient">
+      <Item value="WithBasicAuthentication`0" priority="0" />
+      <Item value="Get`0" priority="2" />
+      <Item value="WithAccept`0" priority="1" />
+      <Item value="Response" priority="2" />
+      <Item value="Put`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:EasyHttp.HttpResponse">
+      <Item value="Body" priority="3" />
+      <Item value="StatusCode" priority="0" />
+      <Item value="TypedBody`1" priority="0" />
+      <Item value="DynamicBody" priority="0" />
+      <Item value="StaticBody`1" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.List`1">
+      <Item value="Add`0" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:EasyHttp.Body">
+      <Item value="RawText" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:YouTrackClient.YouTrack">
+      <Item value="host" priority="0" />
+      <Item value="protocol" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:EasyHttp.UrlEncoderWriter">
+      <Item value="Settings" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.Script.Serialization.JavaScriptSerializer">
+      <Item value="Serialize`0" priority="0" />
+      <Item value="Deserialize`0" priority="1" />
+      <Item value="RegisterConverters`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:EasyHttp.Specs.Helpers.SampleData">
+      <Item value="couchdb" priority="0" />
+      <Item value="version" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Xml.Serialization.XmlSerializer">
+      <Item value="Serialize`0" priority="1" />
+      <Item value="Deserialize`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.IO.StringWriter">
+      <Item value="ToString`0" priority="0" />
+      <Item value="Write`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Type">
+      <Item value="IsAssignableFrom`0" priority="0" />
+      <Item value="BaseType" priority="1" />
+      <Item value="GetType`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.Script.Serialization.JavaScriptConverter">
+      <Item value="Deserialize`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Activator">
+      <Item value="CreateInstance`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:JsonFx.Serialization.Token`1">
+      <Item value="TokenType" priority="0" />
+      <Item value="Name" priority="0" />
+      <Item value="Value" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.IO.TextWriter">
+      <Item value="Write`0" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Console">
+      <Item value="WriteLine`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Exception">
+      <Item value="GetType`0" priority="0" />
+      <Item value="ShouldBeOfType`1" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Net.WebException">
+      <Item value="Status" priority="2" />
+      <Item value="Response" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.IO.StreamWriter">
+      <Item value="Write`0" priority="0" />
+      <Item value="Flush`0" priority="0" />
+      <Item value="Close`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.IO.StreamReader">
+      <Item value="ReadToEnd`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:YouTrackClient.Issue">
+      <Item value="Priority" priority="0" />
+      <Item value="Summary" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Reflection.MemberInfo">
+      <Item value="Name" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:JsonFx.Json.Resolvers.JsonResolverStrategy">
+      <Item value="GetName`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:YouTrackPowerToy.SearchBox">
+      <Item value="ShowDialog`0" priority="0" />
+      <Item value="SearchString" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@JetBrains.UI.Application.UIApplicationShell">
+      <Item value="Instance" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:JetBrains.UI.Application.UIApplicationShell">
+      <Item value="MainWindow" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Windows.Forms.DialogResult">
+      <Item value="OK" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Forms.TextBox">
+      <Item value="Text" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:JetBrains.IDE.TreeBrowser.TreeModelBrowser">
+      <Item value="Show`0" priority="1" />
+      <Item value="RegisterBrowserWindow`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:JetBrains.ActionManagement.IDataContext">
+      <Item value="GetData`1" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@JetBrains.IDE.DataConstants">
+      <Item value="TOOL_WINDOW_CONTENT" priority="0" />
+      <Item value="SOLUTION" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Windows.Forms.MessageBox">
+      <Item value="Show`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@JetBrains.IDE.TreeBrowser.TreeModelBrowser">
+      <Item value="GetInstance`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@EasyHttp.Specs.Helpers.TestSettings">
+      <Item value="CouchDbUrl" priority="0" />
+      <Item value="CouchDbDatabaseUrl" priority="4" />
+      <Item value="CouchDbRootUrl" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Configuration.ConfigurationManager">
+      <Item value="AppSettings" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.Dictionary`2">
+      <Item value="ContainsKey`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Dynamic.GetMemberBinder">
+      <Item value="Name" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:EasyHttp.Specs.Helpers.CouchInformation">
+      <Item value="couchdb" priority="1" />
+      <Item value="version" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:EasyHttp.Specs.Helpers.Customer">
+      <Item value="Name" priority="0" />
+      <Item value="Email" priority="0" />
+      <Item value="Phone" priority="0" />
+      <Item value="Fax" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:EasyHttp.ICoDec">
+      <Item value="Decode`1" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:EasyHttp.IHttpSettings">
+      <Item value="UserAgent" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:EasyHttp.ICodec">
+      <Item value="DecodeDynamic`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:EasyHttp.PropertyNotFoundException">
+      <Item value="PropertyName" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+</Configuration>
