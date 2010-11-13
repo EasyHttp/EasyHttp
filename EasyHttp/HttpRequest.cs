@@ -8,6 +8,8 @@ namespace EasyHttp
     {
 
         public string Accept { get ; set; }
+        public string AcceptCharSet { get; set; }
+        
         public string CachePolicy { get; set; }
         public string Connection { get; set; }
         public string ContentLength { get; set; }

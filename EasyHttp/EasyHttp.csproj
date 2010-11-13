@@ -35,6 +35,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\JsonFx.dll</HintPath>
     </Reference>
+    <Reference Include="StructureMap, Version=2.6.1.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Extensions" />
@@ -45,11 +49,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BootStrapper.cs" />
     <Compile Include="DynamicType.cs" />
     <Compile Include="DefaultCodec.cs" />
     <Compile Include="HttpContentTypes.cs" />
     <Compile Include="ICodec.cs" />
     <Compile Include="IMemberBehavior.cs" />
+    <Compile Include="IStartupTask.cs" />
     <Compile Include="JsonFXExtensions\RemoveAmerpsandFromNameJsonResolverStrategy.cs" />
     <Compile Include="JsonFXExtensions\UrlEncoderTextFormatter.cs" />
     <Compile Include="JsonFXExtensions\UrlEncoderWriter.cs" />
@@ -65,6 +71,8 @@
     <Content Include="Lib\JsonFx.dll" />
     <Content Include="Lib\JsonFx.pdb" />
     <Content Include="Lib\JsonFx.XML" />
+    <Content Include="Lib\StructureMap.dll" />
+    <Content Include="Lib\StructureMap.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

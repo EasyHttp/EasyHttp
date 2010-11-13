@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Reflection;
+using StructureMap;
 
 namespace EasyHttp
 {
@@ -8,15 +9,8 @@ namespace EasyHttp
     {
         readonly ICodec _codec;
 
-        string _userAgent = String.Format("EasyHttp HttpClient v{0}",
-                                      Assembly.GetAssembly(typeof(HttpClient)).GetName().Version);
 
-
-        public string UserAgent
-        {
-            get { return _userAgent; }
-            set { _userAgent = value; }
-        }
+        public string UserAgent { get; set; }
 
         public bool ThrowExceptionOnHttpError { get; set; }
 
@@ -26,15 +20,24 @@ namespace EasyHttp
         string _password;
         string _username;
 
-        public HttpClient(): this(new DefaultCodec())
+        public HttpClient()
         {
+            BootStrapper.InitStructureMap();
+
+            UserAgent = String.Format("EasyHttp HttpClient v{0}",
+                                      Assembly.GetAssembly(typeof (HttpClient)).GetName().Version);
+
+            _codec = ObjectFactory.GetInstance<ICodec>();
+
+            var tasks = ObjectFactory.GetAllInstances<IStartupTask>();
+            
+            foreach(var task in tasks)
+            {
+                task.Execute();
+            }
         }
 
-        public HttpClient(ICodec codec)
-        {
-            _codec = codec;
-        }
-
+ 
         public HttpResponse Response { get; private set; }
         public HttpRequest Request { get; private set; }
 
