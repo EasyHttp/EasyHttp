@@ -6,7 +6,7 @@ using Machine.Specifications;
 namespace EasyHttp.Specs.Specifications.CodingDecoding
 {
     [Subject("DynamicType")]
-    public class when_accessing_a_property_that_is_defined
+    public class when_accessing_a_property_that_is_defined_with_no_member_behavior
     {
         Establish context = () =>
         {
@@ -32,7 +32,7 @@ namespace EasyHttp.Specs.Specifications.CodingDecoding
     }
 
     [Subject("DynamicType")]
-    public class when_accessing_a_property_that_is_not_defined
+    public class when_accessing_a_property_that_is_not_defined_with_no_member_behavior
     {
         Establish context = () =>
         {
@@ -59,7 +59,7 @@ namespace EasyHttp.Specs.Specifications.CodingDecoding
 
 
     [Subject("DynamicType")]
-    public class when_accessing_a_property_of_a_child_property_that_is_defined
+    public class when_accessing_a_property_of_a_child_property_that_is_defined_with_no_member_behavior
     {
         Establish context = () =>
         {
@@ -89,7 +89,7 @@ namespace EasyHttp.Specs.Specifications.CodingDecoding
     }
 
     [Subject("DynamicType")]
-    public class when_accessing_a_property_of_a_child_property_that_is_not_defined
+    public class when_accessing_a_property_of_a_child_property_that_is_not_defined_with_no_member_behavior
     {
         Establish context = () =>
         {
@@ -119,5 +119,5 @@ namespace EasyHttp.Specs.Specifications.CodingDecoding
         static Exception exception;
     }
 
-
+   
 }

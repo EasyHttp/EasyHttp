@@ -6,12 +6,8 @@ namespace EasyHttp.Codecs
 {
     public class DynamicType: DynamicObject
     {
-        //readonly IMemberBehavior _memberBehavior;
-
-        //protected DynamicType(IMemberBehavior memberBehavior)
-        //{
-        //    _memberBehavior = memberBehavior;
-        //}
+        
+        
 
         readonly Dictionary<string, object> _properties = new Dictionary<string, object>();
 
@@ -22,6 +18,7 @@ namespace EasyHttp.Codecs
                 result = _properties[binder.Name.ToLower()];
                 return true;
             }
+           
             throw new PropertyNotFoundException(binder.Name);
         }
 

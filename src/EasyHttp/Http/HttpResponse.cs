@@ -63,39 +63,7 @@ namespace EasyHttp.Http
             {
                 _response = (HttpWebResponse)request.GetResponse();
 
-                ContentType = _response.ContentType;
-                StatusCode = _response.StatusCode;
-                StatusDescription = _response.StatusDescription;
-                Cookie = _response.Cookies;
-                ContentEncoding = _response.ContentEncoding;
-                ContentLength = _response.ContentLength;
-                Date = DateTime.Now;
-                LastModified = _response.LastModified;
-                Server = _response.Server;
-
-                if (!String.IsNullOrEmpty(_response.GetResponseHeader("Age")))
-                {
-                    Age = Convert.ToInt32(_response.GetResponseHeader("Age"));
-                }
-
-                ContentLanguage = _response.GetResponseHeader("Content-Language");
-                ContentLocation = _response.GetResponseHeader("Content-Location");
-                ContentDisposition = _response.GetResponseHeader("Content-Disposition");
-                ETag = _response.GetResponseHeader("ETag");
-                Location = _response.GetResponseHeader("Location");
-                
-                if (!String.IsNullOrEmpty(_response.GetResponseHeader("Expires")))
-                {
-                    Expires = Convert.ToDateTime(_response.GetResponseHeader("Expires"));
-                }
-
-                // TODO: Finish this.
-                 //   public HttpMethod Allow { get; private set; }
-                 //   public CacheControl CacheControl { get; private set; }
-                 //   public CacheControl Pragma { get; private set; }
-
-
-                RawHeaders = _response.Headers;
+                GetHeaders();
 
                 using (var stream = _response.GetResponseStream())
                 {
@@ -118,6 +86,41 @@ namespace EasyHttp.Http
             }
         }
 
-   
+        void GetHeaders()
+        {
+            ContentType = _response.ContentType;
+            StatusCode = _response.StatusCode;
+            StatusDescription = _response.StatusDescription;
+            Cookie = _response.Cookies;
+            ContentEncoding = _response.ContentEncoding;
+            ContentLength = _response.ContentLength;
+            Date = DateTime.Now;
+            LastModified = _response.LastModified;
+            Server = _response.Server;
+
+            if (!String.IsNullOrEmpty(_response.GetResponseHeader("Age")))
+            {
+                Age = Convert.ToInt32(_response.GetResponseHeader("Age"));
+            }
+
+            ContentLanguage = _response.GetResponseHeader("Content-Language");
+            ContentLocation = _response.GetResponseHeader("Content-Location");
+            ContentDisposition = _response.GetResponseHeader("Content-Disposition");
+            ETag = _response.GetResponseHeader("ETag");
+            Location = _response.GetResponseHeader("Location");
+                
+            if (!String.IsNullOrEmpty(_response.GetResponseHeader("Expires")))
+            {
+                Expires = Convert.ToDateTime(_response.GetResponseHeader("Expires"));
+            }
+
+            // TODO: Finish this.
+            //   public HttpMethod Allow { get; private set; }
+            //   public CacheControl CacheControl { get; private set; }
+            //   public CacheControl Pragma { get; private set; }
+
+
+            RawHeaders = _response.Headers;
+        }
     }
 }

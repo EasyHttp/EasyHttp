@@ -33,11 +33,11 @@
   <ItemGroup>
     <Reference Include="JsonFx, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\JsonFx.dll</HintPath>
+      <HintPath>..\..\lib\JsonFx.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap, Version=2.6.1.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\StructureMap.dll</HintPath>
+      <HintPath>..\..\lib\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -70,13 +70,6 @@
     <Compile Include="Infrastructure\ILog.cs" />
     <Compile Include="Infrastructure\PropertyNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Lib\JsonFx.dll" />
-    <Content Include="Lib\JsonFx.pdb" />
-    <Content Include="Lib\JsonFx.XML" />
-    <Content Include="Lib\StructureMap.dll" />
-    <Content Include="Lib\StructureMap.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
