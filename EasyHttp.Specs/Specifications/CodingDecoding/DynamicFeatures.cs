@@ -1,4 +1,6 @@
 using System;
+using EasyHttp.Codecs;
+using EasyHttp.Infrastructure;
 using Machine.Specifications;
 
 namespace EasyHttp.Specs.Specifications.CodingDecoding

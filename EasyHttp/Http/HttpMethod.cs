@@ -1,4 +1,4 @@
-﻿namespace EasyHttp
+﻿namespace EasyHttp.Http
 {
     public enum HttpMethod
     {

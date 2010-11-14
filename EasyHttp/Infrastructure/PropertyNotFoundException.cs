@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace EasyHttp
+namespace EasyHttp.Infrastructure
 {
     public class PropertyNotFoundException : Exception
     {

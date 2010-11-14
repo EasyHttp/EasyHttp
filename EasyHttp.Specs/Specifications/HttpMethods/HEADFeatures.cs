@@ -1,4 +1,5 @@
-﻿using EasyHttp.Specs.Helpers;
+﻿using EasyHttp.Http;
+using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
 
 namespace EasyHttp.Specs.Specifications.HttpMethods

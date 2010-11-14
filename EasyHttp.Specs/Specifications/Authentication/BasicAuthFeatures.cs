@@ -1,4 +1,5 @@
-﻿using Machine.Specifications;
+﻿using EasyHttp.Http;
+using Machine.Specifications;
 
 namespace EasyHttp.Specs.Specifications.Authentication
 {
@@ -13,8 +14,8 @@ namespace EasyHttp.Specs.Specifications.Authentication
 
         Because of = () =>
         {
-            _httpResponse = _httpClient.WithBasicAuthentication("iis_test_user", "logitech100!!!")
-                .Get("http://localhost/testsite");
+            _httpClient.Request.SetBasicAuthentication("iis_test_user", "logitech100!!!");
+            _httpResponse = _httpClient.Get("http://localhost/testsite");
 
         };
 

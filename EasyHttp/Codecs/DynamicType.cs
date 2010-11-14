@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Dynamic;
+using EasyHttp.Infrastructure;
 
-namespace EasyHttp
+namespace EasyHttp.Codecs
 {
     public class DynamicType: DynamicObject
     {

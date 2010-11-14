@@ -49,23 +49,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BootStrapper.cs" />
-    <Compile Include="DynamicType.cs" />
-    <Compile Include="DefaultCodec.cs" />
-    <Compile Include="HttpContentTypes.cs" />
-    <Compile Include="ICodec.cs" />
-    <Compile Include="IMemberBehavior.cs" />
-    <Compile Include="IStartupTask.cs" />
-    <Compile Include="JsonFXExtensions\RemoveAmerpsandFromNameJsonResolverStrategy.cs" />
-    <Compile Include="JsonFXExtensions\UrlEncoderTextFormatter.cs" />
-    <Compile Include="JsonFXExtensions\UrlEncoderWriter.cs" />
-    <Compile Include="HttpClient.cs" />
-    <Compile Include="HttpException.cs" />
-    <Compile Include="HttpMethod.cs" />
-    <Compile Include="HttpRequest.cs" />
-    <Compile Include="HttpResponse.cs" />
+    <Compile Include="Codecs\DefaultCodec.cs" />
+    <Compile Include="Codecs\DynamicType.cs" />
+    <Compile Include="Codecs\ICodec.cs" />
+    <Compile Include="Codecs\IMemberBehavior.cs" />
+    <Compile Include="Codecs\JsonFXExtensions\RemoveAmerpsandFromNameJsonResolverStrategy.cs" />
+    <Compile Include="Codecs\JsonFXExtensions\UrlEncoderTextFormatter.cs" />
+    <Compile Include="Codecs\JsonFXExtensions\UrlEncoderWriter.cs" />
+    <Compile Include="Configuration\BootStrapper.cs" />
+    <Compile Include="Configuration\CodecRegistry.cs" />
+    <Compile Include="Configuration\IConfigurationStep.cs" />
+    <Compile Include="Http\CacheControl.cs" />
+    <Compile Include="Http\HttpClient.cs" />
+    <Compile Include="Http\HttpContentTypes.cs" />
+    <Compile Include="Http\HttpException.cs" />
+    <Compile Include="Http\HttpMethod.cs" />
+    <Compile Include="Http\HttpRequest.cs" />
+    <Compile Include="Http\HttpResponse.cs" />
+    <Compile Include="Infrastructure\ConfigurationException.cs" />
+    <Compile Include="Infrastructure\ILog.cs" />
+    <Compile Include="Infrastructure\PropertyNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyNotFoundException.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Lib\JsonFx.dll" />

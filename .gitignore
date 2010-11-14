@@ -10,5 +10,6 @@ _ReSharper.*
 *.resharper
 *.suo
 *.cache
+*.user
 ~$*
 

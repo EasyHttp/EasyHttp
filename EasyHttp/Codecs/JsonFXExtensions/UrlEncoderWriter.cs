@@ -2,7 +2,7 @@
 using JsonFx.Common;
 using JsonFx.Serialization;
 
-namespace EasyHttp.JsonFXExtensions
+namespace EasyHttp.Codecs.JsonFXExtensions
 {
     public class UrlEncoderWriter:CommonWriter 
     {

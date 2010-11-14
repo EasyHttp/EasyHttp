@@ -2,7 +2,7 @@
 using System.Net;
 using System.Runtime.Serialization;
 
-namespace EasyHttp
+namespace EasyHttp.Http
 {
     public class HttpException : Exception
     {

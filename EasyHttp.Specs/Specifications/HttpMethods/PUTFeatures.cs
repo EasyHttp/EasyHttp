@@ -1,4 +1,5 @@
 ﻿using System;
+using EasyHttp.Http;
 using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
 
@@ -9,8 +10,8 @@ namespace EasyHttp.Specs.Specifications.HttpMethods
     {
         Establish context = () =>
         {
-            _httpClient = new HttpClient()
-                .WithAccept(HttpContentTypes.ApplicationJson);
+            _httpClient = new HttpClient();
+            _httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
         };
 
         Because of = () =>

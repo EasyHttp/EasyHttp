@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
-using EasyHttp.JsonFXExtensions;
+using EasyHttp.Codecs.JsonFXExtensions;
 using JsonFx.Serialization;
 using JsonFx.Serialization.Providers;
+using StructureMap;
 
-namespace EasyHttp
+namespace EasyHttp.Codecs
 {
     public class DefaultCodec : ICodec
     {
         public byte[] Encode(object data, string contentType)
         {
-            var writerSettings = new DataWriterSettings();
+      
+            var dataWriters = ObjectFactory.GetAllInstances<IDataWriter>();
 
-            var jsonWriter = new JsonFx.Json.JsonWriter(writerSettings);
+            var writerProvider = new DataWriterProvider(dataWriters);
 
-            var xmlWriter = new JsonFx.Xml.XmlWriter(writerSettings);
-
-            var urlEncoderWriter = new UrlEncoderWriter(writerSettings);
-
-            IDataWriterProvider writerProvider = new DataWriterProvider(new List<IDataWriter> { jsonWriter, xmlWriter, urlEncoderWriter });
-            
             var serializer = writerProvider.Find(contentType, contentType);
 
             if (serializer == null)
@@ -36,14 +31,9 @@ namespace EasyHttp
        
         public T DecodeToStatic<T>(string input, string contentType)
         {
-            var readerSettings = new DataReaderSettings(new RemoveAmerpsandFromNameJsonResolverStrategy());
+            var dataReaders = ObjectFactory.GetAllInstances<IDataReader>();
 
-            var jsonReader = new JsonFx.Json.JsonReader(readerSettings);
-
-            var xmlReader = new JsonFx.Xml.XmlReader(readerSettings);
-
-            IDataReaderProvider readerProvider = new DataReaderProvider(new List<IDataReader> { jsonReader, xmlReader });
-
+            var readerProvider = new DataReaderProvider(dataReaders);
             // TODO: This is a hack...
             var parsedText = input.Replace("\"@", "\"");
                             

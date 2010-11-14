@@ -1,4 +1,5 @@
-﻿using Machine.Specifications;
+﻿using EasyHttp.Http;
+using Machine.Specifications;
 
 namespace EasyHttp.Specs.Specifications.HttpMethods
 {

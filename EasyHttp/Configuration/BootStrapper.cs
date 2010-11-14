@@ -1,17 +1,18 @@
+﻿using JsonFx.Serialization.Providers;
 using StructureMap;
 
-namespace EasyHttp
+namespace EasyHttp.Configuration
 {
     public static class BootStrapper
     {
         public static void InitStructureMap()
         {
-                
-               
             ObjectFactory.Initialize(
-                x => {
-                         x.For<ICodec>().Use<DefaultCodec>();
+                x =>
+                {
+                    x.AddRegistry<CodecRegistry>();
                 });
+
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using EasyHttp.Specs.Helpers;
+﻿using EasyHttp.Http;
+using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
 
 namespace EasyHttp.Specs.Specifications.HttpMethods
@@ -31,8 +32,8 @@ namespace EasyHttp.Specs.Specifications.HttpMethods
     {
         Establish context = () =>
         {
-            _httpClient = new HttpClient()
-                            .WithAccept(HttpContentTypes.ApplicationJson);
+            _httpClient = new HttpClient();
+            _httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
 
         };
 
@@ -66,8 +67,8 @@ namespace EasyHttp.Specs.Specifications.HttpMethods
     {
         Establish context = () =>
         {
-            _httpClient = new HttpClient()
-                            .WithAccept(HttpContentTypes.ApplicationJson);
+            _httpClient = new HttpClient();
+            _httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
 
         };
 
