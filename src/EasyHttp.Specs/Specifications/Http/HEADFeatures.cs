@@ -2,12 +2,12 @@
 using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
 
-namespace EasyHttp.Specs.Specifications.HttpMethods
+namespace EasyHttp.Specs.Specifications.Http
 {
 
 
-    [Subject("Working with HEAD")]
-    public class when_requesting_a_head_for_valid_uri
+    [Subject("HttpClient")]
+    public class when_making_a_HEAD_request_with_valid_uri
     {
         Establish context = () =>
         {

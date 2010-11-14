@@ -1,7 +1,7 @@
 ﻿using EasyHttp.Http;
 using Machine.Specifications;
 
-namespace EasyHttp.Specs.Specifications.HttpMethods
+namespace EasyHttp.Specs.Specifications.Http
 {
     [Subject("HttpClient")]
     public class when_creating_a_new_instance

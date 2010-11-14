@@ -3,10 +3,10 @@ using EasyHttp.Codecs;
 using EasyHttp.Infrastructure;
 using Machine.Specifications;
 
-namespace EasyHttp.Specs.Specifications.CodingDecoding
+namespace EasyHttp.Specs.Specifications.Infrastructure
 {
     [Subject("DynamicType")]
-    public class when_accessing_a_property_that_is_defined_with_no_member_behavior
+    public class when_accessing_a_property_that_is_defined
     {
         Establish context = () =>
         {
@@ -32,7 +32,7 @@ namespace EasyHttp.Specs.Specifications.CodingDecoding
     }
 
     [Subject("DynamicType")]
-    public class when_accessing_a_property_that_is_not_defined_with_no_member_behavior
+    public class when_accessing_a_property_that_is_not_defined
     {
         Establish context = () =>
         {
@@ -59,7 +59,7 @@ namespace EasyHttp.Specs.Specifications.CodingDecoding
 
 
     [Subject("DynamicType")]
-    public class when_accessing_a_property_of_a_child_property_that_is_defined_with_no_member_behavior
+    public class when_accessing_a_property_of_a_child_property_that_is_defined
     {
         Establish context = () =>
         {
@@ -88,8 +88,8 @@ namespace EasyHttp.Specs.Specifications.CodingDecoding
         static string value;
     }
 
-    [Subject("DynamicType")]
-    public class when_accessing_a_property_of_a_child_property_that_is_not_defined_with_no_member_behavior
+    [Subject("Infrastructure")]
+    public class when_accessing_a_property_of_a_child_property_that_is_not_defined
     {
         Establish context = () =>
         {

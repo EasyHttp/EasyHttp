@@ -2,12 +2,12 @@
 using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
 
-namespace EasyHttp.Specs.Specifications.HttpMethods
+namespace EasyHttp.Specs.Specifications.Http
 {
 
 
-    [Subject("Working with GET")]
-    public class when_requesting_valid_uri_in_text_format
+    [Subject("HttpClient")]
+    public class when_making_a_GET_request_with_valid_uri
     {
         Establish context = () =>
         {
@@ -27,8 +27,8 @@ namespace EasyHttp.Specs.Specifications.HttpMethods
         static HttpResponse _httpResponse;
     }
 
-    [Subject("Working with GET")]
-    public class when_requesting_a_valid_uri_in_json_format
+    [Subject("HttpClient")]
+    public class when_making_a_GET_request_with_valid_uri_and_content_type_set_to_application_json
     {
         Establish context = () =>
         {
@@ -58,28 +58,7 @@ namespace EasyHttp.Specs.Specifications.HttpMethods
             version.ShouldNotBeEmpty();
         };
 
-        static HttpClient _httpClient;
-        static HttpResponse response;
-    }
-
-    [Subject("Working with GET")]
-    public class when_requesting_a_valid_uri_in_json_format_for_static_body
-    {
-        Establish context = () =>
-        {
-            _httpClient = new HttpClient();
-            _httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
-
-        };
-
-        Because of = () =>
-        {
-
-            response = _httpClient.Get(TestSettings.CouchDbRootUrl);
-
-        };
-
-
+ 
         It should_return_static_body_with_json_object = () =>
         {
             var couchInformation = response.StaticBody<CouchInformation>();
@@ -92,5 +71,6 @@ namespace EasyHttp.Specs.Specifications.HttpMethods
         static HttpClient _httpClient;
         static HttpResponse response;
     }
+
 
 }

@@ -47,13 +47,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Specifications\Authentication\BasicAuthFeatures.cs" />
-    <Compile Include="Specifications\CodingDecoding\DynamicFeatures.cs" />
-    <Compile Include="Specifications\HttpMethods\HEADFeatures.cs" />
-    <Compile Include="Specifications\HttpMethods\DELETEFeatures.cs" />
-    <Compile Include="Specifications\HttpMethods\GETFeatures.cs" />
-    <Compile Include="Specifications\HttpMethods\InitFeatures.cs" />
-    <Compile Include="Specifications\HttpMethods\POSTFeatures.cs" />
-    <Compile Include="Specifications\HttpMethods\PUTFeatures.cs" />
+    <Compile Include="Specifications\Infrastructure\DynamicFeatures.cs" />
+    <Compile Include="Specifications\Http\HEADFeatures.cs" />
+    <Compile Include="Specifications\Http\DELETEFeatures.cs" />
+    <Compile Include="Specifications\Http\GETFeatures.cs" />
+    <Compile Include="Specifications\Http\InitFeatures.cs" />
+    <Compile Include="Specifications\Http\POSTFeatures.cs" />
+    <Compile Include="Specifications\Http\PUTFeatures.cs" />
     <Compile Include="Helpers\Customer.cs" />
     <Compile Include="Helpers\CustomCodecClass.cs" />
     <Compile Include="Helpers\DynamicClass.cs" />
@@ -62,8 +62,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Lib\Machine.Specifications.dll" />
-    <Content Include="Lib\Machine.Specifications.pdb" />
     <Content Include="README.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +73,7 @@
       <Name>EasyHttp</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

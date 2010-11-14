@@ -3,10 +3,10 @@ using EasyHttp.Http;
 using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
 
-namespace EasyHttp.Specs.Specifications.HttpMethods
+namespace EasyHttp.Specs.Specifications.Http
 {
-    [Subject("Working with DELETE")]
-    public class when_deleting_a_resource 
+    [Subject("HttpClient")]
+    public class when_making_a_DELETE_request_with_a_valid_uri 
     {
         Establish context = () =>
         {

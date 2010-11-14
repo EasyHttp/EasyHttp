@@ -3,10 +3,10 @@ using EasyHttp.Http;
 using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
 
-namespace EasyHttp.Specs.Specifications.HttpMethods
+namespace EasyHttp.Specs.Specifications.Http
 {
-    [Subject("Working with PUT")]
-    public class when_putting_a_request_in_json_format
+    [Subject("HttpClient")]
+    public class when_making_a_PUT_request_with_valid_uri_and_valid_data_and_content_type_set_to_application_json
     {
         Establish context = () =>
         {
