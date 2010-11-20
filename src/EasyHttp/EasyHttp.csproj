@@ -64,11 +64,11 @@
     <Compile Include="Http\CacheControl.cs" />
     <Compile Include="Http\HttpClient.cs" />
     <Compile Include="Http\HttpContentTypes.cs" />
-    <Compile Include="Http\HttpException.cs" />
     <Compile Include="Http\HttpMethod.cs" />
     <Compile Include="Http\HttpRequest.cs" />
     <Compile Include="Http\HttpResponse.cs" />
     <Compile Include="Infrastructure\ConfigurationException.cs" />
+    <Compile Include="Infrastructure\HttpException.cs" />
     <Compile Include="Infrastructure\ILog.cs" />
     <Compile Include="Infrastructure\PropertyNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
