@@ -1,5 +1,6 @@
-An HTTP Client for .NET. Allows you to easily make HTTP calls. 
+*EasyHttp*
 
+Licensed under BSD. For full License and included software licenses please see LICENSE.TXT
 
 Please log all issues are tracked here: http://youtrack.codebetter.com/issues/EHTTP
 
@@ -43,15 +44,4 @@ To get some data in JSON format:
   If you want just raw undecoded text:
 
   var customer = response.RawText;
-
-EasyHttp's Body is dynamic. It will automatically decode json, xml for you so you can just access the properties. 
-
-
-Encoding
-========
-
-HttpClient will automatically encode it for you to application/json. 
-
-Content-Types currently supported: application/json, HttpContentTypes.ApplicationXml, application/x-www-form-urlencoded
-
 
