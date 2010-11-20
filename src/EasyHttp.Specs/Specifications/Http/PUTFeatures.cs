@@ -10,17 +10,17 @@ namespace EasyHttp.Specs.Specifications.Http
     {
         Establish context = () =>
         {
-            _httpClient = new HttpClient();
-            _httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
+            httpClient = new HttpClient();
+            httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
         };
 
         Because of = () =>
         {
             Guid guid = Guid.NewGuid();
-            _httpClient.Put(string.Format("{0}/{1}", TestSettings.CouchDbDatabaseUrl, guid),
+            httpClient.Put(string.Format("{0}/{1}", TestSettings.CouchDbDatabaseUrl, guid),
                           new Customer() {Name = "Put", Email = "test@test.com"}, HttpContentTypes.ApplicationJson);
 
-            response = _httpClient.Response;
+            response = httpClient.Response;
         };
 
 
@@ -37,7 +37,7 @@ namespace EasyHttp.Specs.Specifications.Http
 
 
 
-        static HttpClient _httpClient;
+        static HttpClient httpClient;
         static dynamic response;
     }
 }

@@ -9,17 +9,17 @@ namespace EasyHttp.Specs.Specifications.Http
     {
         Establish context = () =>
         {
-            _httpClient = new HttpClient();
-            _httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
+            httpClient = new HttpClient();
+            httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
 
         };
 
         Because of = () =>
         {
 
-            _httpClient.Post(TestSettings.CouchDbDatabaseUrl, new Customer() { Name = "Hadi", Email = "test@test.com" }, HttpContentTypes.ApplicationJson);
+            httpClient.Post(TestSettings.CouchDbDatabaseUrl, new Customer() { Name = "Hadi", Email = "test@test.com" }, HttpContentTypes.ApplicationJson);
 
-            response = _httpClient.Response;
+            response = httpClient.Response;
         };
 
 
@@ -36,7 +36,7 @@ namespace EasyHttp.Specs.Specifications.Http
 
 
 
-        static HttpClient _httpClient;
+        static HttpClient httpClient;
         static dynamic response;
     }
 }

@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -56,8 +57,9 @@
     <Compile Include="Codecs\JsonFXExtensions\RemoveAmerpsandFromNameJsonResolverStrategy.cs" />
     <Compile Include="Codecs\JsonFXExtensions\UrlEncoderTextFormatter.cs" />
     <Compile Include="Codecs\JsonFXExtensions\UrlEncoderWriter.cs" />
-    <Compile Include="Configuration\BootStrapper.cs" />
     <Compile Include="Configuration\CodecRegistry.cs" />
+    <Compile Include="Configuration\DefaultConfiguration.cs" />
+    <Compile Include="Configuration\IConfiguration.cs" />
     <Compile Include="Configuration\IConfigurationStep.cs" />
     <Compile Include="Http\CacheControl.cs" />
     <Compile Include="Http\HttpClient.cs" />

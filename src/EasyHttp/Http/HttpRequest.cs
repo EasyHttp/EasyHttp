@@ -58,7 +58,6 @@ namespace EasyHttp.Http
                                  HttpContentTypes.ApplicationJson);
             _codec = codec;
 
-
         }
 
 
@@ -70,6 +69,9 @@ namespace EasyHttp.Http
 
         void SetupHeader()
         {
+            var cookieContainer = new CookieContainer();
+
+            httpWebRequest.CookieContainer = cookieContainer;
             httpWebRequest.ContentType = ContentType;
             httpWebRequest.Accept = Accept;
             httpWebRequest.Method = Method.ToString();
@@ -80,8 +82,6 @@ namespace EasyHttp.Http
 
             if (Cookies != null )
             {
-                httpWebRequest.CookieContainer = new CookieContainer(Cookies.Count);
-                
                 httpWebRequest.CookieContainer.Add(Cookies);
             }
 
@@ -149,6 +149,7 @@ namespace EasyHttp.Http
 
         public HttpResponse MakeRequest()
         {
+         
             httpWebRequest = (HttpWebRequest) WebRequest.Create(Uri);
 
             SetupHeader();

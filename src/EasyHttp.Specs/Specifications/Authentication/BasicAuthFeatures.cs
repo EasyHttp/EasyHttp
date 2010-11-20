@@ -9,13 +9,13 @@ namespace EasyHttp.Specs.Specifications.Authentication
     {
         Establish context = () =>
         {
-            _httpClient = new HttpClient();
+            httpClient = new HttpClient();
         };
 
         Because of = () =>
         {
-            _httpClient.Request.SetBasicAuthentication("iis_test_user", "logitech100!!!");
-            _httpResponse = _httpClient.Get("http://localhost/testsite");
+            httpClient.Request.SetBasicAuthentication("iis_test_user", "logitech100!!!");
+            _httpResponse = httpClient.Get("http://localhost/testsite");
 
         };
 
@@ -24,7 +24,7 @@ namespace EasyHttp.Specs.Specifications.Authentication
             
         };
 
-        static HttpClient _httpClient;
+        static HttpClient httpClient;
         static HttpResponse _httpResponse;
     }
 

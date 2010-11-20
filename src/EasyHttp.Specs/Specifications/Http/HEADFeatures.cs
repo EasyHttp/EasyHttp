@@ -11,21 +11,21 @@ namespace EasyHttp.Specs.Specifications.Http
     {
         Establish context = () =>
         {
-            _httpClient = new HttpClient();
+            httpClient = new HttpClient();
         };
 
         Because of = () =>
         {
-            _httpClient.Head(TestSettings.CouchDbRootUrl);
-            _httpResponse = _httpClient.Response;
+            httpClient.Head(TestSettings.CouchDbRootUrl);
+            httpResponse = httpClient.Response;
 
         };
 
         It should_return_correct_header =
-            () => _httpResponse.StatusDescription.ShouldEqual("OK");
+            () => httpResponse.StatusDescription.ShouldEqual("OK");
 
-        static HttpClient _httpClient;
-        static HttpResponse _httpResponse;
+        static HttpClient httpClient;
+        static HttpResponse httpResponse;
     }
 
    

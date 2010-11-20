@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Web;
 using JsonFx.Common;
 using JsonFx.Serialization;
 
@@ -35,7 +36,14 @@ namespace EasyHttp.Codecs.JsonFXExtensions
                         writer.Write(token.Name);
                         continue;
                     case CommonTokenType.Primitive:
-                        writer.Write(String.Format("={0}", token.Value));
+                        if (token.Value != null)
+                        {
+                            var urlEncode = HttpUtility.UrlEncode(token.Value.ToString());
+                            writer.Write(String.Format("={0}", urlEncode));
+                        } else
+                        {
+                            writer.Write("=");
+                        }
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

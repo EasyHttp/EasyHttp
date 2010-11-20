@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using EasyHttp.Codecs;
 using EasyHttp.Configuration;
 using EasyHttp.Infrastructure;
@@ -14,26 +15,37 @@ namespace EasyHttp.Http
         public bool LoggingEnabled { get; set; }
         public bool ThrowExceptionOnHttpError { get; set; }
 
-        
-  
 
-        public HttpClient()
+        public HttpClient(IConfiguration configuration)
         {
-            BootStrapper.InitStructureMap();
+
+            ObjectFactory.Initialize(
+                x =>
+                {
+                    foreach (var registry in configuration.Registries)
+                    {
+                        x.AddRegistry(registry);
+                    }
+                });
 
             _codec = ObjectFactory.GetInstance<ICodec>();
 
             _log = ObjectFactory.TryGetInstance<ILog>();
 
-            
+
             var tasks = ObjectFactory.GetAllInstances<IConfigurationStep>();
-            
-            foreach(var task in tasks)
+
+            foreach (var task in tasks)
             {
                 task.Execute();
             }
 
             Request = new HttpRequest(_codec);
+        }
+      
+
+        public HttpClient(): this(new DefaultConfiguration())
+        {
         }
 
  
@@ -122,11 +134,13 @@ namespace EasyHttp.Http
 
         bool IsHttpError()
         {
-            var num = (int) Response.StatusCode;
+            var num = (int) Response.StatusCode / 100;
 
-            return (num/100 == 4 || num/100 == 5);
+            return (num == 4 || num == 5);
         }
 
 
     }
+
+   
 }

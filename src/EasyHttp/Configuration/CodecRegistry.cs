@@ -1,6 +1,7 @@
 ﻿using EasyHttp.Codecs;
 using EasyHttp.Codecs.JsonFXExtensions;
 using JsonFx.Json;
+using JsonFx.Json.Resolvers;
 using JsonFx.Serialization;
 using JsonFx.Serialization.Resolvers;
 using JsonFx.Xml;
@@ -14,11 +15,11 @@ namespace EasyHttp.Configuration
         {
             For<ICodec>().Use<DefaultCodec>();
             For<IDataReader>().Singleton().Use<JsonReader>();
-            For<IDataReader>().Singleton().Use<JsonReader>();
+            For<IDataReader>().Singleton().Use<XmlReader>();
             For<IDataWriter>().Singleton().Use<JsonWriter>();
             For<IDataWriter>().Singleton().Use<XmlWriter>();
             For<IDataWriter>().Singleton().Use<UrlEncoderWriter>();
-            For<IResolverStrategy>().Use<PocoResolverStrategy>();
+            For<IResolverStrategy>().Use<JsonResolverStrategy>();
         }
     }
 }

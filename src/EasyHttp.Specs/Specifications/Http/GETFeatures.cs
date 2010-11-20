@@ -1,4 +1,5 @@
-﻿using EasyHttp.Http;
+﻿using System.Dynamic;
+using EasyHttp.Http;
 using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
 
@@ -11,20 +12,20 @@ namespace EasyHttp.Specs.Specifications.Http
     {
         Establish context = () =>
         {
-            _httpClient = new HttpClient();
+            httpClient = new HttpClient();
         };
 
         Because of = () =>
         {
-            _httpResponse = _httpClient.Get("http://localhost:5984");
+            httpResponse = httpClient.Get("http://localhost:5984");
 
         };
 
         It should_return_body_with_rawtext =
-            () => _httpResponse.RawText.ShouldNotBeEmpty();
+            () => httpResponse.RawText.ShouldNotBeEmpty();
 
-        static HttpClient _httpClient;
-        static HttpResponse _httpResponse;
+        static HttpClient httpClient;
+        static HttpResponse httpResponse;
     }
 
     [Subject("HttpClient")]
@@ -32,15 +33,15 @@ namespace EasyHttp.Specs.Specifications.Http
     {
         Establish context = () =>
         {
-            _httpClient = new HttpClient();
-            _httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
+            httpClient = new HttpClient();
+            httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
 
         };
 
         Because of = () =>
         {
 
-            response = _httpClient.Get(TestSettings.CouchDbRootUrl);
+            response = httpClient.Get(TestSettings.CouchDbRootUrl);
             
         };
 
@@ -68,9 +69,47 @@ namespace EasyHttp.Specs.Specifications.Http
             couchInformation.version.ShouldNotBeEmpty();
         };
 
-        static HttpClient _httpClient;
+        static HttpClient httpClient;
         static HttpResponse response;
     }
+
+
+    //[Subject("HttpClient")]
+    //public class when_making_a_GET_request_with_valid_uri_and_content_type_set_to_application_xml
+    //{
+    //    Establish context = () =>
+    //    {
+    //        httpClient = new HttpClient();
+    //        httpClient.Request.Accept = HttpContentTypes.ApplicationXml;
+
+    //    };
+
+    //    Because of = () =>
+    //    {
+    //        dynamic credentials = new ExpandoObject();
+
+    //        credentials.login = "youtrackapi";
+    //        credentials.password = "youtrackapi";
+
+    //        httpClient.Post("http://youtrack.jetbrains.net/rest/user/login", credentials, HttpContentTypes.ApplicationXWwwFormUrlEncoded);
+
+    //        response = httpClient.Response;
+    //    };
+
+
+    //    It should_return_dynamic_body_with_json_object = () =>
+    //    {
+    //        dynamic body = response.DynamicBody;
+
+    //        string login = body.login;
+            
+    //        login.ShouldEqual("ok");
+    //    };
+
+
+    //    static HttpClient httpClient;
+    //    static HttpResponse response;
+    //}
 
 
 }
