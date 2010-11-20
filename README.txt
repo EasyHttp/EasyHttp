@@ -25,12 +25,10 @@ To do a POST with JSON:
 To get some data in JSON format:
 
   var http = new HttpClient();
+	
+  http.Request.Accept = HttpContentTypes.ApplicationJson;
 
-  var response = 
-	http
-	.WithAccept(HttpContentTypes.ApplicationJson)
-	.Get("url");
-
+  var response = http.Get("url");
 
   dynamic customer = response.DynamicBody;
 
