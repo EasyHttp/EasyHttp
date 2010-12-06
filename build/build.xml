@@ -11,8 +11,10 @@
 
   <Target Name="TeamCity" DependsOnTargets="Build">
     <Exec Command="$(mspec) ..\src\EasyHttp.Specs\bin\debug\EasyHttp.Specs.dll --teamcity"/>
-    <TeamCityProgressMessage Text="Running dotCover" />
-    <TeamCitySetStatus Status="dotCover" Text="dotNetCoverage" />
+    <TeamCityProgressMessage Text="##teamcity[dotNetCoverage key='dotCover']" />
+
+    <TeamCityProgressMessage Text="##teamcity[importData type='dotNetCoverage' tool='dotCover' path='dotCover.xml'"/>
+    
   </Target>
-  
+
 </Project>
