@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AnalyseParams>
+  <Executable>..\src\packages\mspec\mspec.exe</Executable>
+  <Arguments>..\src\EasyHttp.Specs\bin\debug\EasyHttp.Specs.dll</Arguments>
+  <Output>coverage.xml</Output>
+  
+  <!-- Optional. Coverage filters. It's possible to use asterisks as wildcard symbols.
+  <Filters>
+    <IncludeFilters>
+      <FilterEntry>
+        <ModuleMask> Module mask. </ModuleMask>
+        <ClassMask> Class mask. </ClassMask>
+        <FunctionMask> Function mask. </FunctionMask>
+      </FilterEntry>
+    </IncludeFilters>
+    <ExcludeFilters>
+      <FilterEntry>...</FilterEntry>
+      <FilterEntry>...</FilterEntry>
+      <FilterEntry>...</FilterEntry>
+    </ExcludeFilters>
+  </Filters>
+  -->
+</AnalyseParams>
