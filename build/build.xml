@@ -2,12 +2,15 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <PropertyGroup>
     <ProjectFolder>..\src\</ProjectFolder>
+    <MSpec>..\src\packages\mspec\mspec.exe</MSpec>
   </PropertyGroup>
   <Target Name="Build">
 
     <MSBuild Projects="$(ProjectFolder)\EasyHttp.sln"/>
   </Target>
 
- 
+  <Target Name="TeamCity" DependsOnTargets="Build">
+    <Exec Command="$(mspec) ..\src\EasyHttp.Specs\bin\debug\EasyHttp.Specs.dll --teamcity"/>
+  </Target>
   
 </Project>
