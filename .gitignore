@@ -1,9 +1,5 @@
-*/bin/*
-*/obj/*
-**/bin/*
-**/obj/*
-**/*/obj/*
-**/*/bin/*
+bin/
+obj/
 _ReSharper.*
 *.csproj.user
 *.resharper.user

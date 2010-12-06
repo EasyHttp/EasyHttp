@@ -111,7 +111,11 @@ namespace EasyHttp.Http
                 
             if (!String.IsNullOrEmpty(_response.GetResponseHeader("Expires")))
             {
-                Expires = Convert.ToDateTime(_response.GetResponseHeader("Expires"));
+                DateTime expires; 
+                if (DateTime.TryParse(_response.GetResponseHeader("Expires"), out expires))
+                {
+                    Expires = expires;
+                }
             }
 
             // TODO: Finish this.
