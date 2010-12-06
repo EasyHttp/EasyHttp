@@ -3,6 +3,7 @@
   <PropertyGroup>
     <ProjectFolder>..\src\</ProjectFolder>
     <MSpec>..\src\packages\mspec\mspec.exe</MSpec>
+    <dotCover>x:\TeamCity\buildAgent\plugins\dotCover\bin\dotCover.exe</dotCover>
   </PropertyGroup>
   <Target Name="Build">
 
@@ -11,8 +12,9 @@
 
   <Target Name="TeamCity" DependsOnTargets="Build">
     <Exec Command="$(mspec) $(ProjectFolder)\EasyHttp.Specs\bin\debug\EasyHttp.Specs.dll --teamcity"/>
+    <Message Text="##teamcity[dotNetCoverage dotcover_home='x:\TeamCity\buildAgent\plugins\dotCover']" />
     <Exec Command="$(dotCover) a dotcover.xml"/>
-    <Message Text="##teamcity[importData type='dotNetCoverage' tool='dotCover' path='X:\Temp\coverage.xml']"/>
+    <Message Text="##teamcity[importData type='dotNetCoverage' tool='dotCover' path='x:\temp\coverage.xml']"/>
     
   </Target>
 
