@@ -13,7 +13,7 @@
     <Exec Command="$(mspec) ..\src\EasyHttp.Specs\bin\debug\EasyHttp.Specs.dll --teamcity"/>
     <TeamCityProgressMessage Text="##teamcity[dotNetCoverage key='dotCover']" />
 
-    <TeamCityProgressMessage Text="##teamcity[importData type='dotNetCoverage' tool='dotCover' path='dotCover.xml'"/>
+    <TeamCityProgressMessage Text="##teamcity[importData type='dotNetCoverage' tool='dotCover' path='dotCover.xml']"/>
     
   </Target>
 
