@@ -12,6 +12,11 @@
         <FunctionMask>*</FunctionMask>
       </FilterEntry>
       <FilterEntry>
+        <ModuleMask>JsonFx</ModuleMask>
+        <ClassMask>*</ClassMask>
+        <FunctionMask>*</FunctionMask>
+      </FilterEntry>
+      <FilterEntry>
         <ModuleMask>EasyHttp.Specs</ModuleMask>
         <ClassMask>*</ClassMask>
         <FunctionMask>*</FunctionMask>
