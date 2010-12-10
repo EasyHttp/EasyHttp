@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageParams>
-  <Executable>..\src\packages\mspec\mspec.exe</Executable>
-  <Arguments>..\src\EasyHttp.Specs\bin\debug\EasyHttp.Specs.dll</Arguments>
+  <Executable>X:\Projects\EasyHttp\src\packages\mspec\mspec.exe</Executable>
+  <Arguments>X:\Projects\EasyHttp\src\EasyHttp.Specs\bin\Debug\EasyHttp.Specs.dll --teamcity</Arguments>
   <Output>coverage.xml</Output>
 
   <Filters>
-    <IncludeFilters>
-      <FilterEntry>
-        <ModuleMask>EasyHttp.Specs</ModuleMask>
-        <ClassMask>*</ClassMask>
-        <FunctionMask>*</FunctionMask>
-      </FilterEntry>
-    </IncludeFilters>
     <ExcludeFilters>
       <FilterEntry>
         <ModuleMask>Machine.*</ModuleMask>
@@ -19,7 +12,7 @@
         <FunctionMask>*</FunctionMask>
       </FilterEntry>
       <FilterEntry>
-        <ModuleMask>Specs</ModuleMask>
+        <ModuleMask>EasyHttp.Specs</ModuleMask>
         <ClassMask>*</ClassMask>
         <FunctionMask>*</FunctionMask>
       </FilterEntry>
