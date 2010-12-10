@@ -5,6 +5,13 @@
   <Output>coverage.xml</Output>
 
   <Filters>
+    <IncludeFilters>
+      <FilterEntry>
+        <ModuleMask>EasyHttp.Specs</ModuleMask>
+        <ClassMask>*</ClassMask>
+        <FunctionMask>*</FunctionMask>
+      </FilterEntry>
+    </IncludeFilters>
     <ExcludeFilters>
       <FilterEntry>
         <ModuleMask>Machine.*</ModuleMask>
