@@ -11,7 +11,7 @@
   </Target>
 
   <Target Name="TeamCity" DependsOnTargets="Build">
-    <Exec Command="$(mspec) $(ProjectFolder)\EasyHttp.Specs\bin\debug\EasyHttp.Specs.dll --teamcity"/>
+    <!--<Exec Command="$(mspec) $(ProjectFolder)\EasyHttp.Specs\bin\debug\EasyHttp.Specs.dll --teamcity"/>-->
     <!--<Message Text="##teamcity[dotNetCoverage dotcover_home='x:\TeamCity\buildAgent\plugins\dotCover']" />-->
     <Exec Command="$(dotCover) c dotcover.xml"/>
     <Message Text="##teamcity[importData type='dotNetCoverage' tool='dotcover' path='build\coverage.xml']"/>
