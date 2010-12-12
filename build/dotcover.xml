@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageParams>
   <Executable>X:\Projects\EasyHttp\src\packages\mspec\mspec.exe</Executable>
-  <Arguments>X:\Projects\EasyHttp\src\EasyHttp.Specs\bin\Debug\EasyHttp.Specs.dll --teamcity</Arguments>
+  <Arguments>X:\Projects\EasyHttp\src\EasyHttp.Specs\bin\Debug\EasyHttp.Specs.dll</Arguments>
   <Output>coverage.xml</Output>
-
   <Filters>
     <ExcludeFilters>
       <FilterEntry>

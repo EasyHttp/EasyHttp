@@ -2,20 +2,17 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <PropertyGroup>
     <ProjectFolder>..\src\</ProjectFolder>
-    <MSpec>..\src\packages\mspec\mspec.exe</MSpec>
-    <dotCover>x:\TeamCity\buildAgent\plugins\dotCover\bin\dotCover.exe</dotCover>
+    <mspec>..\src\packages\mspec\mspec.exe</mspec>
+    <dotCover>dotCover.exe</dotCover>
   </PropertyGroup>
   <Target Name="Build">
-
     <MSBuild Projects="$(ProjectFolder)\EasyHttp.sln"/>
   </Target>
 
   <Target Name="TeamCity" DependsOnTargets="Build">
     <Exec Command="$(mspec) $(ProjectFolder)EasyHttp.Specs\bin\debug\EasyHttp.Specs.dll --teamcity"/>
-    <!--<Message Text="##teamcity[dotNetCoverage dotcover_home='x:\TeamCity\buildAgent\plugins\dotCover']" />-->
     <Exec Command="$(dotCover) c dotcover.xml"/>
     <Message Text="##teamcity[importData type='dotNetCoverage' tool='dotcover' path='build\coverage.xml']"/>
-    
   </Target>
 
 </Project>

@@ -46,14 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Specifications\Authentication\BasicAuthFeatures.cs" />
-    <Compile Include="Specifications\Infrastructure\DynamicFeatures.cs" />
-    <Compile Include="Specifications\Http\HEADFeatures.cs" />
-    <Compile Include="Specifications\Http\DELETEFeatures.cs" />
-    <Compile Include="Specifications\Http\GETFeatures.cs" />
-    <Compile Include="Specifications\Http\InitFeatures.cs" />
-    <Compile Include="Specifications\Http\POSTFeatures.cs" />
-    <Compile Include="Specifications\Http\PUTFeatures.cs" />
+    <Compile Include="Specs\DynamicSpecs.cs" />
+    <Compile Include="Specs\HttpSpecs.cs" />
     <Compile Include="Helpers\Customer.cs" />
     <Compile Include="Helpers\CustomCodecClass.cs" />
     <Compile Include="Helpers\DynamicClass.cs" />

@@ -3,7 +3,7 @@ using EasyHttp.Codecs;
 using EasyHttp.Infrastructure;
 using Machine.Specifications;
 
-namespace EasyHttp.Specs.Specifications.Infrastructure
+namespace EasyHttp.Specs.Specs
 {
     [Subject("DynamicType")]
     public class when_accessing_a_property_that_is_defined
