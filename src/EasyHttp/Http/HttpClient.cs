@@ -16,17 +16,12 @@ namespace EasyHttp.Http
         public bool ThrowExceptionOnHttpError { get; set; }
 
 
-        public HttpClient(IConfiguration configuration)
+        public HttpClient()
         {
+            var containerConfiguration = new ContainerConfiguration();
 
             ObjectFactory.Initialize(
-                x =>
-                {
-                    foreach (var registry in configuration.Registries)
-                    {
-                        x.AddRegistry(registry);
-                    }
-                });
+                x => x.AddRegistry(containerConfiguration));
 
             _codec = ObjectFactory.GetInstance<ICodec>();
 
@@ -37,18 +32,13 @@ namespace EasyHttp.Http
 
             foreach (var task in tasks)
             {
-                task.Execute();
+                task.Execute(containerConfiguration);
             }
 
             Request = new HttpRequest(_codec);
         }
       
 
-        public HttpClient(): this(new DefaultConfiguration())
-        {
-        }
-
- 
         public HttpResponse Response { get; private set; }
         public HttpRequest Request { get; private set; }
 

@@ -57,9 +57,7 @@
     <Compile Include="Codecs\JsonFXExtensions\RemoveAmerpsandFromNameJsonResolverStrategy.cs" />
     <Compile Include="Codecs\JsonFXExtensions\UrlEncoderTextFormatter.cs" />
     <Compile Include="Codecs\JsonFXExtensions\UrlEncoderWriter.cs" />
-    <Compile Include="Configuration\CodecRegistry.cs" />
-    <Compile Include="Configuration\DefaultConfiguration.cs" />
-    <Compile Include="Configuration\IConfiguration.cs" />
+    <Compile Include="Configuration\ContainerConfiguration.cs" />
     <Compile Include="Configuration\IConfigurationStep.cs" />
     <Compile Include="Http\CacheControl.cs" />
     <Compile Include="Http\HttpClient.cs" />

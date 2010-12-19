@@ -18,6 +18,7 @@ namespace EasyHttp.Codecs
 
             var serializer = writerProvider.Find(contentType, contentType);
 
+
             if (serializer == null)
             {
                 throw new SerializationException("The encoding requested does not have a corresponding encoder");
@@ -33,6 +34,7 @@ namespace EasyHttp.Codecs
         {
             var dataReaders = ObjectFactory.GetAllInstances<IDataReader>();
 
+            
             var readerProvider = new DataReaderProvider(dataReaders);
             // TODO: This is a hack...
             var parsedText = input.Replace("\"@", "\"");

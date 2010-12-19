@@ -43,7 +43,8 @@ namespace EasyHttp.Http
         }
 
         public string RawText { get; set; }
-        
+
+
         public T StaticBody<T>()
         {
             return _codec.DecodeToStatic<T>(RawText, ContentType);
@@ -67,6 +68,7 @@ namespace EasyHttp.Http
 
                 using (var stream = _response.GetResponseStream())
                 {
+                    
                     if (stream != null)
                     {
                         using (var reader = new StreamReader(stream))

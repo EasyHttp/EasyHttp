@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using EasyHttp.Http;
 using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
