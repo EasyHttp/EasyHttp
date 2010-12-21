@@ -81,6 +81,8 @@ namespace EasyHttp.Configuration
             _registry.For<IDataWriter>().Singleton().Use<XmlWriter>();
             _registry.For<IDataWriter>().Singleton().Use<UrlEncoderWriter>();
             _registry.For<IResolverStrategy>().Use<JsonResolverStrategy>();
+            
+            return _registry;
         }
     }
 }
