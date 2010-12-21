@@ -55,15 +55,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 #endregion
-namespace EasyHttp.Http
+
+using System;
+using EasyHttp.Codecs;
+using EasyHttp.Codecs.JsonFXExtensions;
+using JsonFx.Json;
+using JsonFx.Json.Resolvers;
+using JsonFx.Serialization;
+using JsonFx.Serialization.Resolvers;
+using JsonFx.Xml;
+using StructureMap.Configuration.DSL;
+
+namespace EasyHttp.Configuration
 {
-    public enum HttpMethod
+    public class DefaultContainerConfiguration : IContainerConfiguration
     {
-        HEAD,
-        GET,
-        POST,
-        PUT,
-        DELETE,
-        OPTIONS
+        readonly Registry _registry = new Registry();
+
+        public Registry InitializeContainer()
+        {
+            _registry.For<ICodec>().Use<DefaultCodec>();
+            _registry.For<IDataReader>().Singleton().Use<JsonReader>();
+            _registry.For<IDataReader>().Singleton().Use<XmlReader>();
+            _registry.For<IDataWriter>().Singleton().Use<JsonWriter>();
+            _registry.For<IDataWriter>().Singleton().Use<XmlWriter>();
+            _registry.For<IDataWriter>().Singleton().Use<UrlEncoderWriter>();
+            _registry.For<IResolverStrategy>().Use<JsonResolverStrategy>();
+        }
     }
 }

@@ -47,13 +47,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Specs\DynamicSpecs.cs" />
-    <Compile Include="Specs\HttpSpecs.cs" />
+    <Compile Include="Specs\HttpRequestSpecs.cs" />
     <Compile Include="Helpers\Customer.cs" />
     <Compile Include="Helpers\CustomCodecClass.cs" />
     <Compile Include="Helpers\DynamicClass.cs" />
     <Compile Include="Helpers\CouchInformation.cs" />
     <Compile Include="Helpers\TestSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Specs\HttpInitSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="README.txt" />
