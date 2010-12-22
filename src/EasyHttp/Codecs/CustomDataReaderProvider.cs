@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using JsonFx.Serialization;
 using JsonFx.Serialization.Providers;
 
@@ -32,15 +34,13 @@ namespace EasyHttp.Codecs
 
         public IDataReader Find(string contentTypeHeader)
         {
-            string type = DataWriterProvider.ParseMediaType(contentTypeHeader);
+            var type = DataWriterProvider.ParseMediaType(contentTypeHeader);
 
-            IDataReader reader;
-            if (_readersByMime.TryGetValue(type, out reader))
-            {
-                return reader;
-            }
+            var readers = from reader in _readersByMime
+                                where Regex.Match(type, reader.Key, RegexOptions.Singleline).Success
+                                select reader;
 
-            return null;
+            return readers.First().Value;
         }
     }
 }

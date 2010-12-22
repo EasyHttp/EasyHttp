@@ -64,8 +64,11 @@ namespace EasyHttp.Codecs.JsonFXExtensions
 {
     public class UrlEncoderWriter: ModelWriter 
     {
-        public UrlEncoderWriter(DataWriterSettings settings) : base(settings)
+        readonly string[] _contentTypes;
+
+        public UrlEncoderWriter(DataWriterSettings settings, params string[] contentTypes) : base(settings)
         {
+            _contentTypes = contentTypes;
         }
 
         protected override ITextFormatter<ModelTokenType> GetFormatter()
@@ -75,7 +78,20 @@ namespace EasyHttp.Codecs.JsonFXExtensions
 
         public override IEnumerable<string> ContentType
         {
-            get { yield return "application/x-www-form-urlencoded"; }
+            get
+            {
+				if (_contentTypes != null)
+				{
+					foreach (var contentType in _contentTypes)
+					{
+						yield return contentType;
+					}
+					yield break;
+				}
+
+
+                yield return "application/x-www-form-urlencoded";
+            }
         }
 
         public override IEnumerable<string> FileExtension

@@ -59,6 +59,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using JsonFx.Serialization;
 using JsonFx.Serialization.Providers;
 
@@ -136,15 +138,14 @@ namespace EasyHttp.Codecs
 		{
 		    foreach (string type in ParseHeaders(acceptHeader, contentTypeHeader))
 			{
-			    IDataWriter writer;
+                var readers = from writer in _writersByMime
+                                    where Regex.Match(type, writer.Key, RegexOptions.Singleline).Success
+                                    select writer;
 
-                if (_writersByMime.TryGetValue(type, out writer))
-				{
-					return writer;
-				}
-			}
+                return readers.First().Value;
+            }
+            return null;
 
-		    return null;
 		}
 
 

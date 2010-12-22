@@ -78,17 +78,19 @@ namespace EasyHttp.Configuration
             _registry.For<ICodec>().Use<DefaultCodec>();
             _registry.For<IDataReader>().Singleton().Use<JsonReader>().
                 Ctor<DataReaderSettings>().Is(new DataReaderSettings()).
-                Ctor<string[]>().Is(new [] { "application/json", "text/json", "text/x-json"});
+                Ctor<string[]>().Is(new [] { "application/*json", "text/*json"});
             _registry.For<IDataReader>().Singleton().Use<XmlReader>().
                 Ctor<DataReaderSettings>().Is(new DataReaderSettings()).
-                Ctor<string[]>().Is(new[] { "application/xml", "text/xml+xhtml", "text/xml", "text/html" });
+                Ctor<string[]>().Is(new[] { "application/*xml", "text/*xhtml", "text/xml", "text/html" });
             _registry.For<IDataWriter>().Singleton().Use<JsonWriter>().
                 Ctor<DataWriterSettings>().Is(new DataWriterSettings()).
-                Ctor<string[]>().Is(new[] { "application/json", "text/json", "text/x-json" });
+                Ctor<string[]>().Is(new[] { "application/*json", "text/*json"});
             _registry.For<IDataWriter>().Singleton().Use<XmlWriter>().
                 Ctor<DataWriterSettings>().Is(new DataWriterSettings()).
-                Ctor<string[]>().Is(new[] { "application/xml", "text/xml+xhtml", "text/xml", "text/html" });
-            _registry.For<IDataWriter>().Singleton().Use<UrlEncoderWriter>();
+                Ctor<string[]>().Is(new[] { "application/xml", "text/*xhtml", "text/xml", "text/html" });
+            _registry.For<IDataWriter>().Singleton().Use<UrlEncoderWriter>().
+                Ctor<DataWriterSettings>().Is(new DataWriterSettings()).
+                Ctor<string[]>().Is(new[] { "application/x-www-form-urlencoded" });
             _registry.For<IResolverStrategy>().Singleton().Use<JsonResolverStrategy>();
             _registry.For<IDataReaderProvider>().Singleton().Use<CustomDataReaderProvider>();
             _registry.For<IDataWriterProvider>().Singleton().Use<CustomDataWriterProvider>();
