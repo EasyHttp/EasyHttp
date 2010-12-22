@@ -50,8 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Codecs\CustomDataReaderProvider.cs" />
-    <Compile Include="Codecs\CustomDataWriterProvider.cs" />
+    <Compile Include="Codecs\RegExBasedDataReaderProvider.cs" />
+    <Compile Include="Codecs\RegExBasedDataWriterProvider.cs" />
     <Compile Include="Codecs\DefaultCodec.cs" />
     <Compile Include="Codecs\DynamicType.cs" />
     <Compile Include="Codecs\ICodec.cs" />

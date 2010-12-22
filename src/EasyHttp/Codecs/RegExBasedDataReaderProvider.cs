@@ -7,11 +7,11 @@ using JsonFx.Serialization.Providers;
 
 namespace EasyHttp.Codecs
 {
-    public class CustomDataReaderProvider: IDataReaderProvider
+    public class RegExBasedDataReaderProvider: IDataReaderProvider
     {
         readonly IDictionary<string, IDataReader> _readersByMime = new Dictionary<string, IDataReader>(StringComparer.OrdinalIgnoreCase);
 
-        public CustomDataReaderProvider(IEnumerable<IDataReader> dataReaders)
+        public RegExBasedDataReaderProvider(IEnumerable<IDataReader> dataReaders)
         {
             if (dataReaders != null)
             {
@@ -40,7 +40,11 @@ namespace EasyHttp.Codecs
                                 where Regex.Match(type, reader.Key, RegexOptions.Singleline).Success
                                 select reader;
 
-            return readers.First().Value;
+            if (readers.Count() > 0)
+            {
+                return readers.First().Value;
+            }
+            return null;
         }
     }
 }

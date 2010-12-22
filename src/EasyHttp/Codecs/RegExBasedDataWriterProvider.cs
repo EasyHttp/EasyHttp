@@ -67,14 +67,14 @@ using JsonFx.Serialization.Providers;
 namespace EasyHttp.Codecs
 {
     // TODO: This is a copy of the DataWriterProvider in JsonFX. Need to clean it up and move things elsewhere
-    public class CustomDataWriterProvider: IDataWriterProvider
+    public class RegExBasedDataWriterProvider: IDataWriterProvider
     {
     	readonly IDataWriter _defaultWriter;
 		readonly IDictionary<string, IDataWriter> _writersByExt = new Dictionary<string, IDataWriter>(StringComparer.OrdinalIgnoreCase);
 		readonly IDictionary<string, IDataWriter> _writersByMime = new Dictionary<string, IDataWriter>(StringComparer.OrdinalIgnoreCase);
 
 		
-		public CustomDataWriterProvider(IEnumerable<IDataWriter> writers)
+		public RegExBasedDataWriterProvider(IEnumerable<IDataWriter> writers)
 		{
 			if (writers != null)
 			{
@@ -142,7 +142,10 @@ namespace EasyHttp.Codecs
                                     where Regex.Match(type, writer.Key, RegexOptions.Singleline).Success
                                     select writer;
 
-                return readers.First().Value;
+                if (readers.Count() > 0)
+                {
+                    return readers.First().Value;
+                }
             }
             return null;
 

@@ -92,8 +92,8 @@ namespace EasyHttp.Configuration
                 Ctor<DataWriterSettings>().Is(new DataWriterSettings()).
                 Ctor<string[]>().Is(new[] { "application/x-www-form-urlencoded" });
             _registry.For<IResolverStrategy>().Singleton().Use<JsonResolverStrategy>();
-            _registry.For<IDataReaderProvider>().Singleton().Use<CustomDataReaderProvider>();
-            _registry.For<IDataWriterProvider>().Singleton().Use<CustomDataWriterProvider>();
+            _registry.For<IDataReaderProvider>().Singleton().Use<RegExBasedDataReaderProvider>();
+            _registry.For<IDataWriterProvider>().Singleton().Use<RegExBasedDataWriterProvider>();
             
             return _registry;
         }
