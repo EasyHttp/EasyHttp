@@ -75,7 +75,7 @@ namespace EasyHttp.Codecs.JsonFXExtensions
 
         public override IEnumerable<string> ContentType
         {
-            get { return new List<string>() {"application/x-www-form-urlencoded"}; }
+            get { yield return "application/x-www-form-urlencoded"; }
         }
 
         public override IEnumerable<string> FileExtension

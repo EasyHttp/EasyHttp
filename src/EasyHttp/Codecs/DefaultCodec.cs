@@ -65,14 +65,20 @@ namespace EasyHttp.Codecs
 {
     public class DefaultCodec : ICodec
     {
+        readonly IDataReaderProvider _dataReaderProvider;
+        readonly IDataWriterProvider _dataWriterProvider;
+
+        public DefaultCodec(IDataReaderProvider dataReaderProvider, IDataWriterProvider dataWriterProvider)
+        {
+            _dataReaderProvider = dataReaderProvider;
+            _dataWriterProvider = dataWriterProvider;
+        }
+
         public byte[] Encode(object data, string contentType)
         {
       
-            var dataWriters = ObjectFactory.GetAllInstances<IDataWriter>();
-
-            var writerProvider = new DataWriterProvider(dataWriters);
-
-            var serializer = writerProvider.Find(contentType, contentType);
+       
+            var serializer = _dataWriterProvider.Find(contentType, contentType);
 
 
             if (serializer == null)
@@ -88,14 +94,12 @@ namespace EasyHttp.Codecs
        
         public T DecodeToStatic<T>(string input, string contentType)
         {
-            var dataReaders = ObjectFactory.GetAllInstances<IDataReader>();
-
             
-            var readerProvider = new DataReaderProvider(dataReaders);
             // TODO: This is a hack...
+
             var parsedText = input.Replace("\"@", "\"");
                             
-            var deserializer = readerProvider.Find(contentType);
+            var deserializer = _dataReaderProvider.Find(contentType);
 
                             
             if (deserializer == null)

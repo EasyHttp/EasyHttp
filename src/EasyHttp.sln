@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyHttp", "EasyHttp\EasyHt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyHttp.Specs", "EasyHttp.Specs\EasyHttp.Specs.csproj", "{6F950A41-727E-4416-8D5B-809946DD2836}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleUsage", "SampleUsage\SampleUsage.csproj", "{DAD4BD69-5A86-4193-A52F-A09FDB66FBC0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,16 +34,6 @@ Global
 		{6F950A41-727E-4416-8D5B-809946DD2836}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6F950A41-727E-4416-8D5B-809946DD2836}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6F950A41-727E-4416-8D5B-809946DD2836}.Release|x86.ActiveCfg = Release|Any CPU
-		{DAD4BD69-5A86-4193-A52F-A09FDB66FBC0}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{DAD4BD69-5A86-4193-A52F-A09FDB66FBC0}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{DAD4BD69-5A86-4193-A52F-A09FDB66FBC0}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{DAD4BD69-5A86-4193-A52F-A09FDB66FBC0}.Debug|x86.ActiveCfg = Debug|x86
-		{DAD4BD69-5A86-4193-A52F-A09FDB66FBC0}.Debug|x86.Build.0 = Debug|x86
-		{DAD4BD69-5A86-4193-A52F-A09FDB66FBC0}.Release|Any CPU.ActiveCfg = Release|x86
-		{DAD4BD69-5A86-4193-A52F-A09FDB66FBC0}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{DAD4BD69-5A86-4193-A52F-A09FDB66FBC0}.Release|Mixed Platforms.Build.0 = Release|x86
-		{DAD4BD69-5A86-4193-A52F-A09FDB66FBC0}.Release|x86.ActiveCfg = Release|x86
-		{DAD4BD69-5A86-4193-A52F-A09FDB66FBC0}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

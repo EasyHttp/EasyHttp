@@ -62,6 +62,7 @@ using EasyHttp.Codecs.JsonFXExtensions;
 using JsonFx.Json;
 using JsonFx.Json.Resolvers;
 using JsonFx.Serialization;
+using JsonFx.Serialization.Providers;
 using JsonFx.Serialization.Resolvers;
 using JsonFx.Xml;
 using StructureMap.Configuration.DSL;
@@ -75,14 +76,28 @@ namespace EasyHttp.Configuration
         public Registry InitializeContainer()
         {
             _registry.For<ICodec>().Use<DefaultCodec>();
-            _registry.For<IDataReader>().Singleton().Use<JsonReader>();
-            _registry.For<IDataReader>().Singleton().Use<XmlReader>();
-            _registry.For<IDataWriter>().Singleton().Use<JsonWriter>();
-            _registry.For<IDataWriter>().Singleton().Use<XmlWriter>();
+            _registry.For<IDataReader>().Singleton().Use<JsonReader>().
+                Ctor<DataReaderSettings>().Is(new DataReaderSettings()).
+                Ctor<string[]>().Is(new [] { "application/json", "text/json", "text/x-json"});
+            _registry.For<IDataReader>().Singleton().Use<XmlReader>().
+                Ctor<DataReaderSettings>().Is(new DataReaderSettings()).
+                Ctor<string[]>().Is(new[] { "application/xml", "text/xml+xhtml", "text/xml", "text/html" });
+            _registry.For<IDataWriter>().Singleton().Use<JsonWriter>().
+                Ctor<DataWriterSettings>().Is(new DataWriterSettings()).
+                Ctor<string[]>().Is(new[] { "application/json", "text/json", "text/x-json" });
+            _registry.For<IDataWriter>().Singleton().Use<XmlWriter>().
+                Ctor<DataWriterSettings>().Is(new DataWriterSettings()).
+                Ctor<string[]>().Is(new[] { "application/xml", "text/xml+xhtml", "text/xml", "text/html" });
             _registry.For<IDataWriter>().Singleton().Use<UrlEncoderWriter>();
-            _registry.For<IResolverStrategy>().Use<JsonResolverStrategy>();
+            _registry.For<IResolverStrategy>().Singleton().Use<JsonResolverStrategy>();
+            _registry.For<IDataReaderProvider>().Singleton().Use<CustomDataReaderProvider>();
+            _registry.For<IDataWriterProvider>().Singleton().Use<CustomDataWriterProvider>();
             
             return _registry;
         }
+
+
     }
+
+
 }
