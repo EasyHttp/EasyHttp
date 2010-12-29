@@ -34,7 +34,7 @@ namespace EasyHttp.Codecs
 
         public IDataReader Find(string contentTypeHeader)
         {
-            var type = DataWriterProvider.ParseMediaType(contentTypeHeader);
+            var type = DataProviderUtility.ParseMediaType(contentTypeHeader);
 
             var readers = from reader in _readersByMime
                                 where Regex.Match(type, reader.Key, RegexOptions.Singleline).Success

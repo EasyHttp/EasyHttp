@@ -159,7 +159,7 @@ namespace EasyHttp.Codecs
 			// check for a matching accept type
 			foreach (string type in SplitTrim(accept, ','))
 			{
-				mime = DataWriterProvider.ParseMediaType(type);
+				mime = DataProviderUtility.ParseMediaType(type);
 				if (!String.IsNullOrEmpty(mime))
 				{
 					yield return mime;
@@ -167,23 +167,11 @@ namespace EasyHttp.Codecs
 			}
 
 			// fallback on content-type
-			mime = DataWriterProvider.ParseMediaType(contentType);
+			mime = DataProviderUtility.ParseMediaType(contentType);
 			if (!String.IsNullOrEmpty(mime))
 			{
 				yield return mime;
 			}
-		}
-
-		public static string ParseMediaType(string type)
-		{
-			foreach (string mime in SplitTrim(type, ';'))
-			{
-				// only return first part
-				return mime;
-			}
-
-			// if no parts then was empty
-			return String.Empty;
 		}
 
 		private static IEnumerable<string> SplitTrim(string source, char ch)

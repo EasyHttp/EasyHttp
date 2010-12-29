@@ -106,9 +106,12 @@ namespace EasyHttp.Http
 
         public void Post(string uri, object data, string contentType)
         {
-            Request.ContentType = contentType;
+            if (data != null)
+            {
+                Request.ContentType = contentType;
+                Request.Data = data;
+            }
             Request.Method = HttpMethod.POST;
-            Request.Data = data;
             Request.Uri = uri;
  
             ProcessRequest();
@@ -117,9 +120,12 @@ namespace EasyHttp.Http
 
         public void Put(string uri, object data, string contentType)
         {
-            Request.ContentType = contentType;
+            if (data != null)
+            {
+                Request.ContentType = contentType;
+                Request.Data = data;
+            }
             Request.Method = HttpMethod.PUT;
-            Request.Data = data;
             Request.Uri = uri;
             ProcessRequest();
         }

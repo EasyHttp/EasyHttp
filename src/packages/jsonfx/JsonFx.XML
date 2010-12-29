@@ -719,6 +719,29 @@
             <param name="ignored">an example value used solely for Type inference</param>
             <returns></returns>
         </member>
+        <member name="T:JsonFx.Serialization.Providers.DataProviderUtility">
+            <summary>
+            Provides lookup capabilities for providers
+            </summary>
+        </member>
+        <member name="M:JsonFx.Serialization.Providers.DataProviderUtility.ParseHeaders(System.String,System.String)">
+            <summary>
+            Parses HTTP headers for Media-Types
+            </summary>
+            <param name="accept">HTTP Accept header</param>
+            <param name="contentType">HTTP Content-Type header</param>
+            <returns>sequence of Media-Types</returns>
+            <remarks>
+            http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
+            </remarks>
+        </member>
+        <member name="M:JsonFx.Serialization.Providers.DataProviderUtility.ParseMediaType(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
         <member name="T:JsonFx.IO.CharBuffer">
             <summary>
             StringBuilder-like implementation built like List&lt;char&gt;
@@ -2762,24 +2785,6 @@
             Ctor
             </summary>
             <param name="writers">inject with all possible writers</param>
-        </member>
-        <member name="M:JsonFx.Serialization.Providers.DataWriterProvider.ParseHeaders(System.String,System.String)">
-            <summary>
-            Parses HTTP headers for Media-Types
-            </summary>
-            <param name="accept">HTTP Accept header</param>
-            <param name="contentType">HTTP Content-Type header</param>
-            <returns>sequence of Media-Types</returns>
-            <remarks>
-            http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
-            </remarks>
-        </member>
-        <member name="M:JsonFx.Serialization.Providers.DataWriterProvider.ParseMediaType(System.String)">
-            <summary>
-            
-            </summary>
-            <param name="type"></param>
-            <returns></returns>
         </member>
         <member name="T:JsonFx.Serialization.DataName">
             <summary>
