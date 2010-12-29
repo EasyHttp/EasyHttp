@@ -57,12 +57,38 @@
 #endregion
 
 using System;
+using System.Net;
 using EasyHttp.Http;
 using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
 
 namespace EasyHttp.Specs.Specs
 {
+    [Subject("HttpClient")]
+    public class when_making_any_type_of_request_to_invalid_host
+    {
+        Establish context = () =>
+        {
+            httpClient = new HttpClient();
+        };
+
+        Because of = () =>
+        {
+            exception = Catch.Exception( () => httpClient.Get("http://somethinginvalid") );
+
+        };
+
+        It should_throw_web_exception  = () =>
+        {
+            exception.ShouldBeOfType<WebException>();
+            
+
+        };
+
+        static HttpClient httpClient;
+        static Exception exception;
+    }
+
     [Subject("HttpClient")]
     public class when_making_a_DELETE_request_with_a_valid_uri 
     {

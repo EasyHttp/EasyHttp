@@ -139,10 +139,14 @@ namespace EasyHttp.Http
             }
             catch (WebException webException)
             {
-                var respone = (HttpWebResponse)webException.Response;
+                if (webException.Response != null)
+                {
+                    var respone = (HttpWebResponse)webException.Response;
 
-                StatusCode = respone.StatusCode;
-                StatusDescription = respone.StatusDescription;
+                    StatusCode = respone.StatusCode;
+                    StatusDescription = respone.StatusDescription;
+                }
+                throw;
             }
         }
 
