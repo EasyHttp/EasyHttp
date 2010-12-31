@@ -215,7 +215,7 @@ namespace EasyHttp.Specs.Specs
 
         };
 
-        It should_return_correct_header =
+        It should_return_OK_response  =
             () => httpResponse.StatusDescription.ShouldEqual("OK");
 
         static HttpClient httpClient;
