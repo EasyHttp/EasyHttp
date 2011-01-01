@@ -94,9 +94,11 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
-            httpClient = new HttpClient();
-            httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
-            
+            httpClient = new HttpClient
+                         {
+                             Request = {Accept = HttpContentTypes.ApplicationJson}
+                         };
+
             // First create customer in order to then delete it
             guid = Guid.NewGuid();
 
@@ -191,7 +193,7 @@ namespace EasyHttp.Specs.Specs
         {
             var couchInformation = response.StaticBody<CouchInformation>();
 
-            couchInformation.couchdb.ShouldEqual("Welcome");
+            couchInformation.message.ShouldEqual("Welcome");
 
             couchInformation.version.ShouldNotBeEmpty();
         };
@@ -200,6 +202,7 @@ namespace EasyHttp.Specs.Specs
         static HttpResponse response;
     }
 
+  
     [Subject("HttpClient")]
     public class when_making_a_HEAD_request_with_valid_uri
     {

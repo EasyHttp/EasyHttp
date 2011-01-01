@@ -55,11 +55,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 #endregion
+
+using JsonFx.Json;
+
 namespace EasyHttp.Specs.Helpers
 {
     public class CouchInformation
     {
-        public string couchdb { get; set; }
+        [JsonName("couchdb")]
+        public string message { get; set; }
         public string version { get; set; }
     }
 }
