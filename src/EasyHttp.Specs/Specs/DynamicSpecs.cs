@@ -80,10 +80,7 @@ namespace EasyHttp.Specs.Specs
 
         };
 
-        It should_return_the_value = () =>
-        {
-            value.ShouldEqual("Joe");
-        };
+        It should_return_the_value = () => value.ShouldEqual("Joe");
 
         static dynamic dynamicObject;
         static string value;
@@ -104,12 +101,9 @@ namespace EasyHttp.Specs.Specs
             exception = Catch.Exception( () => value = dynamicObject.Name );
         };
 
-        It should_throw_property_not_found_exception = () =>
-        {
-            exception.ShouldBeOfType(typeof(PropertyNotFoundException));
-            
-            ((PropertyNotFoundException)exception).PropertyName.ShouldEqual("Name");
-        };
+        It should_throw_property_not_found_exception = () => exception.ShouldBeOfType<PropertyNotFoundException>();
+
+        It should_set_property_name_to_name_of_property_not_found = () => ((PropertyNotFoundException)exception).PropertyName.ShouldEqual("Name");
 
         static dynamic dynamicObject;
         static Exception exception;
@@ -136,10 +130,7 @@ namespace EasyHttp.Specs.Specs
             value = parentObject.Child.Name;
         };
 
-        It should_return_the_value = () =>
-        {
-            value.ShouldEqual("Child");
-        };
+        It should_return_the_value = () => value.ShouldEqual("Child");
 
         static dynamic childObject;
         static dynamic parentObject;
@@ -164,12 +155,9 @@ namespace EasyHttp.Specs.Specs
             exception = Catch.Exception(() => value = parentObject.Child.Name);
         };
 
-        It should_throw_property_not_found_exception = () =>
-        {
-            exception.ShouldBeOfType(typeof(PropertyNotFoundException));
+        It should_throw_property_not_found_exception = () => exception.ShouldBeOfType<PropertyNotFoundException>();
 
-            ((PropertyNotFoundException)exception).PropertyName.ShouldEqual("Name");
-        };
+        It should_set_property_name_to_name_of_property_not_found = () => ((PropertyNotFoundException)exception).PropertyName.ShouldEqual("Name");
 
         static dynamic childObject;
         static dynamic parentObject;
