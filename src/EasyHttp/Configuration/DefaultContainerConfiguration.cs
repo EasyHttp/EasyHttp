@@ -65,6 +65,7 @@ using JsonFx.Serialization;
 using JsonFx.Serialization.Providers;
 using JsonFx.Serialization.Resolvers;
 using JsonFx.Xml;
+using JsonFx.Xml.Resolvers;
 using StructureMap.Configuration.DSL;
 
 namespace EasyHttp.Configuration
@@ -77,16 +78,17 @@ namespace EasyHttp.Configuration
         {
             _registry.For<ICodec>().Use<DefaultCodec>();
             _registry.For<IDataReader>().Singleton().Use<JsonReader>().
-                Ctor<DataReaderSettings>().Is(new DataReaderSettings(new JsonResolverStrategy())).
+                Ctor<DataReaderSettings>().Is(new DataReaderSettings(
+                    CombinedResolverStrategy())).
                 Ctor<string[]>().Is(new [] { "application/.*json", "text/.*json"});
             _registry.For<IDataReader>().Singleton().Use<XmlReader>().
-                Ctor<DataReaderSettings>().Is(new DataReaderSettings(new JsonResolverStrategy())).
+                Ctor<DataReaderSettings>().Is(new DataReaderSettings(CombinedResolverStrategy())).
                 Ctor<string[]>().Is(new[] { "application/.*xml", "text/.*xhtml", "text/xml", "text/html" });
             _registry.For<IDataWriter>().Singleton().Use<JsonWriter>().
-                Ctor<DataWriterSettings>().Is(new DataWriterSettings()).
+                Ctor<DataWriterSettings>().Is(new DataWriterSettings(CombinedResolverStrategy())).
                 Ctor<string[]>().Is(new[] { "application/.*json", "text/.*json"});
             _registry.For<IDataWriter>().Singleton().Use<XmlWriter>().
-                Ctor<DataWriterSettings>().Is(new DataWriterSettings()).
+                Ctor<DataWriterSettings>().Is(new DataWriterSettings(CombinedResolverStrategy())).
                 Ctor<string[]>().Is(new[] { "application/xml", "text/.*xhtml", "text/xml", "text/html" });
             _registry.For<IDataWriter>().Singleton().Use<UrlEncoderWriter>().
                 Ctor<DataWriterSettings>().Is(new DataWriterSettings()).
@@ -97,7 +99,18 @@ namespace EasyHttp.Configuration
             return _registry;
         }
 
-
+        // TODO: Do not like this. 
+        CombinedResolverStrategy CombinedResolverStrategy()
+        {
+            return new CombinedResolverStrategy(
+                new JsonResolverStrategy(),
+                new DataContractResolverStrategy(),                                     
+                new XmlResolverStrategy(),                                                              
+                new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.PascalCase),       
+                new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.CamelCase),        
+                new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.Lowercase, "-"),   
+                new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.Uppercase, "_"));
+        }
     }
 
 

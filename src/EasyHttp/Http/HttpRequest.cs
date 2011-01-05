@@ -75,6 +75,7 @@ namespace EasyHttp.Http
         public bool KeepAlive { get; set; }
         public string ContentLength { get; private set; }
         public string ContentType { get; set; }
+        public string ContentEncoding { get; set; }
         public CookieCollection Cookies { get; set; }
         public DateTime Date { get; set; }
         public bool Expect { get; set; }
@@ -137,6 +138,7 @@ namespace EasyHttp.Http
             httpWebRequest.Referer = Referer;
             httpWebRequest.CachePolicy = _cachePolicy;
             httpWebRequest.KeepAlive = KeepAlive;
+            
 
             if (Cookies != null )
             {
@@ -176,7 +178,7 @@ namespace EasyHttp.Http
             AddExtraHeader("Accept-Encoding", AcceptEncoding);
             AddExtraHeader("Accept-Language", AcceptLanguage);
             AddExtraHeader("If-Match", IfMatch);
-
+            AddExtraHeader("Content-Encoding", ContentEncoding);
         }
 
         public void AddExtraHeader(string header, object value)

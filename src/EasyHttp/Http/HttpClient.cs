@@ -110,6 +110,7 @@ namespace EasyHttp.Http
             {
                 Request.ContentType = contentType;
                 Request.Data = data;
+                Request.ContentEncoding = HttpContentEncoding.Utf8;
             }
             Request.Method = HttpMethod.POST;
             Request.Uri = uri;
@@ -124,7 +125,9 @@ namespace EasyHttp.Http
             {
                 Request.ContentType = contentType;
                 Request.Data = data;
+                Request.ContentEncoding = HttpContentEncoding.Utf8;
             }
+            
             Request.Method = HttpMethod.PUT;
             Request.Uri = uri;
             ProcessRequest();
