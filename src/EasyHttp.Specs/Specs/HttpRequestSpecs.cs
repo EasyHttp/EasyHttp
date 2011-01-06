@@ -78,7 +78,12 @@ namespace EasyHttp.Specs.Specs
 
         };
 
-        It should_throw_web_exception  = () => exception.ShouldBeOfType<WebException>();
+        It should_throw_web_exception  = () =>
+        {
+            exception.ShouldBeOfType<WebException>();
+            
+
+        };
 
         static HttpClient httpClient;
         static Exception exception;
