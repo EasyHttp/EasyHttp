@@ -129,7 +129,7 @@ namespace EasyHttp.Http
                     
                     if (stream != null)
                     {
-                        if (filename != String.Empty)
+                        if (!String.IsNullOrEmpty(filename))
                         {
                             using (var filestream = new FileStream(filename, FileMode.CreateNew))
                             {
