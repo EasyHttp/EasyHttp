@@ -116,7 +116,7 @@ namespace EasyHttp.Http
      
         }
 
-        public void GetResponse(HttpWebRequest request)
+        public void GetResponse(HttpWebRequest request, string filename)
         {
             try
             {
@@ -129,9 +129,24 @@ namespace EasyHttp.Http
                     
                     if (stream != null)
                     {
-                        using (var reader = new StreamReader(stream))
+                        if (filename != String.Empty)
                         {
-                            RawText = reader.ReadToEnd();
+                            using (var filestream = new FileStream(filename, FileMode.CreateNew))
+                            {
+                                int count;
+                                var buffer = new byte[8192];
+                                
+                                while ((count = stream.Read(buffer, 0, buffer.Length)) > 0)
+                                {
+                                    filestream.Write(buffer, 0, count);
+                                } 
+                            }   
+                        } else
+                        {
+                            using (var reader = new StreamReader(stream))
+                            {
+                                RawText = reader.ReadToEnd();
+                            }
                         }
                     }
                 }

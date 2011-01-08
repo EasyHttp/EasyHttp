@@ -94,7 +94,16 @@ namespace EasyHttp.Http
         public HttpResponse Response { get; private set; }
         public HttpRequest Request { get; private set; }
 
+        public HttpResponse GetAsFile(string uri, string filename)
+        {
+            Request.Method = HttpMethod.GET;
+            Request.Uri = uri;
+            Request.Filename = filename;
+            ProcessRequest();
 
+            return Response;
+        }
+        
         public HttpResponse Get(string uri)
         {
             Request.Method = HttpMethod.GET;

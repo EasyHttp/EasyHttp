@@ -98,6 +98,8 @@ namespace EasyHttp.Http
 
         public string Uri { get; set; }
 
+        public string Filename { get; set; }
+
         HttpWebRequest httpWebRequest;
 
         readonly ICodec _codec;
@@ -219,8 +221,8 @@ namespace EasyHttp.Http
 
             var response = new HttpResponse(_codec);
 
-            response.GetResponse(httpWebRequest);
-
+            response.GetResponse(httpWebRequest, Filename);
+            
             return response;
         }
 
