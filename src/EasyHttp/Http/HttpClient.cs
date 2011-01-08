@@ -67,6 +67,7 @@ namespace EasyHttp.Http
     {
         readonly ICodec _codec;
         readonly ILog _log;
+        string _filename;
 
         public bool LoggingEnabled { get; set; }
         public bool ThrowExceptionOnHttpError { get; set; }
@@ -98,7 +99,7 @@ namespace EasyHttp.Http
         {
             Request.Method = HttpMethod.GET;
             Request.Uri = uri;
-            Request.Filename = filename;
+            _filename = filename;
             ProcessRequest();
 
             return Response;
@@ -164,7 +165,7 @@ namespace EasyHttp.Http
                 _log.LogRequest(Request);
             }
 
-            Response = Request.MakeRequest();
+            Response = Request.MakeRequest(_filename);
 
             if (CanLog())
             {

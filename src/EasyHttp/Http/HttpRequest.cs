@@ -98,7 +98,6 @@ namespace EasyHttp.Http
 
         public string Uri { get; set; }
 
-        public string Filename { get; set; }
 
         HttpWebRequest httpWebRequest;
 
@@ -209,7 +208,7 @@ namespace EasyHttp.Http
         }
 
 
-        public HttpResponse MakeRequest()
+        public HttpResponse MakeRequest(string filename)
         {
          
             httpWebRequest = (HttpWebRequest) WebRequest.Create(Uri);
@@ -221,7 +220,7 @@ namespace EasyHttp.Http
 
             var response = new HttpResponse(_codec);
 
-            response.GetResponse(httpWebRequest, Filename);
+            response.GetResponse(httpWebRequest, filename);
             
             return response;
         }
