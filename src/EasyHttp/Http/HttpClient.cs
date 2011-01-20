@@ -109,8 +109,9 @@ namespace EasyHttp.Http
         {
             Request.Method = HttpMethod.GET;
             Request.Uri = uri;
+            Request.Data = null;
             ProcessRequest();
-
+            
             return Response;
         }
 
@@ -147,6 +148,7 @@ namespace EasyHttp.Http
         {
             Request.Method = HttpMethod.DELETE;
             Request.Uri = uri;
+            Request.Data = null;
             ProcessRequest();
         }
 
@@ -155,6 +157,7 @@ namespace EasyHttp.Http
         {
             Request.Method = HttpMethod.HEAD;
             Request.Uri = uri;
+            Request.Data = null;
             ProcessRequest();
         }
 
