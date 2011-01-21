@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="BugRepros\CustomPropertyNameIssue.cs" />
     <Compile Include="BugRepros\EnumEncodingIssue.cs" />
+    <Compile Include="Specs\UploadRequestSpecs.cs" />
     <Compile Include="Specs\DynamicSpecs.cs" />
     <Compile Include="Specs\FileRequestSpecs.cs" />
     <Compile Include="Specs\HttpRequestSpecs.cs" />
@@ -64,6 +65,9 @@
     <Compile Include="Specs\HttpInitSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Helpers\test.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="README.txt" />
   </ItemGroup>
   <ItemGroup>

@@ -58,6 +58,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Cache;
 using System.Reflection;
@@ -78,7 +79,7 @@ namespace EasyHttp.Http
         public string ContentEncoding { get; set; }
         public CookieCollection Cookies { get; set; }
         public DateTime Date { get; set; }
-        public bool Expect { get; set; }
+        public string Expect { get; set; }
         public string From { get; set; }
         public string Host { get; set; }
         public string IfMatch { get; set; }
@@ -97,6 +98,8 @@ namespace EasyHttp.Http
         public object Data { get; set; }
 
         public string Uri { get; set; }
+
+        public string File { get; set; }
 
 
         HttpWebRequest httpWebRequest;
@@ -139,8 +142,12 @@ namespace EasyHttp.Http
             httpWebRequest.Referer = Referer;
             httpWebRequest.CachePolicy = _cachePolicy;
             httpWebRequest.KeepAlive = KeepAlive;
-            
 
+            if (!String.IsNullOrEmpty(Expect))
+            {
+                httpWebRequest.Expect = Expect;
+            }
+ 
             if (Cookies != null )
             {
                 httpWebRequest.CookieContainer.Add(Cookies);
@@ -193,24 +200,41 @@ namespace EasyHttp.Http
         void SetupBody()
         {
 
-            if (Data == null)
+            if (Data != null)
             {
-                return;
+                var bytes = _codec.Encode(Data, ContentType);
+
+                var requestStream = httpWebRequest.GetRequestStream();
+
+                requestStream.Write(bytes, 0, bytes.Length);
+
+                requestStream.Close();
+            }
+            else if (!String.IsNullOrEmpty(File))
+            {
+                var requestStream = httpWebRequest.GetRequestStream();
+
+                using (var fileStream = new FileStream(File, FileMode.Open))
+                {
+                    byte[] buffer = new byte[81982];
+
+                    int bytesRead = fileStream.Read(buffer, 0, buffer.Length);
+                    while (bytesRead > 0)
+                    {
+                        requestStream.Write(buffer, 0, bytesRead);
+                        bytesRead = fileStream.Read(buffer, 0, buffer.Length);
+                    }
+                    requestStream.Close();
+                }
             }
 
-            var bytes = _codec.Encode(Data, ContentType);
-
-            var requestStream = httpWebRequest.GetRequestStream();
-            
-            requestStream.Write(bytes, 0, bytes.Length);
-                
-            requestStream.Close();
         }
 
 
         public HttpResponse MakeRequest(string filename)
         {
          
+            
             httpWebRequest = (HttpWebRequest) WebRequest.Create(Uri);
 
             SetupHeader();

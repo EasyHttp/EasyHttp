@@ -112,6 +112,4 @@ namespace EasyHttp.Configuration
                 new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.Uppercase, "_"));
         }
     }
-
-    
 }

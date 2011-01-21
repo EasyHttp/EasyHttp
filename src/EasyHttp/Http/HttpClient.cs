@@ -56,6 +56,9 @@
 // THE SOFTWARE.
 #endregion
 
+using System;
+using System.IO;
+using System.Text;
 using EasyHttp.Codecs;
 using EasyHttp.Configuration;
 using EasyHttp.Infrastructure;
@@ -66,8 +69,7 @@ namespace EasyHttp.Http
     public class HttpClient
     {
         readonly ICodec _codec;
-        readonly ILog _log;
-        string _filename;
+        string _downloadFilename;
 
         public bool LoggingEnabled { get; set; }
         public bool ThrowExceptionOnHttpError { get; set; }
@@ -87,19 +89,27 @@ namespace EasyHttp.Http
 
             _codec = ObjectFactory.GetInstance<ICodec>();
 
-            _log = ObjectFactory.TryGetInstance<ILog>();
-
             Request = new HttpRequest(_codec);
         }
 
         public HttpResponse Response { get; private set; }
         public HttpRequest Request { get; private set; }
 
+        void InitRequest(string uri)
+        {
+            Request.Uri = uri;
+            Request.Data = null;
+            Request.File = String.Empty;
+            Request.Accept = HttpContentTypes.Any;
+            Request.Expect = String.Empty;
+            Request.KeepAlive = false;
+        }
+
         public HttpResponse GetAsFile(string uri, string filename)
         {
+            InitRequest(uri);
             Request.Method = HttpMethod.GET;
-            Request.Uri = uri;
-            _filename = filename;
+            _downloadFilename = filename;
             ProcessRequest();
 
             return Response;
@@ -107,9 +117,8 @@ namespace EasyHttp.Http
         
         public HttpResponse Get(string uri)
         {
+            InitRequest(uri);
             Request.Method = HttpMethod.GET;
-            Request.Uri = uri;
-            Request.Data = null;
             ProcessRequest();
             
             return Response;
@@ -117,6 +126,7 @@ namespace EasyHttp.Http
 
         public void Post(string uri, object data, string contentType)
         {
+            InitRequest(uri);
             if (data != null)
             {
                 Request.ContentType = contentType;
@@ -124,14 +134,13 @@ namespace EasyHttp.Http
                 Request.ContentEncoding = HttpContentEncoding.Utf8;
             }
             Request.Method = HttpMethod.POST;
-            Request.Uri = uri;
- 
             ProcessRequest();
         }
 
-
+        
         public void Put(string uri, object data, string contentType)
         {
+            InitRequest(uri);
             if (data != null)
             {
                 Request.ContentType = contentType;
@@ -140,61 +149,38 @@ namespace EasyHttp.Http
             }
             
             Request.Method = HttpMethod.PUT;
-            Request.Uri = uri;
             ProcessRequest();
         }
 
         public void Delete(string uri)
         {
+            InitRequest(uri);
             Request.Method = HttpMethod.DELETE;
-            Request.Uri = uri;
-            Request.Data = null;
             ProcessRequest();
         }
 
  
         public void Head(string uri)
         {
+            InitRequest(uri);
             Request.Method = HttpMethod.HEAD;
-            Request.Uri = uri;
-            Request.Data = null;
             ProcessRequest();
         }
 
         void ProcessRequest()
         {
-            if (CanLog())
-            {
-                _log.LogRequest(Request);
-            }
+          
 
-            Response = Request.MakeRequest(_filename);
+            Response = Request.MakeRequest(_downloadFilename);
 
-            if (CanLog())
-            {
-                _log.LogResponse(Response);
-            }
-
-
+          
             if (ThrowExceptionOnHttpError && IsHttpError())
             {
                 throw new HttpException(Response.StatusCode, Response.StatusDescription);
             }
         }
 
-        bool CanLog()
-        {
-            if (LoggingEnabled)
-            {
-                if (_log == null)
-                {
-                    throw new ConfigurationException("Logging is enabled but no valid logger has been configured");
-                }
-                return true;
-            }
-            return false;
-        }
-
+       
 
         bool IsHttpError()
         {
@@ -204,6 +190,16 @@ namespace EasyHttp.Http
         }
 
 
+        public void PutFile(string uri, string filename, string contentType)
+        {
+            InitRequest(uri);
+            Request.ContentType = contentType;
+            Request.File = filename;
+            Request.Method = HttpMethod.PUT;
+            Request.Expect = "100 Continue";
+            Request.KeepAlive = true;
+            ProcessRequest();
+        }
     }
 
    
