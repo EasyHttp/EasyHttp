@@ -58,11 +58,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Net.Cache;
 using System.Reflection;
+using System.Text;
 using EasyHttp.Codecs;
+using EasyHttp.Infrastructure;
 
 namespace EasyHttp.Http
 {
@@ -90,7 +93,7 @@ namespace EasyHttp.Http
         public int Range { get; set; }
         public string UserAgent { get; set; }
 
-        public IDictionary<string, string> RawHeaders { get; private set; }
+        public IDictionary<string, object> RawHeaders { get; private set; }
         
 
         public HttpMethod Method { get; set; }
@@ -99,7 +102,12 @@ namespace EasyHttp.Http
 
         public string Uri { get; set; }
 
-        public string File { get; set; }
+        public string PutFilename { get; set; }
+
+        public IDictionary<string, object> MultiPartData { get; set; }
+
+        public IList<FileData> MultiPartFilenames { get; set; }
+        
 
 
         HttpWebRequest httpWebRequest;
@@ -112,7 +120,7 @@ namespace EasyHttp.Http
         
         public HttpRequest(ICodec codec)
         {
-            RawHeaders = new Dictionary<string, string>();
+            RawHeaders = new Dictionary<string, object>();
             
             UserAgent = String.Format("EasyHttp HttpClient v{0}",
                                        Assembly.GetAssembly(typeof(HttpClient)).GetName().Version);
@@ -202,34 +210,115 @@ namespace EasyHttp.Http
 
             if (Data != null)
             {
-                var bytes = _codec.Encode(Data, ContentType);
+                SetupData();
 
-                var requestStream = httpWebRequest.GetRequestStream();
-
-                requestStream.Write(bytes, 0, bytes.Length);
-
-                requestStream.Close();
+                return;
             }
-            else if (!String.IsNullOrEmpty(File))
+
+            if (!String.IsNullOrEmpty(PutFilename))
             {
-                var requestStream = httpWebRequest.GetRequestStream();
-
-                using (var fileStream = new FileStream(File, FileMode.Open))
-                {
-                    byte[] buffer = new byte[81982];
-
-                    int bytesRead = fileStream.Read(buffer, 0, buffer.Length);
-                    while (bytesRead > 0)
-                    {
-                        requestStream.Write(buffer, 0, bytesRead);
-                        bytesRead = fileStream.Read(buffer, 0, buffer.Length);
-                    }
-                    requestStream.Close();
-                }
+                SetupPutFilename();
+                return;
             }
 
+            if (MultiPartData != null || MultiPartFilenames != null)
+            {
+                SetupMultiPartBody();
+            }
         }
 
+        void SetupData()
+        {
+            var bytes = _codec.Encode(Data, ContentType);
+
+            var requestStream = httpWebRequest.GetRequestStream();
+
+            requestStream.Write(bytes, 0, bytes.Length);
+
+            requestStream.Close();
+        }
+
+        void SetupPutFilename()
+        {
+            var requestStream = httpWebRequest.GetRequestStream();
+
+            using (var fileStream = new FileStream(PutFilename, FileMode.Open))
+            {
+                byte[] buffer = new byte[81982];
+
+                int bytesRead = fileStream.Read(buffer, 0, buffer.Length);
+                while (bytesRead > 0)
+                {
+                    requestStream.Write(buffer, 0, bytesRead);
+                    bytesRead = fileStream.Read(buffer, 0, buffer.Length);
+                }
+                requestStream.Close();
+            }
+        }
+
+        void SetupMultiPartBody()
+        {
+            var requestStream = httpWebRequest.GetRequestStream();
+
+            var boundary = string.Format("--------------{0}\r\n", DateTime.Now.Ticks.GetHashCode());
+
+            WriteStringToStream(requestStream, boundary);
+
+            foreach (var entry in MultiPartData)
+            {
+
+                WriteStringToStream(requestStream, GetFormData(entry.Key, entry.Value));
+
+                WriteStringToStream(requestStream, boundary);
+            }
+
+            foreach (var fileData in MultiPartFilenames)
+            {
+                using (var file = new FileStream(fileData.Filename, FileMode.Open))
+                {
+                    WriteStringToStream(requestStream, GetFileHeader(Path.GetFileName(fileData.Filename)));
+                    WriteStringToStream(requestStream, string.Format("Content-Type: {0}\r\n", fileData.ContentType));
+                    WriteStringToStream(requestStream, "\r\n");
+                    
+                    var buffer = new byte[8192];
+
+                    int count = 0;
+
+                    while ((count = file.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        if (fileData.ContentEncoding == HttpContentEncoding.Base64)
+                        {
+                            var str = Convert.ToBase64String(buffer, 0, count);
+
+                            WriteStringToStream(requestStream, str);
+                        } else if (fileData.ContentEncoding == HttpContentEncoding.Binary)
+                        {
+                            requestStream.Write(buffer, 0, count);
+                        }
+                    }
+                    WriteStringToStream(requestStream, "\r\n");
+                    WriteStringToStream(requestStream, boundary);
+                }
+            }
+        }
+
+
+        string GetFileHeader(string filename)
+        {
+            return string.Format("Content-Disposition: file; name=\"{0}\"; filename=\"{1}\"\r\n", filename, filename);
+        }
+
+        string GetFormData(string name, object value)
+        {
+            return string.Format("Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}\r\n", name, value);
+        }
+
+        void WriteStringToStream(Stream stream, string value)
+        {
+            var buffer = Encoding.ASCII.GetBytes(value);
+
+            stream.Write(buffer, 0, buffer.Length);
+        }
 
         public HttpResponse MakeRequest(string filename)
         {

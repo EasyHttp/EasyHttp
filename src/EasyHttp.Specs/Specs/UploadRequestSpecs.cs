@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Reflection;
 using EasyHttp.Http;
+using EasyHttp.Infrastructure;
 using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
 
@@ -21,7 +23,7 @@ namespace EasyHttp.Specs.Specs
         
             var imageFile = Path.Combine("Helpers", "test.jpg");
 
-            httpClient.PutFile(string.Format("{0}/attachment{1}/test.jpg", TestSettings.CouchDbDatabaseUrl, DateTime.Now.ToShortTimeString()),
+            httpClient.PutFile(string.Format("{0}/attachment{1}/test.jpg", TestSettings.CouchDbDatabaseUrl, DateTime.Now.ToLongTimeString()),
                                                imageFile,
                                                "image/jpeg");
 
@@ -52,10 +54,14 @@ namespace EasyHttp.Specs.Specs
         
             var imageFile = Path.Combine("Helpers", "test.jpg");
 
-            httpClient.PutFile(string.Format("{0}/attachment{1}/test.jpg", TestSettings.CouchDbDatabaseUrl, DateTime.Now.ToShortTimeString()),
-                                               imageFile,
-                                               "image/jpeg");
+            IDictionary<string, object> data = new Dictionary<string, object>();
 
+            data.Add("email", "hadi@hadi.com");
+
+            IList<FileData> files = new List<FileData>();
+
+            files.Add(new FileData() { ContentType = "image/jpeg", Filename = imageFile});
+            httpClient.Post("http://youtrack.jetbrains.net/", data, files);
             
         };
 

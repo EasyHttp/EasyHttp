@@ -57,6 +57,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Text;
 using EasyHttp.Codecs;
@@ -99,10 +101,11 @@ namespace EasyHttp.Http
         {
             Request.Uri = uri;
             Request.Data = null;
-            Request.File = String.Empty;
-            Request.Accept = HttpContentTypes.Any;
+            Request.PutFilename = String.Empty;
             Request.Expect = String.Empty;
             Request.KeepAlive = false;
+            Request.MultiPartData = null;
+            Request.MultiPartFilenames = null;
         }
 
         public HttpResponse GetAsFile(string uri, string filename)
@@ -134,10 +137,22 @@ namespace EasyHttp.Http
                 Request.ContentEncoding = HttpContentEncoding.Utf8;
             }
             Request.Method = HttpMethod.POST;
+            
             ProcessRequest();
         }
 
-        
+        public void Post(string uri, IDictionary<string, object> data, IList<FileData> files)
+        {
+            InitRequest(uri);
+            Request.Method = HttpMethod.POST;
+            Request.ContentType = HttpContentTypes.MultiPartFormData;
+            Request.MultiPartData = data;
+            Request.MultiPartFilenames = files;
+            Request.Expect = "100 Continue";
+            Request.KeepAlive = true;
+            ProcessRequest();
+        }
+
         public void Put(string uri, object data, string contentType)
         {
             InitRequest(uri);
@@ -194,7 +209,7 @@ namespace EasyHttp.Http
         {
             InitRequest(uri);
             Request.ContentType = contentType;
-            Request.File = filename;
+            Request.PutFilename = filename;
             Request.Method = HttpMethod.PUT;
             Request.Expect = "100 Continue";
             Request.KeepAlive = true;

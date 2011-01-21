@@ -69,8 +69,8 @@
     <Compile Include="Http\HttpRequest.cs" />
     <Compile Include="Http\HttpResponse.cs" />
     <Compile Include="Infrastructure\ConfigurationException.cs" />
+    <Compile Include="Infrastructure\FileData.cs" />
     <Compile Include="Infrastructure\HttpException.cs" />
-    <Compile Include="Infrastructure\ILog.cs" />
     <Compile Include="Infrastructure\PropertyNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
