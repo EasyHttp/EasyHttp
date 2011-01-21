@@ -278,6 +278,7 @@ namespace EasyHttp.Http
                 {
                     WriteStringToStream(requestStream, GetFileHeader(Path.GetFileName(fileData.Filename)));
                     WriteStringToStream(requestStream, string.Format("Content-Type: {0}\r\n", fileData.ContentType));
+                    WriteStringToStream(requestStream, string.Format("Content-Transfer-Encoding: {0}\r\n", fileData.ContentTransferEncoding));
                     WriteStringToStream(requestStream, "\r\n");
                     
                     var buffer = new byte[8192];
@@ -286,12 +287,12 @@ namespace EasyHttp.Http
 
                     while ((count = file.Read(buffer, 0, buffer.Length)) > 0)
                     {
-                        if (fileData.ContentEncoding == HttpContentEncoding.Base64)
+                        if (fileData.ContentTransferEncoding == HttpContentEncoding.Base64)
                         {
                             var str = Convert.ToBase64String(buffer, 0, count);
 
                             WriteStringToStream(requestStream, str);
-                        } else if (fileData.ContentEncoding == HttpContentEncoding.Binary)
+                        } else if (fileData.ContentTransferEncoding == HttpContentEncoding.Binary)
                         {
                             requestStream.Write(buffer, 0, count);
                         }
