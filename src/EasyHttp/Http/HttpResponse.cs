@@ -65,7 +65,7 @@ namespace EasyHttp.Http
 {
     public class HttpResponse
     {
-        readonly ICodec _codec;
+        readonly IDecoder _decoder;
         HttpWebResponse _response;
 
         public string ContentType { get; private set; }
@@ -97,7 +97,7 @@ namespace EasyHttp.Http
         
         public dynamic DynamicBody
         {
-            get { return _codec.DecodeToDynamic(RawText, ContentType); }
+            get { return _decoder.DecodeToDynamic(RawText, ContentType); }
         }
 
         public string RawText { get; set; }
@@ -105,14 +105,14 @@ namespace EasyHttp.Http
 
         public T StaticBody<T>()
         {
-            return _codec.DecodeToStatic<T>(RawText, ContentType);
+            return _decoder.DecodeToStatic<T>(RawText, ContentType);
         }
 
 
 
-        public HttpResponse(ICodec codec)
+        public HttpResponse(IDecoder decoder)
         {
-            _codec = codec;
+            _decoder = decoder;
      
         }
 

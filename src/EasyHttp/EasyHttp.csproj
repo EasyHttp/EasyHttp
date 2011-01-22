@@ -50,11 +50,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Codecs\RegExBasedDataReaderProvider.cs" />
-    <Compile Include="Codecs\RegExBasedDataWriterProvider.cs" />
-    <Compile Include="Codecs\DefaultCodec.cs" />
+    <Compile Include="Codecs\DefaultDecoder.cs" />
+    <Compile Include="Codecs\IEncoder.cs" />
+    <Compile Include="Codecs\JsonFXExtensions\RegExBasedDataReaderProvider.cs" />
+    <Compile Include="Codecs\JsonFXExtensions\RegExBasedDataWriterProvider.cs" />
+    <Compile Include="Codecs\DefaultEncoder.cs" />
     <Compile Include="Codecs\DynamicType.cs" />
-    <Compile Include="Codecs\ICodec.cs" />
+    <Compile Include="Codecs\IDecoder.cs" />
     <Compile Include="Codecs\IMemberBehavior.cs" />
     <Compile Include="Codecs\JsonFXExtensions\RemoveAmerpsandFromNameJsonResolverStrategy.cs" />
     <Compile Include="Codecs\JsonFXExtensions\UrlEncoderTextFormatter.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="Infrastructure\FileData.cs" />
     <Compile Include="Infrastructure\HttpException.cs" />
     <Compile Include="Infrastructure\PropertyNotFoundException.cs" />
+    <Compile Include="Infrastructure\StreamExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

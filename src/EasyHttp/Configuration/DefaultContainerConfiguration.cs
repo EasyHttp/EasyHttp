@@ -76,7 +76,8 @@ namespace EasyHttp.Configuration
 
         public Registry InitializeContainer()
         {
-            _registry.For<ICodec>().Use<DefaultCodec>();
+            _registry.For<IEncoder>().Use<DefaultEncoder>();
+            _registry.For<IDecoder>().Use<DefaultDecoder>();
             _registry.For<IDataReader>().Singleton().Use<JsonReader>().
                 Ctor<DataReaderSettings>().Is(new DataReaderSettings(
                     CombinedResolverStrategy())).
@@ -100,7 +101,7 @@ namespace EasyHttp.Configuration
         }
 
         // TODO: Do not like this. 
-        CombinedResolverStrategy CombinedResolverStrategy()
+        static CombinedResolverStrategy CombinedResolverStrategy()
         {
             return new CombinedResolverStrategy(
                 new JsonResolverStrategy(),

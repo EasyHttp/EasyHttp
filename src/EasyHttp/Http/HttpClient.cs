@@ -70,8 +70,9 @@ namespace EasyHttp.Http
 {
     public class HttpClient
     {
-        readonly ICodec _codec;
+        readonly IEncoder _encoder;
         string _downloadFilename;
+        IDecoder _decoder;
 
         public bool LoggingEnabled { get; set; }
         public bool ThrowExceptionOnHttpError { get; set; }
@@ -89,9 +90,10 @@ namespace EasyHttp.Http
             ObjectFactory.Initialize(
                 x => x.AddRegistry(registry));
 
-            _codec = ObjectFactory.GetInstance<ICodec>();
+            _encoder = ObjectFactory.GetInstance<IEncoder>();
+            _decoder = ObjectFactory.GetInstance<IDecoder>();
 
-            Request = new HttpRequest(_codec);
+            Request = new HttpRequest(_encoder);
         }
 
         public HttpResponse Response { get; private set; }
@@ -104,8 +106,8 @@ namespace EasyHttp.Http
             Request.PutFilename = String.Empty;
             Request.Expect = String.Empty;
             Request.KeepAlive = false;
-            Request.MultiPartData = null;
-            Request.MultiPartFilenames = null;
+            Request.MultiPartFormData = null;
+            Request.MultiPartFileData = null;
         }
 
         public HttpResponse GetAsFile(string uri, string filename)
@@ -141,13 +143,12 @@ namespace EasyHttp.Http
             ProcessRequest();
         }
 
-        public void Post(string uri, IDictionary<string, object> data, IList<FileData> files)
+        public void Post(string uri, IDictionary<string, object> formData, IList<FileData> files)
         {
             InitRequest(uri);
             Request.Method = HttpMethod.POST;
-            Request.ContentType = HttpContentTypes.MultiPartFormData;
-            Request.MultiPartData = data;
-            Request.MultiPartFilenames = files;
+            Request.MultiPartFormData = formData;
+            Request.MultiPartFileData = files;
             Request.Expect = "100 Continue";
             Request.KeepAlive = true;
             ProcessRequest();
@@ -182,13 +183,25 @@ namespace EasyHttp.Http
             ProcessRequest();
         }
 
+        public void PutFile(string uri, string filename, string contentType)
+        {
+            InitRequest(uri);
+            Request.ContentType = contentType;
+            Request.PutFilename = filename;
+            Request.Method = HttpMethod.PUT;
+            Request.Expect = "100 Continue";
+            Request.KeepAlive = true;
+            ProcessRequest();
+        }
+
         void ProcessRequest()
         {
-          
+            var httpWebRequest = Request.PrepareRequest();
 
-            Response = Request.MakeRequest(_downloadFilename);
+            Response = new HttpResponse(_decoder);
 
-          
+            Response.GetResponse(httpWebRequest, _downloadFilename);
+
             if (ThrowExceptionOnHttpError && IsHttpError())
             {
                 throw new HttpException(Response.StatusCode, Response.StatusDescription);
@@ -205,16 +218,6 @@ namespace EasyHttp.Http
         }
 
 
-        public void PutFile(string uri, string filename, string contentType)
-        {
-            InitRequest(uri);
-            Request.ContentType = contentType;
-            Request.PutFilename = filename;
-            Request.Method = HttpMethod.PUT;
-            Request.Expect = "100 Continue";
-            Request.KeepAlive = true;
-            ProcessRequest();
-        }
     }
 
    

@@ -67,7 +67,7 @@ namespace EasyHttp.Specs.Specs
 
         It should_upload_it_succesfully = () =>
         {
-            httpClient.Response.StatusCode.ShouldEqual(HttpStatusCode.Created);
+            httpClient.Response.StatusCode.ShouldEqual(HttpStatusCode.OK);
         };
 
         static HttpClient httpClient;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EasyHttp.Codecs;
+using EasyHttp.Codecs.JsonFXExtensions;
 using EasyHttp.Http;
 using JsonFx.Json;
 using JsonFx.Json.Resolvers;
@@ -14,19 +15,28 @@ namespace EasyHttp.Specs.BugRepros
     [Subject("Custom Decoding")]
     public class when_decoding_an_object_with_custom_naming_of_property
     {
-
+        static CombinedResolverStrategy CombinedResolverStrategy()
+        {
+            return new CombinedResolverStrategy(
+                new JsonResolverStrategy(),
+                new DataContractResolverStrategy(),
+                new XmlResolverStrategy(),
+                new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.PascalCase),
+                new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.CamelCase),
+                new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.Lowercase, "-"),
+                new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.Uppercase, "_"));
+        }
         Establish context = () =>
         {
-            IEnumerable<IDataReader> readers = new List<IDataReader> { new JsonReader(new DataReaderSettings(new JsonResolverStrategy()), "application/.*json") };
-            IEnumerable<IDataWriter> writers = new List<IDataWriter> { new JsonWriter(new DataWriterSettings(), "application/.*json") };
-
-            codec = new DefaultCodec(new RegExBasedDataReaderProvider(readers), new RegExBasedDataWriterProvider(writers));
+            IEnumerable<IDataReader> readers = new List<IDataReader> { new JsonReader(new DataReaderSettings(CombinedResolverStrategy()), HttpContentTypes.ApplicationJson) };
+            
+            decoder = new DefaultDecoder(new RegExBasedDataReaderProvider(readers));
         };
 
         Because of = () =>
         {
 
-            obj = codec.DecodeToStatic<CustomNaming>("{\"abc\":\"def\"}", "application/json");
+            obj = decoder.DecodeToStatic<CustomNaming>("{\"abc\":\"def\"}", "application/json");
         };
 
         It should_decode_taking_into_account_custom_property_name = () =>
@@ -34,7 +44,7 @@ namespace EasyHttp.Specs.BugRepros
             obj.PropertyName.ShouldEqual("def");
         };
 
-        static DefaultCodec codec;
+        static IDecoder decoder;
         static CustomNaming obj;
     }
 
@@ -58,17 +68,16 @@ namespace EasyHttp.Specs.BugRepros
         {
     
             
-            IEnumerable<IDataReader> readers = new List<IDataReader> { new JsonReader(new DataReaderSettings(), "application/.*json") };
             IEnumerable<IDataWriter> writers = new List<IDataWriter> { new JsonWriter(new DataWriterSettings(CombinedResolverStrategy()), HttpContentTypes.ApplicationJson) };
 
-            codec = new DefaultCodec(new RegExBasedDataReaderProvider(readers), new RegExBasedDataWriterProvider(writers));
+            encoder = new DefaultEncoder(new RegExBasedDataWriterProvider(writers));
         };
 
         Because of = () =>
         {
             var customObject = new CustomNamedObject {UpperPropertyName = "someValue"};
 
-            encoded = codec.Encode(customObject, HttpContentTypes.ApplicationJson);
+            encoded = encoder.Encode(customObject, HttpContentTypes.ApplicationJson);
 
 
         };
@@ -79,7 +88,7 @@ namespace EasyHttp.Specs.BugRepros
             str.ShouldContain("upperPropertyName");
         };
 
-        static DefaultCodec codec;
+        static IEncoder encoder;
         static byte[] encoded;
     }
 

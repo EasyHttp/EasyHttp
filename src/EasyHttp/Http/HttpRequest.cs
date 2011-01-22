@@ -58,7 +58,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Net.Cache;
@@ -69,6 +68,7 @@ using EasyHttp.Infrastructure;
 
 namespace EasyHttp.Http
 {
+    // TODO: This class needs cleaning up and abstracting the encoder one more level
     public class HttpRequest
     {
 
@@ -92,33 +92,23 @@ namespace EasyHttp.Http
         public string Referer { get; set; }
         public int Range { get; set; }
         public string UserAgent { get; set; }
-
         public IDictionary<string, object> RawHeaders { get; private set; }
-        
-
         public HttpMethod Method { get; set; }
-
         public object Data { get; set; }
-
         public string Uri { get; set; }
-
         public string PutFilename { get; set; }
-
-        public IDictionary<string, object> MultiPartData { get; set; }
-
-        public IList<FileData> MultiPartFilenames { get; set; }
-        
-
+        public IDictionary<string, object> MultiPartFormData { get; set; }
+        public IList<FileData> MultiPartFileData { get; set; }
 
         HttpWebRequest httpWebRequest;
 
-        readonly ICodec _codec;
+        readonly IEncoder _encoder;
         string _username;
         string _password;
         
         HttpRequestCachePolicy _cachePolicy;
-        
-        public HttpRequest(ICodec codec)
+
+        public HttpRequest(IEncoder encoder)
         {
             RawHeaders = new Dictionary<string, object>();
             
@@ -127,8 +117,7 @@ namespace EasyHttp.Http
 
             Accept = String.Join(";", HttpContentTypes.TextHtml, HttpContentTypes.ApplicationXml,
                                  HttpContentTypes.ApplicationJson);
-            _codec = codec;
-
+            _encoder = encoder;
         }
 
 
@@ -207,7 +196,7 @@ namespace EasyHttp.Http
 
         void SetupBody()
         {
-
+            
             if (Data != null)
             {
                 SetupData();
@@ -221,7 +210,7 @@ namespace EasyHttp.Http
                 return;
             }
 
-            if (MultiPartData != null || MultiPartFilenames != null)
+            if (MultiPartFormData != null || MultiPartFileData != null)
             {
                 SetupMultiPartBody();
             }
@@ -229,7 +218,7 @@ namespace EasyHttp.Http
 
         void SetupData()
         {
-            var bytes = _codec.Encode(Data, ContentType);
+            var bytes = _encoder.Encode(Data, ContentType);
 
             var requestStream = httpWebRequest.GetRequestStream();
 
@@ -262,24 +251,27 @@ namespace EasyHttp.Http
 
             var boundary = string.Format("--------------{0}\r\n", DateTime.Now.Ticks.GetHashCode());
 
-            WriteStringToStream(requestStream, boundary);
+            httpWebRequest.ContentType = string.Format("multipart/form-data; bounday={0}", boundary);
 
-            foreach (var entry in MultiPartData)
+            requestStream.WriteString(boundary);
+
+            foreach (var entry in MultiPartFormData)
             {
 
-                WriteStringToStream(requestStream, GetFormData(entry.Key, entry.Value));
+                requestStream.WriteString(string.Format("Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}\r\n", entry.Key, entry.Value));
 
-                WriteStringToStream(requestStream, boundary);
+                requestStream.WriteString(boundary);
             }
 
-            foreach (var fileData in MultiPartFilenames)
+            foreach (var fileData in MultiPartFileData)
             {
                 using (var file = new FileStream(fileData.Filename, FileMode.Open))
                 {
-                    WriteStringToStream(requestStream, GetFileHeader(Path.GetFileName(fileData.Filename)));
-                    WriteStringToStream(requestStream, string.Format("Content-Type: {0}\r\n", fileData.ContentType));
-                    WriteStringToStream(requestStream, string.Format("Content-Transfer-Encoding: {0}\r\n", fileData.ContentTransferEncoding));
-                    WriteStringToStream(requestStream, "\r\n");
+                    string filename = Path.GetFileName(fileData.Filename);
+                    requestStream.WriteString(string.Format("Content-Disposition: file; name=\"{0}\"; filename=\"{1}\"\r\n", filename, filename));
+                    requestStream.WriteString(string.Format("Content-Type: {0}\r\n", fileData.ContentType));
+                    requestStream.WriteString(string.Format("Content-Transfer-Encoding: {0}\r\n", fileData.ContentTransferEncoding));
+                    requestStream.WriteString("\r\n");
                     
                     var buffer = new byte[8192];
 
@@ -291,52 +283,29 @@ namespace EasyHttp.Http
                         {
                             var str = Convert.ToBase64String(buffer, 0, count);
 
-                            WriteStringToStream(requestStream, str);
+                            requestStream.WriteString(str);
                         } else if (fileData.ContentTransferEncoding == HttpContentEncoding.Binary)
                         {
                             requestStream.Write(buffer, 0, count);
                         }
                     }
-                    WriteStringToStream(requestStream, "\r\n");
-                    WriteStringToStream(requestStream, boundary);
+                    requestStream.WriteString("\r\n");
+                    requestStream.WriteString(boundary);
                 }
             }
         }
 
 
-        string GetFileHeader(string filename)
+     
+        public HttpWebRequest PrepareRequest()
         {
-            return string.Format("Content-Disposition: file; name=\"{0}\"; filename=\"{1}\"\r\n", filename, filename);
-        }
-
-        string GetFormData(string name, object value)
-        {
-            return string.Format("Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}\r\n", name, value);
-        }
-
-        void WriteStringToStream(Stream stream, string value)
-        {
-            var buffer = Encoding.ASCII.GetBytes(value);
-
-            stream.Write(buffer, 0, buffer.Length);
-        }
-
-        public HttpResponse MakeRequest(string filename)
-        {
-         
-            
             httpWebRequest = (HttpWebRequest) WebRequest.Create(Uri);
 
             SetupHeader();
             
             SetupBody();
 
-
-            var response = new HttpResponse(_codec);
-
-            response.GetResponse(httpWebRequest, filename);
-            
-            return response;
+            return httpWebRequest;
         }
 
         void SetupAuthentication()

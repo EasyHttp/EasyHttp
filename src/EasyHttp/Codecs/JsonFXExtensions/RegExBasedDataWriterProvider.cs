@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 // Distributed under the BSD License
 // =================================
 // 
@@ -64,7 +64,7 @@ using System.Text.RegularExpressions;
 using JsonFx.Serialization;
 using JsonFx.Serialization.Providers;
 
-namespace EasyHttp.Codecs
+namespace EasyHttp.Codecs.JsonFXExtensions
 {
     // TODO: This is a copy of the DataWriterProvider in JsonFX. Need to clean it up and move things elsewhere
     public class RegExBasedDataWriterProvider: IDataWriterProvider

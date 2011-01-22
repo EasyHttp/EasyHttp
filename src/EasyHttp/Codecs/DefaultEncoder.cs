@@ -55,12 +55,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 #endregion
+
+using System.Text;
+using JsonFx.Serialization;
+using JsonFx.Serialization.Providers;
+using StructureMap;
+
 namespace EasyHttp.Codecs
 {
-    public interface ICodec
+    public class DefaultEncoder : IEncoder
     {
-        byte[] Encode(object data, string contentType);
-        T DecodeToStatic<T>(string rawText, string contentType);
-        dynamic DecodeToDynamic(string rawText, string contentType);
+        readonly IDataWriterProvider _dataWriterProvider;
+
+        public DefaultEncoder(IDataWriterProvider dataWriterProvider)
+        {
+            _dataWriterProvider = dataWriterProvider;
+        }
+
+        public byte[] Encode(object input, string contentType)
+        {
+      
+       
+            var serializer = _dataWriterProvider.Find(contentType, contentType);
+
+
+            if (serializer == null)
+            {
+                throw new SerializationException("The encoding requested does not have a corresponding encoder");
+            }
+
+            var serialized = serializer.Write(input);
+
+            return Encoding.UTF8.GetBytes(serialized);
+        }
+
+       
     }
 }

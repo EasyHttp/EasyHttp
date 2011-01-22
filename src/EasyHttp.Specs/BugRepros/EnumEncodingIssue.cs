@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using EasyHttp.Codecs;
+using EasyHttp.Codecs.JsonFXExtensions;
 using EasyHttp.Http;
 using JsonFx.Json;
 using JsonFx.Serialization;
@@ -14,17 +15,16 @@ namespace EasyHttp.Specs.BugRepros
 
         Establish context = () =>
         {
-            IEnumerable<IDataReader> readers = new List<IDataReader> { new JsonReader(new DataReaderSettings(), "application/.*json") };
             IEnumerable<IDataWriter> writers = new List<IDataWriter> { new JsonWriter(new DataWriterSettings(), "application/.*json") };
 
-            codec = new DefaultCodec(new RegExBasedDataReaderProvider(readers), new RegExBasedDataWriterProvider(writers));
+            _encoder = new DefaultEncoder(new RegExBasedDataWriterProvider(writers));
         };
 
         Because of = () =>
         {
             var data = new Foo {Baz = Bar.First};
 
-            result = codec.Encode(data, "application/vnd.fubar+json");
+            result = _encoder.Encode(data, "application/vnd.fubar+json");
         };
 
         It should_encode_correctly = () =>
@@ -33,7 +33,7 @@ namespace EasyHttp.Specs.BugRepros
         };
 
         static HttpClient client;
-        static DefaultCodec codec;
+        static DefaultEncoder _encoder;
         static byte[] result;
     }
  

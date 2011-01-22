@@ -55,66 +55,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 #endregion
-
-using System.Text;
-using JsonFx.Serialization;
-using JsonFx.Serialization.Providers;
-using StructureMap;
-
 namespace EasyHttp.Codecs
 {
-    public class DefaultCodec : ICodec
+    public interface IDecoder
     {
-        readonly IDataReaderProvider _dataReaderProvider;
-        readonly IDataWriterProvider _dataWriterProvider;
-
-        public DefaultCodec(IDataReaderProvider dataReaderProvider, IDataWriterProvider dataWriterProvider)
-        {
-            _dataReaderProvider = dataReaderProvider;
-            _dataWriterProvider = dataWriterProvider;
-        }
-
-        public byte[] Encode(object data, string contentType)
-        {
-      
-       
-            var serializer = _dataWriterProvider.Find(contentType, contentType);
-
-
-            if (serializer == null)
-            {
-                throw new SerializationException("The encoding requested does not have a corresponding encoder");
-            }
-
-            var serialized = serializer.Write(data);
-
-            return Encoding.UTF8.GetBytes(serialized);
-        }
-
-       
-        public T DecodeToStatic<T>(string input, string contentType)
-        {
-            
-            // TODO: This is a hack...
-
-            var parsedText = input.Replace("\"@", "\"");
-                            
-            var deserializer = _dataReaderProvider.Find(contentType);
-
-                            
-            if (deserializer == null)
-            {
-                throw new SerializationException("The encoding requested does not have a corresponding decoder");
-            }
-
-            
-            return deserializer.Read<T>(parsedText);
- 
-        }
-
-        public dynamic DecodeToDynamic(string rawText, string contentType)
-        {
-            return DecodeToStatic<DynamicType>(rawText, contentType);
-        }
+        T DecodeToStatic<T>(string input, string contentType);
+        dynamic DecodeToDynamic(string input, string contentType);
     }
 }

@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using JsonFx.Serialization;
 using JsonFx.Serialization.Providers;
 
-namespace EasyHttp.Codecs
+namespace EasyHttp.Codecs.JsonFXExtensions
 {
     public class RegExBasedDataReaderProvider: IDataReaderProvider
     {
