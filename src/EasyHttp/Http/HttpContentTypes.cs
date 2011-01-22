@@ -70,6 +70,5 @@ namespace EasyHttp.Http
         public const string ApplicationXml = "application/xml";
         public const string ApplicationXWwwFormUrlEncoded = "application/x-www-form-urlencoded";
         public const string ApplicationOctetStream = "application/octet-stream";
-        public const string Any = "*/*";
     }
 }

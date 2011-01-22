@@ -108,6 +108,7 @@ namespace EasyHttp.Http
             Request.KeepAlive = false;
             Request.MultiPartFormData = null;
             Request.MultiPartFileData = null;
+            Request.ContentEncoding = null;
         }
 
         public HttpResponse GetAsFile(string uri, string filename)
