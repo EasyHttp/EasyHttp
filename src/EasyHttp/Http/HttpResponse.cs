@@ -177,21 +177,21 @@ namespace EasyHttp.Http
             LastModified = _response.LastModified;
             Server = _response.Server;
 
-            if (!String.IsNullOrEmpty(_response.GetResponseHeader("Age")))
+            if (!String.IsNullOrEmpty(GetHeader("Age")))
             {
-                Age = Convert.ToInt32(_response.GetResponseHeader("Age"));
+                Age = Convert.ToInt32(GetHeader("Age"));
             }
 
-            ContentLanguage = _response.GetResponseHeader("Content-Language");
-            ContentLocation = _response.GetResponseHeader("Content-Location");
-            ContentDisposition = _response.GetResponseHeader("Content-Disposition");
-            ETag = _response.GetResponseHeader("ETag");
-            Location = _response.GetResponseHeader("Location");
+            ContentLanguage = GetHeader("Content-Language");
+            ContentLocation = GetHeader("Content-Location");
+            ContentDisposition = GetHeader("Content-Disposition");
+            ETag = GetHeader("ETag");
+            Location = GetHeader("Location");
                 
-            if (!String.IsNullOrEmpty(_response.GetResponseHeader("Expires")))
+            if (!String.IsNullOrEmpty(GetHeader("Expires")))
             {
                 DateTime expires; 
-                if (DateTime.TryParse(_response.GetResponseHeader("Expires"), out expires))
+                if (DateTime.TryParse(GetHeader("Expires"), out expires))
                 {
                     Expires = expires;
                 }
@@ -204,6 +204,13 @@ namespace EasyHttp.Http
 
 
             RawHeaders = _response.Headers;
+        }
+
+        string GetHeader(string header)
+        {
+            var headerValue = _response.GetResponseHeader(header);
+
+            return headerValue.Replace("\"", "");
         }
     }
 }
