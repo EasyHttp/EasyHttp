@@ -15,7 +15,7 @@ namespace EasyHttp.Codecs
         public T DecodeToStatic<T>(string input, string contentType)
         {
 
-            // TODO: This is a hack...
+            // this is a hack 
 
             var parsedText = input.Replace("\"@", "\"");
 
