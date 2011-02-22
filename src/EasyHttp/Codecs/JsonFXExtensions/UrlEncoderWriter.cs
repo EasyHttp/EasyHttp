@@ -57,6 +57,7 @@
 #endregion
 
 using System.Collections.Generic;
+using EasyHttp.Http;
 using JsonFx.Model;
 using JsonFx.Serialization;
 
@@ -90,7 +91,7 @@ namespace EasyHttp.Codecs.JsonFXExtensions
 				}
 
 
-                yield return "application/x-www-form-urlencoded";
+                yield return HttpContentTypes.ApplicationXWwwFormUrlEncoded;
             }
         }
 

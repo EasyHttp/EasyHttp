@@ -75,7 +75,11 @@ namespace EasyHttp.Codecs
         public byte[] Encode(object input, string contentType)
         {
       
-       
+            if (input.GetType() == typeof(string))
+            {
+                return Encoding.UTF8.GetBytes((string)input);
+            }
+
             var serializer = _dataWriterProvider.Find(contentType, contentType);
 
 

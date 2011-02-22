@@ -310,12 +310,9 @@ namespace EasyHttp.Http
 
         void SetupAuthentication()
         {
-            if (!String.IsNullOrEmpty(_username) && !String.IsNullOrEmpty(_password))
-            {
-                var networkCredential = new NetworkCredential(_username, _password);
+            var networkCredential = new NetworkCredential(_username, _password);
 
-                httpWebRequest.Credentials = networkCredential;
-            }
+            httpWebRequest.Credentials = networkCredential;
         }
 
 
