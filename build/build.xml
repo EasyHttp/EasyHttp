@@ -15,4 +15,9 @@
     <Message Text="##teamcity[importData type='dotNetCoverage' tool='dotcover' path='build\coverage.xml']"/>
   </Target>
 
+  <Target Name="Release">
+    <MSBuild Projects="$(ProjectFolder)\EasyHttp.sln" Properties="Configuration=Release;OutputPath=..\..\build\Release"/>
+    <Exec Command="NuGet pack ..\build\Package.nuspec -o ..\build\Release\"/>
+  </Target>
+
 </Project>
