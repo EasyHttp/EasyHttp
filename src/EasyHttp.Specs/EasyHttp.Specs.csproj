@@ -33,12 +33,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="JsonFx, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\jsonfx\JsonFx.dll</HintPath>
+      <HintPath>..\packages\JsonFx.2.0\lib\.NetFramework 4.0\JsonFx.dll</HintPath>
     </Reference>
-    <Reference Include="Machine.Specifications, Version=0.3.0.0, Culture=neutral, PublicKeyToken=5c474de7a495cff1, processorArchitecture=MSIL">
+    <Reference Include="Machine.Specifications, Version=0.4.2.0, Culture=neutral, PublicKeyToken=5c474de7a495cff1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\mspec\Machine.Specifications.dll</HintPath>
+      <HintPath>..\packages\Machine.Specifications.0.4.2.0\lib\Machine.Specifications.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -72,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyHttp\EasyHttp.csproj">
