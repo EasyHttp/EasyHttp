@@ -35,4 +35,7 @@
       </Filter>
     </DenyFilters>
   </CoverageFilters>
+  <SnapshotDialog>
+    <InitialDirectory>X:\Projects\EasyHttp\src</InitialDirectory>
+  </SnapshotDialog>
 </Configuration>

@@ -104,8 +104,8 @@ namespace EasyHttp.Http
             Request.Uri = uri;
             Request.Data = null;
             Request.PutFilename = String.Empty;
-            Request.Expect = String.Empty;
-            Request.KeepAlive = false;
+            Request.Expect = false;
+            Request.KeepAlive = true;
             Request.MultiPartFormData = null;
             Request.MultiPartFileData = null;
             Request.ContentEncoding = null;
@@ -150,7 +150,6 @@ namespace EasyHttp.Http
             Request.Method = HttpMethod.POST;
             Request.MultiPartFormData = formData;
             Request.MultiPartFileData = files;
-            Request.Expect = "100 Continue";
             Request.KeepAlive = true;
             ProcessRequest();
         }
@@ -190,7 +189,7 @@ namespace EasyHttp.Http
             Request.ContentType = contentType;
             Request.PutFilename = filename;
             Request.Method = HttpMethod.PUT;
-            Request.Expect = "100 Continue";
+            Request.Expect = true;
             Request.KeepAlive = true;
             ProcessRequest();
         }
@@ -202,11 +201,12 @@ namespace EasyHttp.Http
             Response = new HttpResponse(_decoder);
 
             Response.GetResponse(httpWebRequest, _downloadFilename);
-
+            
             if (ThrowExceptionOnHttpError && IsHttpError())
             {
                 throw new HttpException(Response.StatusCode, Response.StatusDescription);
             }
+            
         }
 
        

@@ -82,7 +82,7 @@ namespace EasyHttp.Http
         public string ContentEncoding { get; set; }
         public CookieCollection Cookies { get; set; }
         public DateTime Date { get; set; }
-        public string Expect { get; set; }
+        public bool Expect { get; set; }
         public string From { get; set; }
         public string Host { get; set; }
         public string IfMatch { get; set; }
@@ -139,11 +139,9 @@ namespace EasyHttp.Http
             httpWebRequest.Referer = Referer;
             httpWebRequest.CachePolicy = _cachePolicy;
             httpWebRequest.KeepAlive = KeepAlive;
-
-            if (!String.IsNullOrEmpty(Expect))
-            {
-                httpWebRequest.Expect = Expect;
-            }
+            
+            ServicePointManager.Expect100Continue = Expect;
+           
  
             if (Cookies != null )
             {
@@ -249,48 +247,72 @@ namespace EasyHttp.Http
         {
             var requestStream = httpWebRequest.GetRequestStream();
 
-            var boundary = string.Format("--------------{0}\r\n", DateTime.Now.Ticks.GetHashCode());
+            var boundayCode = DateTime.Now.Ticks.GetHashCode() + "548130";
 
-            httpWebRequest.ContentType = string.Format("multipart/form-data; bounday={0}", boundary);
+            var boundary = string.Format("----------------{0}", boundayCode);
+            var boundayFinal = string.Format("----------------{0}--", boundayCode);
+
+            httpWebRequest.ContentType = string.Format("multipart/form-data; boundary=--------------{0}", boundayCode);
 
             requestStream.WriteString(boundary);
 
-            foreach (var entry in MultiPartFormData)
+            if (MultiPartFormData != null)
             {
 
-                requestStream.WriteString(string.Format("Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}\r\n", entry.Key, entry.Value));
+                foreach (var entry in MultiPartFormData)
+                {
+                    requestStream.WriteString("\r\n");
+                    requestStream.WriteString(string.Format("Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}\r\n", entry.Key, entry.Value));
 
-                requestStream.WriteString(boundary);
+                    requestStream.WriteString(boundary);
+                }
             }
 
-            foreach (var fileData in MultiPartFileData)
+
+            if (MultiPartFileData != null)
             {
-                using (var file = new FileStream(fileData.Filename, FileMode.Open))
+                foreach (var fileData in MultiPartFileData)
                 {
-                    string filename = Path.GetFileName(fileData.Filename);
-                    requestStream.WriteString(string.Format("Content-Disposition: file; name=\"{0}\"; filename=\"{1}\"\r\n", filename, filename));
-                    requestStream.WriteString(string.Format("Content-Type: {0}\r\n", fileData.ContentType));
-                    requestStream.WriteString(string.Format("Content-Transfer-Encoding: {0}\r\n", fileData.ContentTransferEncoding));
-                    requestStream.WriteString("\r\n");
-                    
-                    var buffer = new byte[8192];
-
-                    int count = 0;
-
-                    while ((count = file.Read(buffer, 0, buffer.Length)) > 0)
+                    using (var file = new FileStream(fileData.Filename, FileMode.Open))
                     {
-                        if (fileData.ContentTransferEncoding == HttpContentEncoding.Base64)
-                        {
-                            var str = Convert.ToBase64String(buffer, 0, count);
+                        requestStream.WriteString("\r\n");
 
-                            requestStream.WriteString(str);
-                        } else if (fileData.ContentTransferEncoding == HttpContentEncoding.Binary)
+                        string filename = Path.GetFileName(fileData.Filename);
+                        requestStream.WriteString(
+                            string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\n", filename,
+                                          filename));
+                        requestStream.WriteString(string.Format("Content-Type: {0}\r\n", fileData.ContentType));
+                        requestStream.WriteString(string.Format("Content-Transfer-Encoding: {0}\r\n",
+                                                                fileData.ContentTransferEncoding));
+                        requestStream.WriteString("\r\n");
+
+                        var buffer = new byte[8192];
+
+                        int count = 0;
+
+                        while ((count = file.Read(buffer, 0, buffer.Length)) > 0)
                         {
-                            requestStream.Write(buffer, 0, count);
+                            if (fileData.ContentTransferEncoding == HttpContentEncoding.Base64)
+                            {
+                                var str = Convert.ToBase64String(buffer, 0, count);
+
+                                requestStream.WriteString(str);
+                            }
+                            else if (fileData.ContentTransferEncoding == HttpContentEncoding.Binary)
+                            {
+                                requestStream.Write(buffer, 0, count);
+                            }
                         }
+                        requestStream.WriteString("\r\n");
+                        requestStream.WriteString(boundary);
                     }
-                    requestStream.WriteString("\r\n");
-                    requestStream.WriteString(boundary);
+                }
+                requestStream.WriteString("--");
+            } else
+            {
+                if (MultiPartFormData != null)
+                {
+                    requestStream.WriteString("--");
                 }
             }
         }

@@ -2,22 +2,26 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <PropertyGroup>
     <ProjectFolder>..\src\</ProjectFolder>
-    <mspec>..\src\packages\mspec\mspec.exe</mspec>
+    <mspec>X:\Libraries\machine.specifications\working\mspec.exe</mspec>
     <dotCover>dotCover.exe</dotCover>
   </PropertyGroup>
   <Target Name="Build">
     <MSBuild Projects="$(ProjectFolder)\EasyHttp.sln"/>
   </Target>
 
+  <Target Name="Tests" DependsOnTargets="Build">
+    <Exec Command="$(mspec) $(ProjectFolder)EasyHttp.Specs\bin\debug\EasyHttp.Specs.dll --teamcity" />
+  </Target>
+
   <Target Name="TeamCity" DependsOnTargets="Build">
-    <Exec Command="$(mspec) $(ProjectFolder)EasyHttp.Specs\bin\debug\EasyHttp.Specs.dll --teamcity"/>
-    <Exec Command="$(dotCover) c dotcover.xml"/>
-    <Message Text="##teamcity[importData type='dotNetCoverage' tool='dotcover' path='build\coverage.xml']"/>
+    <Exec Command="$(mspec) $(ProjectFolder)EasyHttp.Specs\bin\debug\EasyHttp.Specs.dll --teamcity" />
+    <Exec Command="$(dotCover) c dotcover.xml" />
+    <Message Text="##teamcity[importData type='dotNetCoverage' tool='dotcover' path='build\coverage.xml']" />
   </Target>
 
   <Target Name="Release">
-    <MSBuild Projects="$(ProjectFolder)\EasyHttp.sln" Properties="Configuration=Release;OutputPath=..\..\build\Release"/>
-    <Exec Command="NuGet pack ..\build\Package.nuspec -o ..\build\Release\"/>
+    <MSBuild Projects="$(ProjectFolder)\EasyHttp.sln" Properties="Configuration=Release;OutputPath=..\..\build\Release" />
+    <Exec Command="NuGet pack ..\build\Package.nuspec -o ..\build\Release\" />
   </Target>
 
 </Project>
