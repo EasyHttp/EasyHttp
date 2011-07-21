@@ -32,12 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JsonFx, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\JsonFx.2.0\lib\.NetFramework 4.0\JsonFx.dll</HintPath>
-    </Reference>
-    <Reference Include="Machine.Specifications, Version=0.4.2.0, Culture=neutral, PublicKeyToken=5c474de7a495cff1, processorArchitecture=MSIL">
+    <Reference Include="JsonFx, Version=2.0.1106.2610, Culture=neutral, PublicKeyToken=315052dd637f8a52, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\machine.specifications\Machine.Specifications.dll</HintPath>
+      <HintPath>..\packages\JsonFx.2.0.1106.2610\lib\net40\JsonFx.dll</HintPath>
+    </Reference>
+    <Reference Include="Machine.Specifications, Version=0.4.21.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Machine.Specifications.0.4.21.0\lib\Machine.Specifications.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -51,6 +52,7 @@
   <ItemGroup>
     <Compile Include="BugRepros\CustomPropertyNameIssue.cs" />
     <Compile Include="BugRepros\EnumEncodingIssue.cs" />
+    <Compile Include="BugRepros\UploadFileIssue.cs" />
     <Compile Include="Specs\UploadRequestSpecs.cs" />
     <Compile Include="Specs\DynamicSpecs.cs" />
     <Compile Include="Specs\FileRequestSpecs.cs" />
@@ -65,6 +67,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Helpers\test.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Helpers\test.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="README.txt" />

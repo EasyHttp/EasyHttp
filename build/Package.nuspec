@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>EasyHttp</id>
-    <version>1.0.3</version>
+    <version>1.0.7</version>
     <authors>Hadi Hariri</authors>
     <owners>Hadi Hariri</owners>
     <licenseUrl>https://github.com/hhariri/EasyHttp/blob/master/LICENSE.TXT</licenseUrl>
@@ -11,7 +11,7 @@
     <description>An Http Client for .NET with support for Dynamic Types/Json/Xml</description>
     <tags>Http, Json, Xml, Dynamic</tags>
     <dependencies>
-      <dependency id="JsonFx" version="2.0" />
+      <dependency id="JsonFx" version="2.0.1106.2610" />
       <dependency id="StructureMap" version="2.6.2"/>
     </dependencies>
   </metadata>

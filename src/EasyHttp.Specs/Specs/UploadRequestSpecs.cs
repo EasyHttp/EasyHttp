@@ -60,7 +60,7 @@ namespace EasyHttp.Specs.Specs
 
             IList<FileData> files = new List<FileData>();
 
-            files.Add(new FileData() { ContentType = "image/jpeg", Filename = imageFile});
+            files.Add(new FileData() { FieldName = imageFile, ContentType = "image/jpeg", Filename = imageFile});
             httpClient.Post("http://youtrack.jetbrains.net/", data, files);
             
         };

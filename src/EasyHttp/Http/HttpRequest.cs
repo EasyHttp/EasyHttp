@@ -61,7 +61,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Cache;
+using System.Net.Security;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using EasyHttp.Codecs;
 using EasyHttp.Infrastructure;
@@ -141,7 +143,7 @@ namespace EasyHttp.Http
             httpWebRequest.KeepAlive = KeepAlive;
             
             ServicePointManager.Expect100Continue = Expect;
-           
+            ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
  
             if (Cookies != null )
             {
@@ -182,6 +184,11 @@ namespace EasyHttp.Http
             AddExtraHeader("Accept-Language", AcceptLanguage);
             AddExtraHeader("If-Match", IfMatch);
             AddExtraHeader("Content-Encoding", ContentEncoding);
+        }
+
+        bool AcceptAllCertifications(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
+        {
+            return true;
         }
 
         public void AddExtraHeader(string header, object value)
@@ -279,7 +286,7 @@ namespace EasyHttp.Http
 
                         string filename = Path.GetFileName(fileData.Filename);
                         requestStream.WriteString(
-                            string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\n", filename,
+                            string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\n", fileData.FieldName,
                                           filename));
                         requestStream.WriteString(string.Format("Content-Type: {0}\r\n", fileData.ContentType));
                         requestStream.WriteString(string.Format("Content-Transfer-Encoding: {0}\r\n",
