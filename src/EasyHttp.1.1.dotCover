@@ -1,39 +1,9 @@
 <Configuration>
   <CoverageFilters>
-    <AllowFilters>
-      <Filter>
-        <ClassFilter>*</ClassFilter>
-        <FunctionFilter>*</FunctionFilter>
-        <ModuleFilter>*</ModuleFilter>
-      </Filter>
-    </AllowFilters>
-    <DenyFilters>
-      <Filter>
-        <ClassFilter>*</ClassFilter>
-        <FunctionFilter>*</FunctionFilter>
-        <ModuleFilter>*.Tests</ModuleFilter>
-      </Filter>
-      <Filter>
-        <ClassFilter>*</ClassFilter>
-        <FunctionFilter>*</FunctionFilter>
-        <ModuleFilter>xunitcontrib*</ModuleFilter>
-      </Filter>
-      <Filter>
-        <ClassFilter>*</ClassFilter>
-        <FunctionFilter>*</FunctionFilter>
-        <ModuleFilter>xunit*</ModuleFilter>
-      </Filter>
-      <Filter>
-        <ClassFilter>*</ClassFilter>
-        <FunctionFilter>*</FunctionFilter>
-        <ModuleFilter>Machine.*</ModuleFilter>
-      </Filter>
-      <Filter>
-        <ClassFilter>*</ClassFilter>
-        <FunctionFilter>*</FunctionFilter>
-        <ModuleFilter>System.*</ModuleFilter>
-      </Filter>
-    </DenyFilters>
+    <IncludeFilters>
+      <Filter ModuleMask="*" ClassMask="*" FunctionMask="*" />
+    </IncludeFilters>
+    <ExcludeFilters />
   </CoverageFilters>
   <SnapshotDialog>
     <InitialDirectory>X:\Projects\EasyHttp\src</InitialDirectory>
