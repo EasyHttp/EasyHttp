@@ -72,7 +72,7 @@ namespace EasyHttp.Http
     {
         readonly IEncoder _encoder;
         string _downloadFilename;
-        IDecoder _decoder;
+        readonly IDecoder _decoder;
 
         public bool LoggingEnabled { get; set; }
         public bool ThrowExceptionOnHttpError { get; set; }
@@ -99,7 +99,7 @@ namespace EasyHttp.Http
         public HttpResponse Response { get; private set; }
         public HttpRequest Request { get; private set; }
 
-        void InitRequest(string uri)
+        void InitRequest(string uri, HttpMethod method)
         {
             Request.Uri = uri;
             Request.Data = null;
@@ -109,54 +109,47 @@ namespace EasyHttp.Http
             Request.MultiPartFormData = null;
             Request.MultiPartFileData = null;
             Request.ContentEncoding = null;
+            Request.Method = method;
         }
 
         public HttpResponse GetAsFile(string uri, string filename)
         {
-            InitRequest(uri);
-            Request.Method = HttpMethod.GET;
+            InitRequest(uri, HttpMethod.GET);
             _downloadFilename = filename;
-            ProcessRequest();
-
-            return Response;
+            return ProcessRequest();
         }
         
         public HttpResponse Get(string uri)
         {
-            InitRequest(uri);
-            Request.Method = HttpMethod.GET;
-            ProcessRequest();
-            
-            return Response;
+            InitRequest(uri, HttpMethod.GET);
+            return ProcessRequest();
         }
 
-        public void Post(string uri, object data, string contentType)
+        public HttpResponse Post(string uri, object data, string contentType)
         {
-            InitRequest(uri);
+            InitRequest(uri, HttpMethod.POST);
             if (data != null)
             {
                 Request.ContentType = contentType;
                 Request.Data = data;
                 Request.ContentEncoding = HttpContentEncoding.Utf8;
             }
-            Request.Method = HttpMethod.POST;
             
-            ProcessRequest();
+            return ProcessRequest();
         }
 
-        public void Post(string uri, IDictionary<string, object> formData, IList<FileData> files)
+        public HttpResponse Post(string uri, IDictionary<string, object> formData, IList<FileData> files)
         {
-            InitRequest(uri);
-            Request.Method = HttpMethod.POST;
+            InitRequest(uri, HttpMethod.POST);
             Request.MultiPartFormData = formData;
             Request.MultiPartFileData = files;
             Request.KeepAlive = true;
-            ProcessRequest();
+            return ProcessRequest();
         }
 
-        public void Put(string uri, object data, string contentType)
+        public HttpResponse Put(string uri, object data, string contentType)
         {
-            InitRequest(uri);
+            InitRequest(uri, HttpMethod.PUT);
             if (data != null)
             {
                 Request.ContentType = contentType;
@@ -164,37 +157,33 @@ namespace EasyHttp.Http
                 Request.ContentEncoding = HttpContentEncoding.Utf8;
             }
             
-            Request.Method = HttpMethod.PUT;
-            ProcessRequest();
+            return ProcessRequest();
         }
 
-        public void Delete(string uri)
+        public HttpResponse Delete(string uri)
         {
-            InitRequest(uri);
-            Request.Method = HttpMethod.DELETE;
-            ProcessRequest();
+            InitRequest(uri, HttpMethod.DELETE);
+            return ProcessRequest();
         }
 
  
-        public void Head(string uri)
+        public HttpResponse Head(string uri)
         {
-            InitRequest(uri);
-            Request.Method = HttpMethod.HEAD;
-            ProcessRequest();
+            InitRequest(uri, HttpMethod.HEAD);
+            return ProcessRequest();
         }
 
-        public void PutFile(string uri, string filename, string contentType)
+        public HttpResponse PutFile(string uri, string filename, string contentType)
         {
-            InitRequest(uri);
+            InitRequest(uri, HttpMethod.PUT);
             Request.ContentType = contentType;
             Request.PutFilename = filename;
-            Request.Method = HttpMethod.PUT;
             Request.Expect = true;
             Request.KeepAlive = true;
-            ProcessRequest();
+            return ProcessRequest();
         }
 
-        void ProcessRequest()
+        HttpResponse ProcessRequest()
         {
             var httpWebRequest = Request.PrepareRequest();
 
@@ -206,7 +195,7 @@ namespace EasyHttp.Http
             {
                 throw new HttpException(Response.StatusCode, Response.StatusDescription);
             }
-            
+            return Response;
         }
 
        

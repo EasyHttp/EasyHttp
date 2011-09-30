@@ -97,10 +97,9 @@ namespace EasyHttp.Specs.Specs
             // First create customer in order to then delete it
             guid = Guid.NewGuid();
 
-            httpClient.Put(string.Format("{0}/{1}", TestSettings.CouchDbDatabaseUrl, guid),
+            response = httpClient.Put(string.Format("{0}/{1}", TestSettings.CouchDbDatabaseUrl, guid),
                           new Customer() {Name = "ToDelete", Email = "test@test.com"}, HttpContentTypes.ApplicationJson);
 
-            response = httpClient.Response;
 
             rev = response.DynamicBody.rev;
         };
@@ -108,8 +107,7 @@ namespace EasyHttp.Specs.Specs
         Because of = () =>
         {
 
-            httpClient.Delete(String.Format("{0}/{1}?rev={2}", TestSettings.CouchDbDatabaseUrl, guid, rev));
-            response = httpClient.Response;
+            response = httpClient.Delete(String.Format("{0}/{1}?rev={2}", TestSettings.CouchDbDatabaseUrl, guid, rev));
         };
 
         It should_delete_the_specified_resource = () =>
@@ -208,16 +206,15 @@ namespace EasyHttp.Specs.Specs
 
         Because of = () =>
         {
-            httpClient.Head(TestSettings.CouchDbRootUrl);
-            httpResponse = httpClient.Response;
+            response = httpClient.Head(TestSettings.CouchDbRootUrl);
 
         };
 
         It should_return_OK_response  =
-            () => httpResponse.StatusDescription.ShouldEqual("OK");
+            () => response.StatusDescription.ShouldEqual("OK");
 
         static HttpClient httpClient;
-        static HttpResponse httpResponse;
+        static HttpResponse response;
     }
 
     [Subject("HttpClient")]
@@ -233,9 +230,8 @@ namespace EasyHttp.Specs.Specs
         Because of = () =>
         {
 
-            httpClient.Post(TestSettings.CouchDbDatabaseUrl, new Customer() { Name = "Hadi", Email = "test@test.com" }, HttpContentTypes.ApplicationJson);
+            response = httpClient.Post(TestSettings.CouchDbDatabaseUrl, new Customer() { Name = "Hadi", Email = "test@test.com" }, HttpContentTypes.ApplicationJson);
 
-            response = httpClient.Response;
         };
 
 
@@ -268,10 +264,9 @@ namespace EasyHttp.Specs.Specs
         Because of = () =>
         {
             Guid guid = Guid.NewGuid();
-            httpClient.Put(string.Format("{0}/{1}", TestSettings.CouchDbDatabaseUrl, guid),
+            response = httpClient.Put(string.Format("{0}/{1}", TestSettings.CouchDbDatabaseUrl, guid),
                           new Customer() { Name = "Put", Email = "test@test.com" }, HttpContentTypes.ApplicationJson);
 
-            response = httpClient.Response;
         };
 
 
