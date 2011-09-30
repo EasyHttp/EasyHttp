@@ -59,7 +59,6 @@
 using System.Text;
 using JsonFx.Serialization;
 using JsonFx.Serialization.Providers;
-using StructureMap;
 
 namespace EasyHttp.Codecs
 {

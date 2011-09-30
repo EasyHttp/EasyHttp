@@ -58,13 +58,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-using System.Text;
 using EasyHttp.Codecs;
 using EasyHttp.Configuration;
 using EasyHttp.Infrastructure;
-using StructureMap;
 
 namespace EasyHttp.Http
 {
@@ -78,20 +74,15 @@ namespace EasyHttp.Http
         public bool ThrowExceptionOnHttpError { get; set; }
       
         
-        public HttpClient():this(new DefaultContainerConfiguration())
+        public HttpClient():this(new DefaultEncoderDecoderConfiguration())
         {
 
         }
       
-        public HttpClient(IContainerConfiguration containerConfiguration)
+        public HttpClient(IEncoderDecoderConfiguration encoderDecoderConfiguration)
         {
-            var registry = containerConfiguration.InitializeContainer();
-
-            ObjectFactory.Initialize(
-                x => x.AddRegistry(registry));
-
-            _encoder = ObjectFactory.GetInstance<IEncoder>();
-            _decoder = ObjectFactory.GetInstance<IDecoder>();
+            _encoder = encoderDecoderConfiguration.GetEncoder();
+            _decoder = encoderDecoderConfiguration.GetDecoder();
 
             Request = new HttpRequest(_encoder);
         }

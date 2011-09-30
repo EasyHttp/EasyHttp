@@ -56,51 +56,50 @@
 // THE SOFTWARE.
 #endregion
 
-using System;
+using System.Collections.Generic;
 using EasyHttp.Codecs;
 using EasyHttp.Codecs.JsonFXExtensions;
 using JsonFx.Json;
 using JsonFx.Json.Resolvers;
 using JsonFx.Serialization;
-using JsonFx.Serialization.Providers;
 using JsonFx.Serialization.Resolvers;
 using JsonFx.Xml;
 using JsonFx.Xml.Resolvers;
-using StructureMap.Configuration.DSL;
 
 namespace EasyHttp.Configuration
 {
-    public class DefaultContainerConfiguration : IContainerConfiguration
+    public class DefaultEncoderDecoderConfiguration : IEncoderDecoderConfiguration
     {
-        readonly Registry _registry = new Registry();
-
-        public Registry InitializeContainer()
+        public IEncoder GetEncoder()
         {
-            _registry.For<IEncoder>().Use<DefaultEncoder>();
-            _registry.For<IDecoder>().Use<DefaultDecoder>();
-            _registry.For<IDataReader>().Singleton().Use<JsonReader>().
-                Ctor<DataReaderSettings>().Is(new DataReaderSettings(
-                    CombinedResolverStrategy())).
-                Ctor<string[]>().Is(new [] { "application/.*json", "text/.*json"});
-            _registry.For<IDataReader>().Singleton().Use<XmlReader>().
-                Ctor<DataReaderSettings>().Is(new DataReaderSettings(CombinedResolverStrategy())).
-                Ctor<string[]>().Is(new[] { "application/.*xml", "text/.*xhtml", "text/xml", "text/html" });
-            _registry.For<IDataWriter>().Singleton().Use<JsonWriter>().
-                Ctor<DataWriterSettings>().Is(new DataWriterSettings(CombinedResolverStrategy())).
-                Ctor<string[]>().Is(new[] { "application/.*json", "text/.*json"});
-            _registry.For<IDataWriter>().Singleton().Use<XmlWriter>().
-                Ctor<DataWriterSettings>().Is(new DataWriterSettings(CombinedResolverStrategy())).
-                Ctor<string[]>().Is(new[] { "application/xml", "text/.*xhtml", "text/xml", "text/html" });
-            _registry.For<IDataWriter>().Singleton().Use<UrlEncoderWriter>().
-                Ctor<DataWriterSettings>().Is(new DataWriterSettings()).
-                Ctor<string[]>().Is(new[] { "application/x-www-form-urlencoded" });
-            _registry.For<IDataReaderProvider>().Singleton().Use<RegExBasedDataReaderProvider>();
-            _registry.For<IDataWriterProvider>().Singleton().Use<RegExBasedDataWriterProvider>();
-            
-            return _registry;
+            var jsonWriter = new JsonWriter(new DataWriterSettings(CombinedResolverStrategy()),
+                                            new[] {"application/.*json", "text/.*json"});
+            var xmlWriter = new XmlWriter(new DataWriterSettings(CombinedResolverStrategy()),
+                                          new[] {"application/xml", "text/.*xhtml", "text/xml", "text/html"});
+
+            var urlEncoderWriter = new UrlEncoderWriter(new DataWriterSettings(CombinedResolverStrategy()),
+                                                        new[] {"application/x-www-form-urlencoded"});
+
+            var writers = new List<IDataWriter> { jsonWriter, xmlWriter, urlEncoderWriter };
+
+            var dataWriterProvider = new RegExBasedDataWriterProvider(writers);
+
+            return new DefaultEncoder(dataWriterProvider);
         }
 
-        // TODO: Do not like this. 
+        public IDecoder GetDecoder()
+        {
+            var jsonReader = new JsonReader(new DataReaderSettings(CombinedResolverStrategy()), new[] { "application/.*json", "text/.*json" });
+            var xmlReader = new XmlReader(new DataReaderSettings(CombinedResolverStrategy()),
+                                          new[] {"application/.*xml", "text/.*xhtml", "text/xml", "text/html"});
+
+            var readers = new List<IDataReader> {jsonReader, xmlReader};
+
+            var dataReaderProvider = new RegExBasedDataReaderProvider(readers);
+            
+            return new DefaultDecoder(dataReaderProvider);
+        }
+
         static CombinedResolverStrategy CombinedResolverStrategy()
         {
             return new CombinedResolverStrategy(
