@@ -100,14 +100,17 @@ namespace EasyHttp.Configuration
             return new DefaultDecoder(dataReaderProvider);
         }
 
-        static CombinedResolverStrategy CombinedResolverStrategy()
+        public static CombinedResolverStrategy CombinedResolverStrategy()
         {
             return new CombinedResolverStrategy(
                 new JsonResolverStrategy(),
                 new DataContractResolverStrategy(),                                     
                 new XmlResolverStrategy(),                                                              
                 new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.PascalCase),       
-                new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.CamelCase),        
+                new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.CamelCase),    
+                new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.NoChange),
+                new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.NoChange, "_"),
+                new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.NoChange, "-"),
                 new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.Lowercase, "-"),   
                 new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.Uppercase, "_"));
         }

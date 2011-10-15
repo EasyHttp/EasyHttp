@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/hhariri/EasyHttp</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>An Http Client for .NET with support for Dynamic Types/Json/Xml</description>
-    <tags>Http, Json, Xml, Dynamic</tags>
+    <tags>Http Json Xml Dynamic REST</tags>
     <dependencies>
       <dependency id="JsonFx" version="2.0.1106.2610" />
     </dependencies>

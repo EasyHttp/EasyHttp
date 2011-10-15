@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using JsonFx.Serialization;
 using JsonFx.Serialization.Providers;
 
@@ -29,7 +30,7 @@ namespace EasyHttp.Codecs
             var parsedText = NormalizeInputRemovingAmpersands(input);
 
             var deserializer = ObtainDeserializer(contentType);
-
+       
             return deserializer.Read(parsedText);
         }
 

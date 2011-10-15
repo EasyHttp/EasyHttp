@@ -21,7 +21,7 @@
 
   <Target Name="Release">
     <MSBuild Projects="$(ProjectFolder)\EasyHttp.sln" Properties="Configuration=Release;OutputPath=..\..\build\Release" />
-    <Exec Command="NuGet pack ..\build\Package.nuspec -o ..\build\Release\" />
+    <Exec Command="NuGet pack Package.nuspec -o \Release" />
   </Target>
 
 </Project>

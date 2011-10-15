@@ -32,9 +32,11 @@
 using System.Collections.Generic;
 using EasyHttp.Codecs;
 using EasyHttp.Codecs.JsonFXExtensions;
+using EasyHttp.Configuration;
 using EasyHttp.Http;
 using JsonFx.Json;
 using JsonFx.Serialization;
+using JsonFx.Serialization.Resolvers;
 using Machine.Specifications;
 
 namespace EasyHttp.Specs.BugRepros
@@ -45,16 +47,16 @@ namespace EasyHttp.Specs.BugRepros
         {
             input = "[{\"intAuthorID\":\"8\",\"strText\":\"test1\"},{\"intAuthorID\":\"5\",\"strText\":\"This message\"}]";
 
-            IEnumerable<IDataReader> readers = new List<IDataReader> { new JsonReader(new DataReaderSettings(), "application/.*json") };
+            IEnumerable<IDataReader> readers = new List<IDataReader> { new JsonReader(new DataReaderSettings(DefaultEncoderDecoderConfiguration.CombinedResolverStrategy()), "application/.*json") };
 
-            _decoder = new DefaultDecoder(new RegExBasedDataReaderProvider(readers));
+            decoder = new DefaultDecoder(new RegExBasedDataReaderProvider(readers));
         };
 
 
         Because of = () =>
         {
 
-            output = _decoder.DecodeToDynamic(input, HttpContentTypes.ApplicationJson);
+            output = decoder.DecodeToDynamic(input, HttpContentTypes.ApplicationJson);
         };
 
 
@@ -65,7 +67,103 @@ namespace EasyHttp.Specs.BugRepros
         };
 
         static string input;
-        static DefaultDecoder _decoder;
+        static DefaultDecoder decoder;
         static dynamic output;
     }
+
+    public class when_decoding_fields_with_underscores
+    {
+        Establish context = () =>
+        {
+            input =
+                "{\"html_attributions\": [],\"result\": {\"address_components\": [{\"long_name\": \"Church Street\",\"short_name\": \"Church Street\",\"types\": [\"route\"]},{\"long_name\": \"Wilmslow\",\"short_name\": \"Wilmslow\",\"types\": [\"locality\",\"political\"]},{\"long_name\": \"GB\",\"short_name\": \"GB\",\"types\": [\"country\",\"political\"]},{\"long_name\": \"SK9 1\",\"short_name\": \"SK9 1\",\"types\": [\"postal_code\"]}],\"formatted_address\": \"Church Street, Wilmslow, SK9 1, United Kingdom\",\"formatted_phone_number\": \"01625 538831\",\"geometry\": {\"location\": {\"lat\": 53.328908,\"lng\": -2.229191}},\"icon\": \"http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png\",\"id\": \"51155a69bc03041b926e44f03a5bbe9feafb5035\",\"international_phone_number\": \"+44 1625 538831\",\"name\": \"Waitrose\",\"reference\": \"CmRfAAAAUZ4dYk9VpNJd1mFxa970TxVGgp9QTGeEa1BaU_wTWdTHNLCcB-9YyNu5LjgIewxo_oOna0KI9f_Z-Xff4CxvTf9wFHTHgE1wRGyCLLJo2BPjkGHo5Qem-Z-2_FKiY3gmEhA_Qs0jcQyFgVEs1BZAt_bdGhRerV30JziD2x7ZOMgxQTKlnH0yAQ\",\"types\": [\"grocery_or_supermarket\",\"food\",\"store\",\"establishment\"],\"url\": \"http://maps.google.com/maps/place?cid=14979720525476796445\",\"vicinity\": \"Church Street, Wilmslow\",\"website\": \"http://www.waitrose.com/wilmslow\"},\"status\": \"OK\"}";
+
+            IEnumerable<IDataReader> readers = new List<IDataReader> { new JsonReader(new DataReaderSettings(DefaultEncoderDecoderConfiguration.CombinedResolverStrategy()), "application/.*json") };
+
+            decoder = new DefaultDecoder(new RegExBasedDataReaderProvider(readers));
+
+       
+      
+        };
+
+        Because of = () =>
+        {
+            outputDynamic = decoder.DecodeToDynamic(input, HttpContentTypes.ApplicationJson);
+            outputStatic = decoder.DecodeToStatic<PlaceResponse<PlaceDetail>>(input, HttpContentTypes.ApplicationJson);
+            
+        }; 
+        
+        It should_decode_correctly_to_dynamic_body = () =>
+        {
+            string formatted_address = outputDynamic.result.formatted_address;
+            formatted_address.ShouldEqual("Church Street, Wilmslow, SK9 1, United Kingdom");
+        };
+
+        It should_drecode_correctly_to_static_body = () =>
+        {
+
+            outputStatic.result.formatted_address.ShouldEqual("Church Street, Wilmslow, SK9 1, United Kingdom");
+        };     
+        
+        static DefaultDecoder decoder;
+        static dynamic outputDynamic;
+        static string input;
+        static PlaceResponse<PlaceDetail> outputStatic;
+
+    }
+
+
+
+
+
+
+
+
+
+
+    public class PlaceResponse<T>
+    {
+        public string status { get; set; }
+        public T result { get; set; }
+        public string[] html_attributions { get; set; }
+    }
+
+    public class PlaceLocation
+    {
+        public double lat { get; set; }
+        public double lng { get; set; }
+
+    }
+
+    public class PlaceGeometry
+    {
+        public PlaceLocation location { get; set; }
+    }
+
+    public class PlaceDetail
+    {
+        public string name { get; set; }
+
+        public string formatted_address { get; set; }
+        public string formatted_phone_number { get; set; }
+
+        public string icon { get; set; }
+        public string id { get; set; }
+        public PlaceAddressComponent[] address_components { get; set; }
+
+        public PlaceGeometry geometry { get; set; }
+        public string reference { get; set; }
+        public string[] types { get; set; }
+        public string url { get; set; }
+        public string vicinity { get; set; }
+        public string website { get; set; }
+    }
+
+    public class PlaceAddressComponent
+    {
+        public string[] types { get; set; }
+        public string long_name { get; set; }
+        public string short_name { get; set; }
+    }
+
 }
