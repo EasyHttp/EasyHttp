@@ -7,5 +7,7 @@ _ReSharper.*
 *.suo
 *.cache
 *.user
+*.nupkg
+*.bin
 ~$*
 

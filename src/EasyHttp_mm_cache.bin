@@ -1,1 +1,0 @@
-]System.Void EasyHttp.Specs.Specs.when_making_a_DELETE_request_with_a_valid_uri::<.ctor>b__b()DSystem.String EasyHttp.Specs.Helpers.CouchInformation::get_couchdb()OSystem.Void EasyHttp.Specs.Helpers.CouchInformation::set_couchdb(System.String)
