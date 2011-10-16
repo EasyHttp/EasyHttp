@@ -31,7 +31,14 @@ You can either download the source and compile or use nuget at http://nuget.org.
 
 To post/put a customer to  some service: 
 
-  <code>var customer = new Customer(); customer.Name = "Joe"; customer.Email = "joe@smith.com";var http = new HttpClient();http.Post("url", customer, HttpContentTypes.ApplicationJson);</code>
+  
+```
+	var customer = new Customer(); 
+	customer.Name = "Joe"; 
+	customer.Email = "joe@smith.com";
+	var http = new HttpClient();
+	http.Post("url", customer, HttpContentTypes.ApplicationJson);
+```
  
 To get some data in JSON format:
 
