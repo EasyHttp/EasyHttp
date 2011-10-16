@@ -42,45 +42,36 @@ To post/put a customer to  some service:
  
 To get some data in JSON format:
 
-  <code>var http = new HttpClient();
-	
-  http.Request.Accept = HttpContentTypes.ApplicationJson;
-
-  var response = http.Get("url");
-
-  var customer = response.StaticBody<Customer>();
-  
-  Console.WriteLine("Name: {0}", customer.Name);
-  </code>
+```
+	var http = new HttpClient();
+	http.Request.Accept = HttpContentTypes.ApplicationJson;
+	var response = http.Get("url");
+	var customer = response.StaticBody<Customer>();
+	Console.WriteLine("Name: {0}", customer.Name);
+```
 
 ### Using dynamic  types
 
 To post/put a customer to  some service: 
 
-  <code>var customer = new ExpandoObject(); // Or any dynamic type
-
-  customer.Name = "Joe";
-  customer.Email = "joe@smith.com";
-
-
-  var http = new HttpClient();
-
-  http.Post("url", customer, HttpContentTypes.ApplicationJson);
-  </code>
+```
+	var customer = new ExpandoObject(); // Or any dynamic type
+	customer.Name = "Joe";
+	customer.Email = "joe@smith.com";
+	var http = new HttpClient();
+	http.Post("url", customer, HttpContentTypes.ApplicationJson);
+```
  
 To get some data in JSON format:
 
 
-  <code>var http = new HttpClient();
-
-  http.Request.Accept = HttpContentTypes.ApplicationJson;
-
-  var response = http.Get("url");
-
-  var customer = response.DynamicBody;
-
-  Console.WriteLine("Name {0}", customer.Name);
-  </code>
+```
+	var http = new HttpClient();
+	http.Request.Accept = HttpContentTypes.ApplicationJson;
+	var response = http.Get("url");
+	var customer = response.DynamicBody;
+	Console.WriteLine("Name {0}", customer.Name);
+```
 
 Both in Static and Dynamic versions, hierarchies are supported. 
 
