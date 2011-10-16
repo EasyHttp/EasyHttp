@@ -16,7 +16,7 @@ Licensed under Modified BSD (i.e. pretty much MIT).
 For full License and included software licenses please see LICENSE.TXT
 
 
-Please log all issues are tracked here: http://youtrack.codebetter.com/issues/EHTTP
+Please log all issues here: http://youtrack.codebetter.com/issues/EHTTP
 
 ## Installation
 
@@ -31,7 +31,7 @@ You can either download the source and compile or use nuget at http://nuget.org.
 
 To post/put a customer to  some service: 
 
-  var customer = new Customer();
+  <code>var customer = new Customer();
 
   customer.Name = "Joe";
   customer.Email = "joe@smith.com";
@@ -40,11 +40,11 @@ To post/put a customer to  some service:
   var http = new HttpClient();
 
   http.Post("url", customer, HttpContentTypes.ApplicationJson);
-  
+  </code>
  
 To get some data in JSON format:
 
-  var http = new HttpClient();
+  <code>var http = new HttpClient();
 	
   http.Request.Accept = HttpContentTypes.ApplicationJson;
 
@@ -53,12 +53,13 @@ To get some data in JSON format:
   var customer = response.StaticBody<Customer>();
   
   Console.WriteLine("Name: {0}", customer.Name);
+  </code>
 
 ### Using dynamic  types
 
 To post/put a customer to  some service: 
 
-  var customer = new ExpandoObject(); // Or any dynamic type
+  <code>var customer = new ExpandoObject(); // Or any dynamic type
 
   customer.Name = "Joe";
   customer.Email = "joe@smith.com";
@@ -67,11 +68,12 @@ To post/put a customer to  some service:
   var http = new HttpClient();
 
   http.Post("url", customer, HttpContentTypes.ApplicationJson);
-  
+  </code>
  
 To get some data in JSON format:
 
-  var http = new HttpClient();
+
+  <code>var http = new HttpClient();
 
   http.Request.Accept = HttpContentTypes.ApplicationJson;
 
@@ -80,7 +82,7 @@ To get some data in JSON format:
   var customer = response.DynamicBody;
 
   Console.WriteLine("Name {0}", customer.Name);
-
+  </code>
 
 Both in Static and Dynamic versions, hierarchies are supported. 
 
