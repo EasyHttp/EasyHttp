@@ -76,6 +76,16 @@ To get some data in JSON format:
 
 Both in Static and Dynamic versions, hierarchies are supported. 
 
+## Serialization / Deserialization Conventions
+
+For serialization / deserialization, you can use pretty much any type of naming convention, be it Propercase, CamelCase, lowerCamelCase, with_underscores, etc. If for some reason, your convention is not picked up, you can always decorate the property with an attribute:
+
+```
+ 
+   [JsonName("mycustomname")] 
+   public string SomeWeirdCombination { get; set; }
+```
+
 ## Credits
 
 Copyright (c) 2010 - 2011 Hadi Hariri and Project Contributors
