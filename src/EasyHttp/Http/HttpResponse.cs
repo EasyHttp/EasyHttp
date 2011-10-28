@@ -108,7 +108,10 @@ namespace EasyHttp.Http
             return _decoder.DecodeToStatic<T>(RawText, ContentType);
         }
 
-
+        public T StaticBody<T>(string contentType)
+        {
+            return _decoder.DecodeToStatic<T>(RawText, contentType);
+        }
 
         public HttpResponse(IDecoder decoder)
         {
