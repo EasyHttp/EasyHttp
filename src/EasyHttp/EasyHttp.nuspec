@@ -8,7 +8,8 @@
     <owners>$author$</owners>
     <projectUrl>https://github.com/hhariri/EasyHttp</projectUrl>
     <iconUrl>https://github.com/hhariri/EasyHttp/build/logo.png</iconUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/hhariri/EasyHttp/LICENSE.txt</licenseUrl>
     <description>An Http Client for .NET with support for Dynamic Types/Json/Xml</description>
     <tags>Http Json Xml Dynamic REST</tags>
   </metadata>
