@@ -13,4 +13,8 @@
     <description>An Http Client for .NET with support for Dynamic Types/Json/Xml</description>
     <tags>Http Json Xml Dynamic REST</tags>
   </metadata>
+  <files>
+    <file src="bin\release\EasyHttp.dll" target="lib\sl40" />
+    <file src="bin\release\EasyHttp.dll" target="lib\sl40-wp " />
+  </files>
 </package>
