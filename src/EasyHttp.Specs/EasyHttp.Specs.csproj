@@ -53,6 +53,7 @@
     <Compile Include="..\EasyHttp\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="BugRepros\ExtraHeaderIssue.cs" />
     <Compile Include="BugRepros\CustomPropertyNameIssue.cs" />
     <Compile Include="BugRepros\DecodingIssues.cs" />
     <Compile Include="BugRepros\EnumEncodingIssue.cs" />

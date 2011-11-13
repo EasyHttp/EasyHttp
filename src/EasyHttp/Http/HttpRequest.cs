@@ -184,6 +184,11 @@ namespace EasyHttp.Http
             AddExtraHeader("Accept-Language", AcceptLanguage);
             AddExtraHeader("If-Match", IfMatch);
             AddExtraHeader("Content-Encoding", ContentEncoding);
+
+            foreach (var header in RawHeaders)
+            {
+                httpWebRequest.Headers.Add(String.Format("{0}: {1}", header.Key, header.Value));
+            }
         }
 
         bool AcceptAllCertifications(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
@@ -195,7 +200,7 @@ namespace EasyHttp.Http
         {
             if (value != null)
             {
-                httpWebRequest.Headers.Add(String.Format("{0}: {1}", header, value));
+                RawHeaders.Add(header, value);
             }
         }
 
