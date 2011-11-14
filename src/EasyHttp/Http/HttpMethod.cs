@@ -64,6 +64,7 @@ namespace EasyHttp.Http
         POST,
         PUT,
         DELETE,
-        OPTIONS
+        OPTIONS,
+        PATCH
     }
 }

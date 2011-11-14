@@ -125,16 +125,23 @@ namespace EasyHttp.Http
             return ProcessRequest();
         }
 
+        public HttpResponse Options(string url)
+        {
+            InitRequest(uri, HttpMethod.OPTIONS);
+            return ProcessRequest();
+        }
+
         public HttpResponse Post(string uri, object data, string contentType)
         {
             InitRequest(uri, HttpMethod.POST);
-            if (data != null)
-            {
-                Request.ContentType = contentType;
-                Request.Data = data;
-                Request.ContentEncoding = HttpContentEncoding.Utf8;
-            }
-            
+            InitData(data, contentType);
+            return ProcessRequest();
+        }
+
+        public HttpResponse Patch(string uri, object data, string contentType)
+        {
+            InitRequest(uri, HttpMethod.PATCH);
+            InitData(data, contentType);
             return ProcessRequest();
         }
 
@@ -150,14 +157,18 @@ namespace EasyHttp.Http
         public HttpResponse Put(string uri, object data, string contentType)
         {
             InitRequest(uri, HttpMethod.PUT);
+            InitData(data, contentType);
+            return ProcessRequest();
+        }
+
+        void InitData(object data, string contentType)
+        {
             if (data != null)
             {
                 Request.ContentType = contentType;
                 Request.Data = data;
                 Request.ContentEncoding = HttpContentEncoding.Utf8;
             }
-            
-            return ProcessRequest();
         }
 
         public HttpResponse Delete(string uri)
