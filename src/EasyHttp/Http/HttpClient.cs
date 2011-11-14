@@ -66,9 +66,11 @@ namespace EasyHttp.Http
 {
     public class HttpClient
     {
+        readonly string _baseUri;
         readonly IEncoder _encoder;
         string _downloadFilename;
         readonly IDecoder _decoder;
+        readonly UriComposer _uriComposer;
 
         public bool LoggingEnabled { get; set; }
         public bool ThrowExceptionOnHttpError { get; set; }
@@ -83,8 +85,14 @@ namespace EasyHttp.Http
         {
             _encoder = encoderDecoderConfiguration.GetEncoder();
             _decoder = encoderDecoderConfiguration.GetDecoder();
+            _uriComposer = new UriComposer();
 
             Request = new HttpRequest(_encoder);
+        }
+
+        public HttpClient(string baseUri): this(new DefaultEncoderDecoderConfiguration())
+        {
+            _baseUri = baseUri;
         }
 
         public HttpResponse Response { get; private set; }
@@ -92,7 +100,7 @@ namespace EasyHttp.Http
 
         void InitRequest(string uri, HttpMethod method)
         {
-            Request.Uri = uri;
+            Request.Uri = !String.IsNullOrEmpty(_baseUri) ? _uriComposer.Compose(_baseUri, uri): uri;
             Request.Data = null;
             Request.PutFilename = String.Empty;
             Request.Expect = false;
@@ -102,6 +110,7 @@ namespace EasyHttp.Http
             Request.ContentEncoding = null;
             Request.Method = method;
         }
+
 
         public HttpResponse GetAsFile(string uri, string filename)
         {
@@ -200,6 +209,4 @@ namespace EasyHttp.Http
 
 
     }
-
-   
 }

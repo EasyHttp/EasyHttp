@@ -71,6 +71,7 @@
     <Compile Include="Infrastructure\HttpException.cs" />
     <Compile Include="Infrastructure\PropertyNotFoundException.cs" />
     <Compile Include="Infrastructure\StreamExtensions.cs" />
+    <Compile Include="Infrastructure\UriComposer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

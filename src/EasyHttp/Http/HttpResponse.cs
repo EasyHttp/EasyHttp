@@ -92,7 +92,15 @@ namespace EasyHttp.Http
         public string Server { get; private set; }
         public WebHeaderCollection RawHeaders { get; private set; }
 
-        
+        public T BodyAs<T>(string contentType = null)
+        {
+            // TODO: Dynamic doesn't work here.
+            if (!typeof(T).IsPrimitive && typeof(T).DeclaringType == null)
+            {
+                return DynamicBody;
+            }
+            return StaticBody<T>(contentType);
+        }
 
         
         public dynamic DynamicBody
@@ -103,20 +111,18 @@ namespace EasyHttp.Http
         public string RawText { get; set; }
 
 
-        public T StaticBody<T>()
+        public T StaticBody<T>(string overrideContentType = null)
         {
+            if (overrideContentType != null)
+            {
+                return _decoder.DecodeToStatic<T>(RawText, overrideContentType);
+            }
             return _decoder.DecodeToStatic<T>(RawText, ContentType);
-        }
-
-        public T StaticBody<T>(string contentType)
-        {
-            return _decoder.DecodeToStatic<T>(RawText, contentType);
         }
 
         public HttpResponse(IDecoder decoder)
         {
             _decoder = decoder;
-     
         }
 
         public void GetResponse(HttpWebRequest request, string filename)
