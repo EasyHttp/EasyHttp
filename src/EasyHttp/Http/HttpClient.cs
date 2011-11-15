@@ -125,7 +125,7 @@ namespace EasyHttp.Http
             return ProcessRequest();
         }
 
-        public HttpResponse Options(string url)
+        public HttpResponse Options(string uri)
         {
             InitRequest(uri, HttpMethod.OPTIONS);
             return ProcessRequest();

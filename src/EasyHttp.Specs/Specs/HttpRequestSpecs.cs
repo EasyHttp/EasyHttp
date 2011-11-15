@@ -287,48 +287,4 @@ namespace EasyHttp.Specs.Specs
         static dynamic response;
     }
 
-    public class when_requesting_BodyAs_dynamic
-    {
-        Because of = () =>
-        {
-            var http = new HttpClient();
-
-            http.Request.Accept = HttpContentTypes.ApplicationJson;
-
-            response = http.Get("http://localhost:5984/");
-
-
-        };
-
-        It should_return_dynamic_body = () =>
-        {
-            dynamic body = response.BodyAs<dynamic>();
-            string couchdb = body.couchdb;
-            couchdb.ShouldEqual("Welcome");
-        };
-
-        static HttpResponse response;
-    }
-
-    public class when_requesting_BodyAs_static
-    {
-        Because of = () =>
-        {
-            var http = new HttpClient();
-
-            http.Request.Accept = HttpContentTypes.ApplicationJson;
-
-            response = http.Get("http://localhost:5984/");
-
-
-        };
-
-        It should_return_static = () =>
-        {
-            CouchInformation body = response.BodyAs<CouchInformation>();
-            body.message.ShouldEqual("Welcome");
-        };
-
-        static HttpResponse response;
-    }
 }

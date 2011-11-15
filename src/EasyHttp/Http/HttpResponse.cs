@@ -92,17 +92,6 @@ namespace EasyHttp.Http
         public string Server { get; private set; }
         public WebHeaderCollection RawHeaders { get; private set; }
 
-        public T BodyAs<T>(string contentType = null)
-        {
-            // TODO: Dynamic doesn't work here.
-            if (!typeof(T).IsPrimitive && typeof(T).DeclaringType == null)
-            {
-                return DynamicBody;
-            }
-            return StaticBody<T>(contentType);
-        }
-
-        
         public dynamic DynamicBody
         {
             get { return _decoder.DecodeToDynamic(RawText, ContentType); }
