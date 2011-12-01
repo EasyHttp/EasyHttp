@@ -112,7 +112,28 @@ namespace EasyHttp.Specs.BugRepros
 
     }
 
+    public class response_that_contains_umlats
+    {
+        Because of = () =>
+        {
+            var http = new HttpClient();
 
+            http.Request.Accept = HttpContentTypes.ApplicationJson;
+            
+            response = http.Get("https://api.github.com/users/thecodejunkie");
+
+
+        };
+
+        It should_correctly_decode_umlats = () =>
+        {
+            var user = response.DynamicBody;
+            string username = user.name;
+            username.ShouldEqual("Andreas Håkansson");
+        };
+
+        static HttpResponse response;
+    }
 
 
 

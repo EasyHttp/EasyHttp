@@ -198,7 +198,7 @@ namespace EasyHttp.Http
 
         public void AddExtraHeader(string header, object value)
         {
-            if (value != null)
+            if (value != null && !RawHeaders.ContainsKey(header))
             {
                 RawHeaders.Add(header, value);
             }
