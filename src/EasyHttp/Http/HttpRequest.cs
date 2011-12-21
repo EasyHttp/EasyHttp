@@ -121,6 +121,8 @@ namespace EasyHttp.Http
             Accept = String.Join(";", HttpContentTypes.TextHtml, HttpContentTypes.ApplicationXml,
                                  HttpContentTypes.ApplicationJson);
             _encoder = encoder;
+
+            Timeout = 100000; //http://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.timeout.aspx
         }
 
 
@@ -142,10 +144,15 @@ namespace EasyHttp.Http
             httpWebRequest.Referer = Referer;
             httpWebRequest.CachePolicy = _cachePolicy;
             httpWebRequest.KeepAlive = KeepAlive;
-            httpWebRequest.Timeout = Timeout;
-            
+
             ServicePointManager.Expect100Continue = Expect;
             ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
+            
+            if (Timeout > 0)
+            {
+                httpWebRequest.Timeout = Timeout;
+            }
+            
  
             if (Cookies != null )
             {
