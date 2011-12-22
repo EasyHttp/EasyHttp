@@ -119,7 +119,7 @@ namespace EasyHttp.Http
             return ProcessRequest();
         }
         
-        public HttpResponse Get(string uri)
+        public virtual HttpResponse Get(string uri)
         {
             InitRequest(uri, HttpMethod.GET);
             return ProcessRequest();
@@ -131,7 +131,7 @@ namespace EasyHttp.Http
             return ProcessRequest();
         }
 
-        public HttpResponse Post(string uri, object data, string contentType)
+        public virtual HttpResponse Post(string uri, object data, string contentType)
         {
             InitRequest(uri, HttpMethod.POST);
             InitData(data, contentType);
@@ -145,7 +145,7 @@ namespace EasyHttp.Http
             return ProcessRequest();
         }
 
-        public HttpResponse Post(string uri, IDictionary<string, object> formData, IList<FileData> files)
+        public virtual HttpResponse Post(string uri, IDictionary<string, object> formData, IList<FileData> files)
         {
             InitRequest(uri, HttpMethod.POST);
             Request.MultiPartFormData = formData;
