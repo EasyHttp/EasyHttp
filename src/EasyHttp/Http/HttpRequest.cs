@@ -108,8 +108,18 @@ namespace EasyHttp.Http
         readonly IEncoder _encoder;
         string _username;
         string _password;
+        private bool _forceBasicAuth;
+
         
         HttpRequestCachePolicy _cachePolicy;
+
+
+        public bool ForceBasicAuth
+        {
+            get { return _forceBasicAuth; }
+            set {  _forceBasicAuth = value; }
+
+        }
 
         public HttpRequest(IEncoder encoder)
         {
@@ -353,9 +363,19 @@ namespace EasyHttp.Http
 
         void SetupAuthentication()
         {
-            var networkCredential = new NetworkCredential(_username, _password);
+            if (_forceBasicAuth)
+            {
+                string authInfo = _username + ":" + _password;
+                authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
+                httpWebRequest.Headers["Authorization"] = "Basic " + authInfo; 
 
-            httpWebRequest.Credentials = networkCredential;
+            }
+            else
+            {
+                var networkCredential = new NetworkCredential(_username, _password);
+                httpWebRequest.Credentials = networkCredential;
+            }
+           
         }
 
 
