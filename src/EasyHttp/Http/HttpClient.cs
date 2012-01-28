@@ -58,6 +58,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using EasyHttp.Codecs;
 using EasyHttp.Configuration;
 using EasyHttp.Infrastructure;
@@ -75,12 +76,13 @@ namespace EasyHttp.Http
         public bool LoggingEnabled { get; set; }
         public bool ThrowExceptionOnHttpError { get; set; }
       
-        
+
         public HttpClient():this(new DefaultEncoderDecoderConfiguration())
         {
 
         }
       
+
         public HttpClient(IEncoderDecoderConfiguration encoderDecoderConfiguration)
         {
             _encoder = encoderDecoderConfiguration.GetEncoder();
@@ -119,7 +121,7 @@ namespace EasyHttp.Http
             return ProcessRequest();
         }
         
-        public virtual HttpResponse Get(string uri)
+        public HttpResponse Get(string uri)
         {
             InitRequest(uri, HttpMethod.GET);
             return ProcessRequest();
@@ -131,7 +133,7 @@ namespace EasyHttp.Http
             return ProcessRequest();
         }
 
-        public virtual HttpResponse Post(string uri, object data, string contentType)
+        public HttpResponse Post(string uri, object data, string contentType)
         {
             InitRequest(uri, HttpMethod.POST);
             InitData(data, contentType);
@@ -145,7 +147,7 @@ namespace EasyHttp.Http
             return ProcessRequest();
         }
 
-        public virtual HttpResponse Post(string uri, IDictionary<string, object> formData, IList<FileData> files)
+        public HttpResponse Post(string uri, IDictionary<string, object> formData, IList<FileData> files)
         {
             InitRequest(uri, HttpMethod.POST);
             Request.MultiPartFormData = formData;

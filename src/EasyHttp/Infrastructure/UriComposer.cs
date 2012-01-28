@@ -1,3 +1,5 @@
+using System;
+
 namespace EasyHttp.Infrastructure
 {
     public class UriComposer

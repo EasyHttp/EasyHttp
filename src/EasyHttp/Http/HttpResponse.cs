@@ -92,6 +92,7 @@ namespace EasyHttp.Http
         public string Server { get; private set; }
         public WebHeaderCollection RawHeaders { get; private set; }
 
+
         public dynamic DynamicBody
         {
             get { return _decoder.DecodeToDynamic(RawText, ContentType); }
