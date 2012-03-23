@@ -79,6 +79,7 @@ namespace EasyHttp.Http
         public string AcceptEncoding { get; set; }
         public string AcceptLanguage { get; set; }
         public bool KeepAlive { get; set; }
+        public X509CertificateCollection ClientCertificates { get; set; }
         public string ContentLength { get; private set; }
         public string ContentType { get; set; }
         public string ContentEncoding { get; set; }
@@ -361,8 +362,19 @@ namespace EasyHttp.Http
             return httpWebRequest;
         }
 
+        private void SetupClientCertificates()
+        {
+            if (ClientCertificates == null || ClientCertificates.Count == 0)
+                return;
+
+            foreach (var cert in ClientCertificates)
+                httpWebRequest.ClientCertificates.Add(cert);
+        }
+
         void SetupAuthentication()
         {
+            SetupClientCertificates();
+
             if (_forceBasicAuth)
             {
                 string authInfo = _username + ":" + _password;
