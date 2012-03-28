@@ -125,7 +125,9 @@ namespace EasyHttp.Http
         public HttpRequest(IEncoder encoder)
         {
             RawHeaders = new Dictionary<string, object>();
-            
+
+            ClientCertificates = new X509CertificateCollection();
+
             UserAgent = String.Format("EasyHttp HttpClient v{0}",
                                        Assembly.GetAssembly(typeof(HttpClient)).GetName().Version);
 
@@ -367,8 +369,7 @@ namespace EasyHttp.Http
             if (ClientCertificates == null || ClientCertificates.Count == 0)
                 return;
 
-            foreach (var cert in ClientCertificates)
-                httpWebRequest.ClientCertificates.Add(cert);
+            httpWebRequest.ClientCertificates.AddRange(ClientCertificates);
         }
 
         void SetupAuthentication()

@@ -58,6 +58,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using EasyHttp.Codecs;
 using EasyHttp.Configuration;
@@ -211,7 +212,13 @@ namespace EasyHttp.Http
             return Response;
         }
 
-       
+        public void AddClientCertificates(X509CertificateCollection certificates)
+        {
+            if(certificates == null || certificates.Count == 0)
+                return;
+
+            Request.ClientCertificates.AddRange(certificates);
+        }
 
         bool IsHttpError()
         {
