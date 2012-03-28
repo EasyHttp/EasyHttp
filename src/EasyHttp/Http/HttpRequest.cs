@@ -79,6 +79,7 @@ namespace EasyHttp.Http
         public string AcceptEncoding { get; set; }
         public string AcceptLanguage { get; set; }
         public bool KeepAlive { get; set; }
+        public X509CertificateCollection ClientCertificates { get; set; }
         public string ContentLength { get; private set; }
         public string ContentType { get; set; }
         public string ContentEncoding { get; set; }
@@ -124,7 +125,9 @@ namespace EasyHttp.Http
         public HttpRequest(IEncoder encoder)
         {
             RawHeaders = new Dictionary<string, object>();
-            
+
+            ClientCertificates = new X509CertificateCollection();
+
             UserAgent = String.Format("EasyHttp HttpClient v{0}",
                                        Assembly.GetAssembly(typeof(HttpClient)).GetName().Version);
 
@@ -361,8 +364,18 @@ namespace EasyHttp.Http
             return httpWebRequest;
         }
 
+        private void SetupClientCertificates()
+        {
+            if (ClientCertificates == null || ClientCertificates.Count == 0)
+                return;
+
+            httpWebRequest.ClientCertificates.AddRange(ClientCertificates);
+        }
+
         void SetupAuthentication()
         {
+            SetupClientCertificates();
+
             if (_forceBasicAuth)
             {
                 string authInfo = _username + ":" + _password;
