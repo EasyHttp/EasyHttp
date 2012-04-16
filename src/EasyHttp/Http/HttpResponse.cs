@@ -79,10 +79,10 @@ namespace EasyHttp.Http
         public string ContentLanguage { get; private set; }
         public long ContentLength { get; private set; }
         public string ContentLocation { get; private set; }
-        
+
         // TODO :This should be files
         public string ContentDisposition { get; private set; }
-        
+
         public DateTime Date { get; private set; }
         public string ETag { get; private set; }
         public DateTime Expires { get; private set; }
@@ -125,7 +125,7 @@ namespace EasyHttp.Http
 
                 using (var stream = _response.GetResponseStream())
                 {
-                    
+
                     if (stream != null)
                     {
                         if (!String.IsNullOrEmpty(filename))
@@ -134,13 +134,14 @@ namespace EasyHttp.Http
                             {
                                 int count;
                                 var buffer = new byte[8192];
-                                
+
                                 while ((count = stream.Read(buffer, 0, buffer.Length)) > 0)
                                 {
                                     filestream.Write(buffer, 0, count);
-                                } 
-                            }   
-                        } else
+                                }
+                            }
+                        }
+                        else
                         {
                             using (var reader = new StreamReader(stream))
                             {
@@ -157,10 +158,24 @@ namespace EasyHttp.Http
                 {
                     throw;
                 }
-                var respone = (HttpWebResponse) webException.Response;
+                var response = (HttpWebResponse)webException.Response;
 
-                StatusCode = respone.StatusCode;
-                StatusDescription = respone.StatusDescription;
+                StatusCode = response.StatusCode;
+                StatusDescription = response.StatusDescription;
+
+                try
+                {
+                    using (var stream = response.GetResponseStream())
+                    {
+                        using (var reader = new StreamReader(stream))
+                        {
+                            RawText = reader.ReadToEnd();
+                        }
+                    }
+                }
+                catch
+                {
+                }
             }
         }
 
@@ -186,10 +201,10 @@ namespace EasyHttp.Http
             ContentDisposition = GetHeader("Content-Disposition");
             ETag = GetHeader("ETag");
             Location = GetHeader("Location");
-                
+
             if (!String.IsNullOrEmpty(GetHeader("Expires")))
             {
-                DateTime expires; 
+                DateTime expires;
                 if (DateTime.TryParse(GetHeader("Expires"), out expires))
                 {
                     Expires = expires;
