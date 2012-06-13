@@ -61,6 +61,7 @@ using EasyHttp.Codecs;
 using EasyHttp.Codecs.JsonFXExtensions;
 using JsonFx.Json;
 using JsonFx.Json.Resolvers;
+using JsonFx.Model.Filters;
 using JsonFx.Serialization;
 using JsonFx.Serialization.Resolvers;
 using JsonFx.Xml;
@@ -89,8 +90,8 @@ namespace EasyHttp.Configuration
 
         public IDecoder GetDecoder()
         {
-            var jsonReader = new JsonReader(new DataReaderSettings(CombinedResolverStrategy()), new[] { "application/.*json", "text/.*json" });
-            var xmlReader = new XmlReader(new DataReaderSettings(CombinedResolverStrategy()),
+            var jsonReader = new JsonReader(new DataReaderSettings(CombinedResolverStrategy(), new Iso8601DateFilter()), new[] { "application/.*json", "text/.*json" });
+            var xmlReader = new XmlReader(new DataReaderSettings(CombinedResolverStrategy(), new Iso8601DateFilter()),
                                           new[] {"application/.*xml", "text/.*xhtml", "text/xml", "text/html"});
 
             var readers = new List<IDataReader> {jsonReader, xmlReader};

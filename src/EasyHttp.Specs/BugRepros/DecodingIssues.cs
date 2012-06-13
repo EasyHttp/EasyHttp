@@ -29,18 +29,60 @@
 //  
 #endregion
 
+using System;
 using System.Collections.Generic;
 using EasyHttp.Codecs;
 using EasyHttp.Codecs.JsonFXExtensions;
 using EasyHttp.Configuration;
 using EasyHttp.Http;
 using JsonFx.Json;
+using JsonFx.Model.Filters;
 using JsonFx.Serialization;
 using JsonFx.Serialization.Resolvers;
 using Machine.Specifications;
 
 namespace EasyHttp.Specs.BugRepros
 {
+    public class when_decoding_date_in_iso8601_format
+    {
+        Establish context = () =>
+        {
+            input = "{\"LockedOutUntil\":\"/Date(1289073014137)/\"}";
+
+
+            IEnumerable<IDataReader> readers = new List<IDataReader> { new 
+                JsonReader(new DataReaderSettings(DefaultEncoderDecoderConfiguration.CombinedResolverStrategy(), 
+                    new MSAjaxDateFilter(),
+                    new Iso8601DateFilter()
+                ), "application/.*json") };
+
+            decoder = new DefaultDecoder(new RegExBasedDataReaderProvider(readers));
+
+
+
+        };
+
+        Because of = () =>
+        {
+            outputStatic = decoder.DecodeToStatic<User>(input, HttpContentTypes.ApplicationJson);
+        };
+
+        It should_decode_correctly_to_dynamic_body = () =>
+        {
+            outputStatic.LockedOutUntil.ShouldEqual(new DateTime(2010, 11, 06));
+        };
+
+        static DefaultDecoder decoder;
+        static User outputStatic;
+        static string input;
+
+        public class User
+        {
+            public DateTime? LockedOutUntil { get; set; }
+        }
+
+    }
+
     public class when_decoding_an_object_that_is_an_array_to_dynamic
     {
         Establish context = () => 
