@@ -59,7 +59,6 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 using EasyHttp.Codecs;
 using EasyHttp.Configuration;
 using EasyHttp.Infrastructure;
@@ -126,6 +125,16 @@ namespace EasyHttp.Http
         {
             InitRequest(uri, HttpMethod.GET);
             return ProcessRequest();
+        }
+
+        public HttpResponse Get(string uri, dynamic parameters)
+        {
+            return Get(String.Concat(uri, ObjectToUrlParameters.ParametersToUrl(parameters)));
+        }
+
+        public HttpResponse Get<T>(string uri, T parameters)
+        {
+            return Get(String.Concat(uri, ObjectToUrlParameters.ParametersToUrl(parameters)));
         }
 
         public HttpResponse Options(string uri)
@@ -226,7 +235,6 @@ namespace EasyHttp.Http
 
             return (num == 4 || num == 5);
         }
-
 
     }
 }
