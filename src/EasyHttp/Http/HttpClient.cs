@@ -127,12 +127,7 @@ namespace EasyHttp.Http
             return ProcessRequest();
         }
 
-        public HttpResponse Get(string uri, dynamic parameters)
-        {
-            return Get(String.Concat(uri, ObjectToUrlParameters.ParametersToUrl(parameters)));
-        }
-
-        public HttpResponse Get<T>(string uri, T parameters)
+        public HttpResponse Get<T>(string uri, T parameters) where T : class 
         {
             return Get(String.Concat(uri, ObjectToUrlParameters.ParametersToUrl(parameters)));
         }
