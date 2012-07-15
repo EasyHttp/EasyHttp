@@ -1,7 +1,4 @@
-﻿using System;
-using System.Dynamic;
-using System.Linq;
-using EasyHttp.Infrastructure;
+﻿using EasyHttp.Infrastructure;
 using NUnit.Framework;
 
 namespace EasyHttp.Specs.NunitTests
@@ -42,29 +39,6 @@ namespace EasyHttp.Specs.NunitTests
         public void If_Adding_Two_Parameters_Will_Create_The_Correct_Url_With_Static_Object()
         {
             Assert.AreEqual("?Name=test&Id=1", ObjectToUrlParameters.ParametersToUrl(new StaticObjectWithNameAndId { Name = "test", Id=1 }));
-        }
-
-        [Test]
-        public void If_Adding_One_Parameter_Will_Create_The_Correct_Url_With_Dynamic_Object()
-        {
-            dynamic x = new ExpandoObject();
-            x.Name = "test";
-            object o = x;
-            string[] propertyNames = o.GetType().GetProperties().Select(p => p.Name).ToArray();
-            foreach (var prop in propertyNames)
-            {
-                object propValue = o.GetType().GetProperty(prop).GetValue(o, null);
-            }
-            Assert.AreEqual("?Name=test", ObjectToUrlParameters.ParametersToUrl(x));
-        }
-
-        [Test]
-        public void If_Adding_Two_Parameters_Will_Create_The_Correct_Url_With_Dynamic_Object()
-        {
-            dynamic x = new ExpandoObject();
-            x.Name = "test";
-            x.Id = 1;
-            Assert.AreEqual("?Name=test&Id=1", ObjectToUrlParameters.ParametersToUrl(x));
         }
 
         public class StaticObjectWithName
