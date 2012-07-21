@@ -10,4 +10,5 @@ _ReSharper.*
 *.nupkg
 *.bin
 ~$*
+*ncrunch*
 
