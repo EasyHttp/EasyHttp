@@ -72,8 +72,7 @@ namespace EasyHttp.Http
         string _downloadFilename;
         readonly IDecoder _decoder;
         readonly UriComposer _uriComposer;
-        readonly ObjectToUrlParameters _objectToUrlParameters;
-
+        
         public bool LoggingEnabled { get; set; }
         public bool ThrowExceptionOnHttpError { get; set; }
       
@@ -89,8 +88,7 @@ namespace EasyHttp.Http
             _encoder = encoderDecoderConfiguration.GetEncoder();
             _decoder = encoderDecoderConfiguration.GetDecoder();
             _uriComposer = new UriComposer();
-            _objectToUrlParameters = new ObjectToUrlParameters();
-
+            
             Request = new HttpRequest(_encoder);
         }
 
@@ -102,9 +100,9 @@ namespace EasyHttp.Http
         public HttpResponse Response { get; private set; }
         public HttpRequest Request { get; private set; }
 
-        void InitRequest(string uri, HttpMethod method)
+        void InitRequest(string uri, HttpMethod method, object query)
         {
-            Request.Uri = !String.IsNullOrEmpty(_baseUri) ? _uriComposer.Compose(_baseUri, uri): uri;
+            Request.Uri = _uriComposer.Compose(_baseUri, uri, query);
             Request.Data = null;
             Request.PutFilename = String.Empty;
             Request.Expect = false;
@@ -118,54 +116,49 @@ namespace EasyHttp.Http
 
         public HttpResponse GetAsFile(string uri, string filename)
         {
-            InitRequest(uri, HttpMethod.GET);
+            InitRequest(uri, HttpMethod.GET, null);
             _downloadFilename = filename;
             return ProcessRequest();
         }
         
-        public HttpResponse Get(string uri)
+        public HttpResponse Get(string uri, object query = null)
         {
-            InitRequest(uri, HttpMethod.GET);
+            InitRequest(uri, HttpMethod.GET, query);
             return ProcessRequest();
-        }
-
-        public HttpResponse Get<T>(string uri, T parameters) where T : class 
-        {
-            return Get(String.Concat(uri, _objectToUrlParameters.ParametersToUrl(parameters)));
         }
 
         public HttpResponse Options(string uri)
         {
-            InitRequest(uri, HttpMethod.OPTIONS);
+            InitRequest(uri, HttpMethod.OPTIONS, null);
             return ProcessRequest();
         }
 
-        public HttpResponse Post(string uri, object data, string contentType)
+        public HttpResponse Post(string uri, object data, string contentType, object query = null)
         {
-            InitRequest(uri, HttpMethod.POST);
+            InitRequest(uri, HttpMethod.POST, query);
             InitData(data, contentType);
             return ProcessRequest();
         }
 
-        public HttpResponse Patch(string uri, object data, string contentType)
+        public HttpResponse Patch(string uri, object data, string contentType, object query = null)
         {
-            InitRequest(uri, HttpMethod.PATCH);
+            InitRequest(uri, HttpMethod.PATCH, query);
             InitData(data, contentType);
             return ProcessRequest();
         }
 
-        public HttpResponse Post(string uri, IDictionary<string, object> formData, IList<FileData> files)
+        public HttpResponse Post(string uri, IDictionary<string, object> formData, IList<FileData> files, object query = null)
         {
-            InitRequest(uri, HttpMethod.POST);
+            InitRequest(uri, HttpMethod.POST, query);
             Request.MultiPartFormData = formData;
             Request.MultiPartFileData = files;
             Request.KeepAlive = true;
             return ProcessRequest();
         }
 
-        public HttpResponse Put(string uri, object data, string contentType)
+        public HttpResponse Put(string uri, object data, string contentType, object query = null)
         {
-            InitRequest(uri, HttpMethod.PUT);
+            InitRequest(uri, HttpMethod.PUT, query);
             InitData(data, contentType);
             return ProcessRequest();
         }
@@ -180,22 +173,22 @@ namespace EasyHttp.Http
             }
         }
 
-        public HttpResponse Delete(string uri)
+        public HttpResponse Delete(string uri, object query = null)
         {
-            InitRequest(uri, HttpMethod.DELETE);
+            InitRequest(uri, HttpMethod.DELETE, query);
             return ProcessRequest();
         }
 
  
         public HttpResponse Head(string uri)
         {
-            InitRequest(uri, HttpMethod.HEAD);
+            InitRequest(uri, HttpMethod.HEAD, null);
             return ProcessRequest();
         }
 
         public HttpResponse PutFile(string uri, string filename, string contentType)
         {
-            InitRequest(uri, HttpMethod.PUT);
+            InitRequest(uri, HttpMethod.PUT, null);
             Request.ContentType = contentType;
             Request.PutFilename = filename;
             Request.Expect = true;

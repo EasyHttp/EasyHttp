@@ -76,6 +76,7 @@
     <Compile Include="Helpers\CouchInformation.cs" />
     <Compile Include="Helpers\TestSettings.cs" />
     <Compile Include="Specs\HttpInitSpecs.cs" />
+    <Compile Include="Specs\UriComposerSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Helpers\test.jpg">

@@ -4,27 +4,23 @@ namespace EasyHttp.Infrastructure
 {
     public class UriComposer
     {
-        public string Compose(params string[] sections)
+        readonly ObjectToUrlParameters _objectToUrlParameters;
+
+        public UriComposer()
         {
-            var uri = string.Empty;
-            foreach (var section in sections)
+            _objectToUrlParameters = new ObjectToUrlParameters();
+        }
+
+        public string Compose(string baseuri, string uri, object query)
+        {
+            var returnUri = uri;
+            if(!String.IsNullOrEmpty(baseuri))
             {
-
-                if (section.StartsWith("/"))
-                {
-                    uri = uri + section.Remove(0, 1);
-                } else
-                {
-                    uri = uri + section;
-                }
-
-                if (!section.EndsWith("/"))
-                {
-                    uri = uri + "/";
-                }
+                returnUri = baseuri.EndsWith("/") ? baseuri : String.Concat(baseuri,"/");
+                returnUri += uri.StartsWith("/") ? uri.Substring(1) : uri;
             }
-            
-            return uri.Remove(uri.Length -1, 1);
+            returnUri = query != null ? String.Concat(returnUri, _objectToUrlParameters.ParametersToUrl(query)) : returnUri;
+            return returnUri;
         }
     }
 }
