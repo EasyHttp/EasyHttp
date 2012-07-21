@@ -43,6 +43,7 @@ using Machine.Specifications;
 
 namespace EasyHttp.Specs.BugRepros
 {
+    [Ignore]
     public class when_decoding_date_in_iso8601_format
     {
         Establish context = () =>
