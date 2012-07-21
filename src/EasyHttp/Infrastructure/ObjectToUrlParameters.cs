@@ -8,7 +8,7 @@ namespace EasyHttp.Infrastructure
 {
     public class ObjectToUrlParameters
     {
-        public static string ParametersToUrl(object parameters)
+        public string ParametersToUrl(object parameters)
         {
             var returnuri = "";
             var properties = GetProperties((parameters));
@@ -20,7 +20,7 @@ namespace EasyHttp.Infrastructure
             return returnuri;
         }
 
-        private static IEnumerable<PropertyValue> GetProperties(object parameters)
+        private IEnumerable<PropertyValue> GetProperties(object parameters)
         {
             if (parameters != null)
             {

@@ -72,6 +72,7 @@ namespace EasyHttp.Http
         string _downloadFilename;
         readonly IDecoder _decoder;
         readonly UriComposer _uriComposer;
+        readonly ObjectToUrlParameters _objectToUrlParameters;
 
         public bool LoggingEnabled { get; set; }
         public bool ThrowExceptionOnHttpError { get; set; }
@@ -88,6 +89,7 @@ namespace EasyHttp.Http
             _encoder = encoderDecoderConfiguration.GetEncoder();
             _decoder = encoderDecoderConfiguration.GetDecoder();
             _uriComposer = new UriComposer();
+            _objectToUrlParameters = new ObjectToUrlParameters();
 
             Request = new HttpRequest(_encoder);
         }
@@ -129,7 +131,7 @@ namespace EasyHttp.Http
 
         public HttpResponse Get<T>(string uri, T parameters) where T : class 
         {
-            return Get(String.Concat(uri, ObjectToUrlParameters.ParametersToUrl(parameters)));
+            return Get(String.Concat(uri, _objectToUrlParameters.ParametersToUrl(parameters)));
         }
 
         public HttpResponse Options(string uri)
