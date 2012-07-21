@@ -164,7 +164,8 @@ namespace EasyHttp.Specs.Specs
             Guid guid = Guid.NewGuid();
             response = httpClient.Put(string.Format("{0}/{1}", TestSettings.CouchDbDatabaseUrl, guid),
                           new Customer() { Name = "Put", Email = "test@test.com" }, HttpContentTypes.ApplicationJson);
-            response = httpClient.Get(TestSettings.CouchDbRootUrl, new {Name = "Put"});
+            string id = response.DynamicBody.id;
+            response = httpClient.Get(TestSettings.CouchDbDatabaseUrl + "/_all_docs", new { Descending = "true" });
         };
 
 
@@ -172,13 +173,10 @@ namespace EasyHttp.Specs.Specs
         {
             dynamic body = response.DynamicBody;
 
-            string name = body.Name;
+            int couchdb = body.total_rows;
 
-            string email = body.Email;
+            couchdb.ShouldNotEqual(0);
 
-            name.ShouldEqual("Put");
-
-            email.ShouldEqual("test@test.com");
         };
         
         static HttpClient httpClient;
