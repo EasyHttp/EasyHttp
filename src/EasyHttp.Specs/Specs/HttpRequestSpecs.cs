@@ -151,6 +151,39 @@ namespace EasyHttp.Specs.Specs
     }
 
     [Subject("HttpClient")]
+    public class when_making_a_GET_request_with_valid_uri_and__and_valid_parameters
+    {
+        Establish context = () =>
+        {
+            httpClient = new HttpClient();
+            httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
+        };
+
+        Because of = () =>
+        {
+            Guid guid = Guid.NewGuid();
+            response = httpClient.Put(string.Format("{0}/{1}", TestSettings.CouchDbDatabaseUrl, guid),
+                          new Customer() { Name = "Put", Email = "test@test.com" }, HttpContentTypes.ApplicationJson);
+            string id = response.DynamicBody.id;
+            response = httpClient.Get(TestSettings.CouchDbDatabaseUrl + "/_all_docs", new { Descending = "true" });
+        };
+
+
+        It should_return_dynamic_body_with_json_object = () =>
+        {
+            dynamic body = response.DynamicBody;
+
+            int couchdb = body.total_rows;
+
+            couchdb.ShouldNotEqual(0);
+
+        };
+        
+        static HttpClient httpClient;
+        static dynamic response;
+    }
+
+    [Subject("HttpClient")]
     public class when_making_a_GET_request_with_valid_uri_and_content_type_set_to_application_json
     {
         Establish context = () =>
