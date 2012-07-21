@@ -74,7 +74,27 @@ To get some data in JSON format:
 	Console.WriteLine("Name {0}", customer.Name);
 ```
 
-Both in Static and Dynamic versions, hierarchies are supported. 
+Both in Static and Dynamic versions, hierarchies are supported.
+
+## Perform a get with parameters
+
+To get some data from a service
+
+ ```
+	var http = new HttpClient();
+	http.Get("url", new {Name = "test"});
+```
+
+Should translate to the following url being passed. url?Name=test the value will be urlencoded.
+
+To get some data in JSon format.
+
+ ```
+	var http = new HttpClient();
+	http.Request.Accept = HttpContentTypes.ApplicationJson;
+	http.Get("url", new {Name = "test"});
+```
+
 
 ## Serialization / Deserialization Conventions
 

@@ -37,9 +37,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\JsonFx.2.0.1106.2610\lib\net40\JsonFx.dll</HintPath>
     </Reference>
-    <Reference Include="Machine.Specifications, Version=0.4.24.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Machine.Specifications, Version=0.5.7.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Machine.Specifications.0.4.24.0\lib\Machine.Specifications.dll</HintPath>
+      <HintPath>..\packages\Machine.Specifications.0.5.7\lib\net40\Machine.Specifications.dll</HintPath>
+    </Reference>
+    <Reference Include="Machine.Specifications.Clr4">
+      <HintPath>..\packages\Machine.Specifications.0.5.7\lib\net40\Machine.Specifications.Clr4.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.0.12054\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -59,6 +65,7 @@
     <Compile Include="BugRepros\DecodingIssues.cs" />
     <Compile Include="BugRepros\EnumEncodingIssue.cs" />
     <Compile Include="BugRepros\UploadFileIssue.cs" />
+    <Compile Include="Specs\DynamicObjectToUrlSpecs.cs" />
     <Compile Include="Specs\UploadRequestSpecs.cs" />
     <Compile Include="Specs\DynamicSpecs.cs" />
     <Compile Include="Specs\FileRequestSpecs.cs" />
