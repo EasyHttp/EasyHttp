@@ -121,35 +121,6 @@ namespace EasyHttp.Http
             {
                 _response = (HttpWebResponse)request.GetResponse();
 
-                GetHeaders();
-
-                using (var stream = _response.GetResponseStream())
-                {
-                    
-                    if (stream != null)
-                    {
-                        if (!String.IsNullOrEmpty(filename))
-                        {
-                            using (var filestream = new FileStream(filename, FileMode.CreateNew))
-                            {
-                                int count;
-                                var buffer = new byte[8192];
-                                
-                                while ((count = stream.Read(buffer, 0, buffer.Length)) > 0)
-                                {
-                                    filestream.Write(buffer, 0, count);
-                                } 
-                            }   
-                        } else
-                        {
-                            using (var reader = new StreamReader(stream))
-                            {
-                                RawText = reader.ReadToEnd();
-                            }
-                        }
-                    }
-                }
-
             }
             catch (WebException webException)
             {
@@ -157,11 +128,40 @@ namespace EasyHttp.Http
                 {
                     throw;
                 }
-                var respone = (HttpWebResponse) webException.Response;
+                _response = (HttpWebResponse) webException.Response;
 
-                StatusCode = respone.StatusCode;
-                StatusDescription = respone.StatusDescription;
             }
+
+            GetHeaders();
+
+            using (var stream = _response.GetResponseStream())
+            {
+
+                if (stream != null)
+                {
+                    if (!String.IsNullOrEmpty(filename))
+                    {
+                        using (var filestream = new FileStream(filename, FileMode.CreateNew))
+                        {
+                            int count;
+                            var buffer = new byte[8192];
+
+                            while ((count = stream.Read(buffer, 0, buffer.Length)) > 0)
+                            {
+                                filestream.Write(buffer, 0, count);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        using (var reader = new StreamReader(stream))
+                        {
+                            RawText = reader.ReadToEnd();
+                        }
+                    }
+                }
+            }
+
         }
 
         void GetHeaders()

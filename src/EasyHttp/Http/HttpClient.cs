@@ -180,9 +180,9 @@ namespace EasyHttp.Http
         }
 
  
-        public HttpResponse Head(string uri)
+        public HttpResponse Head(string uri, object query = null)
         {
-            InitRequest(uri, HttpMethod.HEAD, null);
+            InitRequest(uri, HttpMethod.HEAD, query);
             return ProcessRequest();
         }
 

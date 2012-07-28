@@ -66,6 +66,7 @@
     <Compile Include="BugRepros\EnumEncodingIssue.cs" />
     <Compile Include="BugRepros\UploadFileIssue.cs" />
     <Compile Include="Specs\DynamicObjectToUrlSpecs.cs" />
+    <Compile Include="Specs\HttpErrorHandlingSpecs.cs" />
     <Compile Include="Specs\UploadRequestSpecs.cs" />
     <Compile Include="Specs\DynamicSpecs.cs" />
     <Compile Include="Specs\FileRequestSpecs.cs" />
