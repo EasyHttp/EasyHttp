@@ -71,7 +71,7 @@ namespace EasyHttp.Http
         public string ContentType { get; private set; }
         public HttpStatusCode StatusCode { get; private set; }
         public string StatusDescription { get; private set; }
-        public CookieCollection Cookie { get; private set; }
+        public CookieCollection Cookies { get; private set; }
         public int Age { get; private set; }
         public HttpMethod[] Allow { get; private set; }
         public CacheControl CacheControl { get; private set; }
