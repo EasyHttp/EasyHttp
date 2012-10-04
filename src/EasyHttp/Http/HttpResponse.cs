@@ -169,7 +169,7 @@ namespace EasyHttp.Http
             ContentType = _response.ContentType;
             StatusCode = _response.StatusCode;
             StatusDescription = _response.StatusDescription;
-            Cookie = _response.Cookies;
+            Cookies = _response.Cookies;
             ContentEncoding = _response.ContentEncoding;
             ContentLength = _response.ContentLength;
             Date = DateTime.Now;
