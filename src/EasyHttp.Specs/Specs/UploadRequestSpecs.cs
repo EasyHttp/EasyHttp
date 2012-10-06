@@ -15,6 +15,9 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
+            appHost = new InitAndTearDownServiceStackHost(16010);
+            appHost.Init();
+
             httpClient = new HttpClient();
         };
 
@@ -23,7 +26,7 @@ namespace EasyHttp.Specs.Specs
         
             var imageFile = Path.Combine("Helpers", "test.jpg");
 
-            httpClient.PutFile(string.Format("{0}/attachment{1}/test.jpg", TestSettings.CouchDbDatabaseUrl, DateTime.Now.ToLongTimeString()),
+            httpClient.PutFile(string.Format("{0}/fileupload/test.jpg", "http://localhost:16010"),
                                                imageFile,
                                                "image/jpeg");
 
@@ -35,10 +38,13 @@ namespace EasyHttp.Specs.Specs
             httpClient.Response.StatusCode.ShouldEqual(HttpStatusCode.Created);
         };
 
+        Cleanup cl = () => appHost.TearDown();
+
         static HttpClient httpClient;
         static Guid guid;
         static HttpResponse response;
         static string rev;
+        static InitAndTearDownServiceStackHost appHost;
     }
 
     [Subject(typeof (HttpClient))]

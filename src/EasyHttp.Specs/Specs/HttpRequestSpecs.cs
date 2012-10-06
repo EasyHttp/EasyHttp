@@ -61,6 +61,7 @@ using System.Net;
 using EasyHttp.Http;
 using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
+using Result = EasyHttp.Specs.Helpers.ResultResponse;
 
 namespace EasyHttp.Specs.Specs
 {
@@ -89,6 +90,9 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
+            appHost = new InitAndTearDownServiceStackHost(16003);
+            appHost.Init();
+
             httpClient = new HttpClient
                          {
                              Request = {Accept = HttpContentTypes.ApplicationJson}
@@ -97,36 +101,33 @@ namespace EasyHttp.Specs.Specs
             // First create customer in order to then delete it
             guid = Guid.NewGuid();
 
-            response = httpClient.Put(string.Format("{0}/{1}", TestSettings.CouchDbDatabaseUrl, guid),
-                          new Customer() {Name = "ToDelete", Email = "test@test.com"}, HttpContentTypes.ApplicationJson);
+            response = httpClient.Put(string.Format("{0}/hello/", "http://localhost:16003"),
+                          new Customer() {Name = "ToDelete"}, HttpContentTypes.ApplicationJson);
 
 
-            rev = response.DynamicBody.rev;
+            rev = response.DynamicBody.Result;
         };
 
         Because of = () =>
         {
-
-            response = httpClient.Delete(String.Format("{0}/{1}?rev={2}", TestSettings.CouchDbDatabaseUrl, guid, rev));
+            response = httpClient.Delete(String.Format("{0}/hello", "http://localhost:16003"));
         };
 
         It should_delete_the_specified_resource = () =>
         {
-            bool ok = response.DynamicBody.ok;
+            string result = response.DynamicBody.Result;
 
-            string id = response.DynamicBody.id;
-
-            ok.ShouldBeTrue();
-
-            id.ShouldNotBeEmpty();
+            result.ShouldNotBeEmpty();
 
         };
 
+        Cleanup cl = () => appHost.TearDown();
 
         static HttpClient httpClient;
         static dynamic response;
         static string rev;
         static Guid guid;
+        static InitAndTearDownServiceStackHost appHost;
     }
 
     [Subject("HttpClient")]
@@ -134,20 +135,26 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
+            appHost = new InitAndTearDownServiceStackHost(16004);
+            appHost.Init();
+
             httpClient = new HttpClient();
         };
 
         Because of = () =>
         {
-            httpResponse = httpClient.Get("http://localhost:5984");
+            httpResponse = httpClient.Get("http://localhost:16004");
 
         };
 
         It should_return_body_with_rawtext =
             () => httpResponse.RawText.ShouldNotBeEmpty();
 
+        Cleanup cl = () => appHost.TearDown();
+
         static HttpClient httpClient;
         static HttpResponse httpResponse;
+        static InitAndTearDownServiceStackHost appHost;
     }
 
     [Subject("HttpClient")]
@@ -155,17 +162,16 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
+            appHost = new InitAndTearDownServiceStackHost(16005);
+            appHost.Init();
+
             httpClient = new HttpClient();
             httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
         };
 
         Because of = () =>
         {
-            Guid guid = Guid.NewGuid();
-            response = httpClient.Put(string.Format("{0}/{1}", TestSettings.CouchDbDatabaseUrl, guid),
-                          new Customer() { Name = "Put", Email = "test@test.com" }, HttpContentTypes.ApplicationJson);
-            string id = response.DynamicBody.id;
-            response = httpClient.Get(TestSettings.CouchDbDatabaseUrl + "/_all_docs", new { Descending = "true" });
+            response = httpClient.Get("http://localhost:16005/hello", new { Name = "true" });
         };
 
 
@@ -173,13 +179,16 @@ namespace EasyHttp.Specs.Specs
         {
             dynamic body = response.DynamicBody;
 
-            int couchdb = body.total_rows;
+            string couchdb = body.Result;
 
-            couchdb.ShouldNotEqual(0);
+            couchdb.ShouldEqual("Hello, true");
 
         };
-        
+
+        Cleanup cl = () => appHost.TearDown();
+
         static HttpClient httpClient;
+        static InitAndTearDownServiceStackHost appHost;
         static dynamic response;
     }
 
@@ -188,6 +197,9 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
+            appHost = new InitAndTearDownServiceStackHost(16006);
+            appHost.Init();
+            
             httpClient = new HttpClient();
             httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
 
@@ -196,7 +208,7 @@ namespace EasyHttp.Specs.Specs
         Because of = () =>
         {
 
-            response = httpClient.Get(TestSettings.CouchDbRootUrl);
+            response = httpClient.Get("http://localhost:16006/hello");
 
         };
 
@@ -205,26 +217,25 @@ namespace EasyHttp.Specs.Specs
         {
             dynamic body = response.DynamicBody;
 
-            string couchdb = body.couchdb;
+            string result = body.Result;
 
-            string version = body.version;
+            result.ShouldEqual("Hello, ");
 
-            couchdb.ShouldEqual("Welcome");
-
-            version.ShouldNotBeEmpty();
         };
 
 
         It should_return_static_body_with_json_object = () =>
         {
-            var couchInformation = response.StaticBody<CouchInformation>();
+            var couchInformation = response.StaticBody<ResultResponse>();
 
-            couchInformation.message.ShouldEqual("Welcome");
+            couchInformation.Result.ShouldEqual("Hello, ");
 
-            couchInformation.version.ShouldNotBeEmpty();
         };
 
+        Cleanup cl = () => appHost.TearDown();
+
         static HttpClient httpClient;
+        static InitAndTearDownServiceStackHost appHost;
         static HttpResponse response;
     }
 
@@ -234,18 +245,24 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
+            appHost = new InitAndTearDownServiceStackHost(16007);
+            appHost.Init();
+            
             httpClient = new HttpClient();
         };
 
         Because of = () =>
         {
-            response = httpClient.Head(TestSettings.CouchDbRootUrl);
+            response = httpClient.Head("http://localhost:16007");
 
         };
 
         It should_return_OK_response  =
             () => response.StatusDescription.ShouldEqual("OK");
 
+        Cleanup cl = () => appHost.TearDown();
+
+        static InitAndTearDownServiceStackHost appHost;
         static HttpClient httpClient;
         static HttpResponse response;
     }
@@ -255,6 +272,9 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
+            appHost = new InitAndTearDownServiceStackHost(16008);
+            appHost.Init();
+            
             httpClient = new HttpClient();
             httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
 
@@ -263,25 +283,22 @@ namespace EasyHttp.Specs.Specs
         Because of = () =>
         {
 
-            response = httpClient.Post(TestSettings.CouchDbDatabaseUrl, new Customer() { Name = "Hadi", Email = "test@test.com" }, HttpContentTypes.ApplicationJson);
+            response = httpClient.Post("http://localhost:16008/hello", new Customer() { Name = "Hadi"}, HttpContentTypes.ApplicationJson);
 
         };
 
 
         It should_succeed = () =>
         {
-            bool ok = response.DynamicBody.ok;
-
-            string id = response.DynamicBody.id;
-
-            ok.ShouldBeTrue();
+            string id = response.DynamicBody.Result;
 
             id.ShouldNotBeEmpty();
         };
 
-
+        Cleanup cl = () => appHost.TearDown();
 
         static HttpClient httpClient;
+        static InitAndTearDownServiceStackHost appHost;
         static dynamic response;
     }
 
@@ -290,33 +307,32 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
+            appHost = new InitAndTearDownServiceStackHost(16009);
+            appHost.Init();
+            
             httpClient = new HttpClient();
             httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
         };
 
         Because of = () =>
         {
-            Guid guid = Guid.NewGuid();
-            response = httpClient.Put(string.Format("{0}/{1}", TestSettings.CouchDbDatabaseUrl, guid),
-                          new Customer() { Name = "Put", Email = "test@test.com" }, HttpContentTypes.ApplicationJson);
+            response = httpClient.Put(string.Format("{0}/{1}", "http://localhost:16009", "hello"),
+                          new Customer() { Name = "Put"}, HttpContentTypes.ApplicationJson);
 
         };
 
 
         It should_succeed = () =>
         {
-            bool ok = response.DynamicBody.ok;
+            string result = response.DynamicBody.Result;
 
-            string id = response.DynamicBody.id;
-
-            ok.ShouldBeTrue();
-
-            id.ShouldNotBeEmpty();
+            result.ShouldNotBeEmpty();
         };
 
-
+        Cleanup cl = () => appHost.TearDown();
 
         static HttpClient httpClient;
+        static InitAndTearDownServiceStackHost appHost;
         static dynamic response;
     }
 
