@@ -1,7 +1,6 @@
-﻿using EasyHttp.Specs.Helpers;
-using Machine.Specifications;
+﻿using Machine.Specifications;
 
-namespace EasyHttp.Specs
+namespace EasyHttp.Specs.Helpers
 {
     public class DataSpecificationBase : IAssemblyContext
     {
