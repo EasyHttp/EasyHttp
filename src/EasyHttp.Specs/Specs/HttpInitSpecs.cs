@@ -18,19 +18,13 @@ namespace EasyHttp.Specs.Specs
     {
         Because of = () =>
         {
-            appHost = new InitAndTearDownServiceStackHost(16001);
-            appHost.Init();
-
-            httpClient = new HttpClient("http://localhost:16001");
+            httpClient = new HttpClient("http://localhost:16000");
 
             httpClient.Get("/hello");
         };
 
-        It should_prefix_all_requests_with_the_base_url = () => httpClient.Request.Uri.ShouldEqual("http://localhost:16001/hello");
-
-        Cleanup cl = () => appHost.TearDown(); 
+        It should_prefix_all_requests_with_the_base_url = () => httpClient.Request.Uri.ShouldEqual("http://localhost:16000/hello");
 
         static HttpClient httpClient;
-        static InitAndTearDownServiceStackHost appHost;
     }
 }

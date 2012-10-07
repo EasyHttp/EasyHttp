@@ -90,9 +90,6 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
-            appHost = new InitAndTearDownServiceStackHost(16003);
-            appHost.Init();
-
             httpClient = new HttpClient
                          {
                              Request = {Accept = HttpContentTypes.ApplicationJson}
@@ -101,7 +98,7 @@ namespace EasyHttp.Specs.Specs
             // First create customer in order to then delete it
             guid = Guid.NewGuid();
 
-            response = httpClient.Put(string.Format("{0}/hello/", "http://localhost:16003"),
+            response = httpClient.Put(string.Format("{0}/hello/", "http://localhost:16000"),
                           new Customer() {Name = "ToDelete"}, HttpContentTypes.ApplicationJson);
 
 
@@ -110,7 +107,7 @@ namespace EasyHttp.Specs.Specs
 
         Because of = () =>
         {
-            response = httpClient.Delete(String.Format("{0}/hello", "http://localhost:16003"));
+            response = httpClient.Delete(String.Format("{0}/hello", "http://localhost:16000"));
         };
 
         It should_delete_the_specified_resource = () =>
@@ -121,13 +118,10 @@ namespace EasyHttp.Specs.Specs
 
         };
 
-        Cleanup cl = () => appHost.TearDown();
-
         static HttpClient httpClient;
         static dynamic response;
         static string rev;
         static Guid guid;
-        static InitAndTearDownServiceStackHost appHost;
     }
 
     [Subject("HttpClient")]
@@ -135,26 +129,21 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
-            appHost = new InitAndTearDownServiceStackHost(16004);
-            appHost.Init();
-
             httpClient = new HttpClient();
         };
 
         Because of = () =>
         {
-            httpResponse = httpClient.Get("http://localhost:16004");
+            httpResponse = httpClient.Get("http://localhost:16000");
 
         };
 
         It should_return_body_with_rawtext =
             () => httpResponse.RawText.ShouldNotBeEmpty();
 
-        Cleanup cl = () => appHost.TearDown();
-
+    
         static HttpClient httpClient;
         static HttpResponse httpResponse;
-        static InitAndTearDownServiceStackHost appHost;
     }
 
     [Subject("HttpClient")]
@@ -162,16 +151,13 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
-            appHost = new InitAndTearDownServiceStackHost(16005);
-            appHost.Init();
-
             httpClient = new HttpClient();
             httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
         };
 
         Because of = () =>
         {
-            response = httpClient.Get("http://localhost:16005/hello", new { Name = "true" });
+            response = httpClient.Get("http://localhost:16000/hello", new { Name = "true" });
         };
 
 
@@ -185,10 +171,7 @@ namespace EasyHttp.Specs.Specs
 
         };
 
-        Cleanup cl = () => appHost.TearDown();
-
         static HttpClient httpClient;
-        static InitAndTearDownServiceStackHost appHost;
         static dynamic response;
     }
 
@@ -197,9 +180,6 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
-            appHost = new InitAndTearDownServiceStackHost(16006);
-            appHost.Init();
-            
             httpClient = new HttpClient();
             httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
 
@@ -208,7 +188,7 @@ namespace EasyHttp.Specs.Specs
         Because of = () =>
         {
 
-            response = httpClient.Get("http://localhost:16006/hello");
+            response = httpClient.Get("http://localhost:16000/hello");
 
         };
 
@@ -232,10 +212,7 @@ namespace EasyHttp.Specs.Specs
 
         };
 
-        Cleanup cl = () => appHost.TearDown();
-
         static HttpClient httpClient;
-        static InitAndTearDownServiceStackHost appHost;
         static HttpResponse response;
     }
 
@@ -245,24 +222,18 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
-            appHost = new InitAndTearDownServiceStackHost(16007);
-            appHost.Init();
-            
             httpClient = new HttpClient();
         };
 
         Because of = () =>
         {
-            response = httpClient.Head("http://localhost:16007");
+            response = httpClient.Head("http://localhost:16000");
 
         };
 
         It should_return_OK_response  =
             () => response.StatusDescription.ShouldEqual("OK");
 
-        Cleanup cl = () => appHost.TearDown();
-
-        static InitAndTearDownServiceStackHost appHost;
         static HttpClient httpClient;
         static HttpResponse response;
     }
@@ -272,9 +243,6 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
-            appHost = new InitAndTearDownServiceStackHost(16008);
-            appHost.Init();
-            
             httpClient = new HttpClient();
             httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
 
@@ -283,7 +251,7 @@ namespace EasyHttp.Specs.Specs
         Because of = () =>
         {
 
-            response = httpClient.Post("http://localhost:16008/hello", new Customer() { Name = "Hadi"}, HttpContentTypes.ApplicationJson);
+            response = httpClient.Post("http://localhost:16000/hello", new Customer() { Name = "Hadi"}, HttpContentTypes.ApplicationJson);
 
         };
 
@@ -295,10 +263,7 @@ namespace EasyHttp.Specs.Specs
             id.ShouldNotBeEmpty();
         };
 
-        Cleanup cl = () => appHost.TearDown();
-
         static HttpClient httpClient;
-        static InitAndTearDownServiceStackHost appHost;
         static dynamic response;
     }
 
@@ -307,16 +272,13 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
-            appHost = new InitAndTearDownServiceStackHost(16009);
-            appHost.Init();
-            
             httpClient = new HttpClient();
             httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
         };
 
         Because of = () =>
         {
-            response = httpClient.Put(string.Format("{0}/{1}", "http://localhost:16009", "hello"),
+            response = httpClient.Put(string.Format("{0}/{1}", "http://localhost:16000", "hello"),
                           new Customer() { Name = "Put"}, HttpContentTypes.ApplicationJson);
 
         };
@@ -329,10 +291,7 @@ namespace EasyHttp.Specs.Specs
             result.ShouldNotBeEmpty();
         };
 
-        Cleanup cl = () => appHost.TearDown();
-
         static HttpClient httpClient;
-        static InitAndTearDownServiceStackHost appHost;
         static dynamic response;
     }
 

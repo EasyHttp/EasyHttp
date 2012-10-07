@@ -15,9 +15,6 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
-            appHost = new InitAndTearDownServiceStackHost(16010);
-            appHost.Init();
-
             httpClient = new HttpClient();
         };
 
@@ -26,7 +23,7 @@ namespace EasyHttp.Specs.Specs
         
             var imageFile = Path.Combine("Helpers", "test.jpg");
 
-            httpClient.PutFile(string.Format("{0}/fileupload/test.jpg", "http://localhost:16010"),
+            httpClient.PutFile(string.Format("{0}/fileupload/test.jpg", "http://localhost:16000"),
                                                imageFile,
                                                "image/jpeg");
 
@@ -38,13 +35,10 @@ namespace EasyHttp.Specs.Specs
             httpClient.Response.StatusCode.ShouldEqual(HttpStatusCode.Created);
         };
 
-        Cleanup cl = () => appHost.TearDown();
-
         static HttpClient httpClient;
         static Guid guid;
         static HttpResponse response;
         static string rev;
-        static InitAndTearDownServiceStackHost appHost;
     }
 
     [Subject(typeof (HttpClient))]
@@ -52,9 +46,6 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
-            appHost = new InitAndTearDownServiceStackHost(16011);
-            appHost.Init();
-
             httpClient = new HttpClient();
         };
 
@@ -70,7 +61,7 @@ namespace EasyHttp.Specs.Specs
             IList<FileData> files = new List<FileData>();
 
             files.Add(new FileData() { FieldName = imageFile, ContentType = "image/jpeg", Filename = imageFile});
-            httpClient.Post(string.Format("{0}/fileupload", "http://localhost:16011"), data, files);
+            httpClient.Post(string.Format("{0}/fileupload", "http://localhost:16000"), data, files);
             
         };
 
@@ -79,13 +70,10 @@ namespace EasyHttp.Specs.Specs
             httpClient.Response.StatusCode.ShouldEqual(HttpStatusCode.OK);
         };
 
-        Cleanup cl = () => appHost.TearDown();
-
         static HttpClient httpClient;
         static Guid guid;
         static HttpResponse response;
         static string rev;
-        static InitAndTearDownServiceStackHost appHost;
     }
 
 }
