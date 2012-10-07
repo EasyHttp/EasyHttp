@@ -52,6 +52,9 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
+            appHost = new InitAndTearDownServiceStackHost(16011);
+            appHost.Init();
+
             httpClient = new HttpClient();
         };
 
@@ -67,7 +70,7 @@ namespace EasyHttp.Specs.Specs
             IList<FileData> files = new List<FileData>();
 
             files.Add(new FileData() { FieldName = imageFile, ContentType = "image/jpeg", Filename = imageFile});
-            httpClient.Post("http://youtrack.jetbrains.net/", data, files);
+            httpClient.Post(string.Format("{0}/fileupload", "http://localhost:16011"), data, files);
             
         };
 
@@ -76,10 +79,13 @@ namespace EasyHttp.Specs.Specs
             httpClient.Response.StatusCode.ShouldEqual(HttpStatusCode.OK);
         };
 
+        Cleanup cl = () => appHost.TearDown();
+
         static HttpClient httpClient;
         static Guid guid;
         static HttpResponse response;
         static string rev;
+        static InitAndTearDownServiceStackHost appHost;
     }
 
 }

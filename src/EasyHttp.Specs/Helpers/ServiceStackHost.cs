@@ -55,6 +55,12 @@ namespace EasyHttp.Specs.Helpers
             if(base.Request.ContentType == "image/jpeg" ) return new HttpResult() { StatusCode = HttpStatusCode.Created };
             return new HttpResult() { StatusCode = HttpStatusCode.NoContent };
         }
+
+        public override object OnPost(Files request)
+        {
+            if (base.Request.Files.Length == 1) return new HttpResult() { StatusCode = HttpStatusCode.OK };
+            return new HttpResult() { StatusCode = HttpStatusCode.NoContent };
+        }
     }
 
     //Define the Web Services AppHost
@@ -67,7 +73,7 @@ namespace EasyHttp.Specs.Helpers
             Routes
                             .Add<Hello>("/hello")
                             .Add<Hello>("/hello/{Name}");
-            Routes.Add<Files>("/fileupload/{Name}");
+            Routes.Add<Files>("/fileupload/{Name}").Add<Files>("/fileupload");
         }
     }
 }
