@@ -43,7 +43,6 @@ using Machine.Specifications;
 
 namespace EasyHttp.Specs.BugRepros
 {
-    [Ignore]
     public class when_decoding_date_in_iso8601_format
     {
         Establish context = () =>
@@ -70,7 +69,7 @@ namespace EasyHttp.Specs.BugRepros
 
         It should_decode_correctly_to_dynamic_body = () =>
         {
-            outputStatic.LockedOutUntil.ShouldEqual(new DateTime(2010, 11, 06));
+            outputStatic.LockedOutUntil.ShouldEqual(new DateTime(2010, 11, 06, 19, 50, 14, 137));
         };
 
         static DefaultDecoder decoder;

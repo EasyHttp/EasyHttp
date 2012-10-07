@@ -23,7 +23,7 @@ namespace EasyHttp.Specs.Specs
         
             var imageFile = Path.Combine("Helpers", "test.jpg");
 
-            httpClient.PutFile(string.Format("{0}/attachment{1}/test.jpg", TestSettings.CouchDbDatabaseUrl, DateTime.Now.ToLongTimeString()),
+            httpClient.PutFile(string.Format("{0}/fileupload/test.jpg", "http://localhost:16000"),
                                                imageFile,
                                                "image/jpeg");
 
@@ -61,7 +61,7 @@ namespace EasyHttp.Specs.Specs
             IList<FileData> files = new List<FileData>();
 
             files.Add(new FileData() { FieldName = imageFile, ContentType = "image/jpeg", Filename = imageFile});
-            httpClient.Post("http://youtrack.jetbrains.net/", data, files);
+            httpClient.Post(string.Format("{0}/fileupload", "http://localhost:16000"), data, files);
             
         };
 
