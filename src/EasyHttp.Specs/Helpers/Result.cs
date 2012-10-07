@@ -56,29 +56,12 @@
 // THE SOFTWARE.
 #endregion
 
-using System.Configuration;
+using JsonFx.Json;
 
 namespace EasyHttp.Specs.Helpers
 {
-    public static class TestSettings
+    public class ResultResponse
     {
-        public static string CouchDbRootUrl
-        {
-            get
-            {
-
-                return  ConfigurationManager.AppSettings["CouchDbRootUrl"];
-
-            }
-        }
-
-        public static string CouchDbDatabaseUrl
-        {
-            get { 
-                
-                return ConfigurationManager.AppSettings["CouchDbDatabaseUrl"];
-              
-            }
-        } 
+        public string Result { get; set; }
     }
 }

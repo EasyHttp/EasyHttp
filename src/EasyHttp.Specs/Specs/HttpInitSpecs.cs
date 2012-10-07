@@ -1,4 +1,5 @@
 using EasyHttp.Http;
+using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
 
 namespace EasyHttp.Specs.Specs
@@ -17,13 +18,12 @@ namespace EasyHttp.Specs.Specs
     {
         Because of = () =>
         {
-            httpClient = new HttpClient("http://localhost:5984");
+            httpClient = new HttpClient("http://localhost:16000");
 
-            httpClient.Get("/_all_dbs");
+            httpClient.Get("/hello");
         };
 
-        It should_prefix_all_requests_with_the_base_url = () => httpClient.Request.Uri.ShouldEqual("http://localhost:5984/_all_dbs");
-
+        It should_prefix_all_requests_with_the_base_url = () => httpClient.Request.Uri.ShouldEqual("http://localhost:16000/hello");
 
         static HttpClient httpClient;
     }
