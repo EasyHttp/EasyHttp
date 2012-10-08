@@ -89,6 +89,7 @@
     <Compile Include="BugRepros\CustomPropertyNameIssue.cs" />
     <Compile Include="BugRepros\DecodingIssues.cs" />
     <Compile Include="BugRepros\EnumEncodingIssue.cs" />
+    <Compile Include="BugRepros\JsonDates.cs" />
     <Compile Include="BugRepros\UploadFileIssue.cs" />
     <Compile Include="Helpers\DataSpecificationBase.cs" />
     <Compile Include="Helpers\ServiceStackHost.cs" />
