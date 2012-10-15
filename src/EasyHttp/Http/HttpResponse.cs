@@ -98,8 +98,7 @@ namespace EasyHttp.Http
             get { return _decoder.DecodeToDynamic(RawText, ContentType); }
         }
 
-        public string RawText { get; set; }
-
+        public string RawText { get; private set; }
 
         public T StaticBody<T>(string overrideContentType = null)
         {
@@ -114,6 +113,8 @@ namespace EasyHttp.Http
         {
             _decoder = decoder;
         }
+
+       
 
         public void GetResponse(HttpWebRequest request, string filename)
         {
