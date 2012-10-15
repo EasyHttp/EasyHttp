@@ -91,6 +91,8 @@ namespace EasyHttp.Http
         public CacheControl Pragma { get; private set; }
         public string Server { get; private set; }
         public WebHeaderCollection RawHeaders { get; private set; }
+        public Stream ResponseStream { get { return _response.GetResponseStream(); }
+        }
 
 
         public dynamic DynamicBody
@@ -116,7 +118,7 @@ namespace EasyHttp.Http
 
        
 
-        public void GetResponse(HttpWebRequest request, string filename)
+        public void GetResponse(HttpWebRequest request, string filename, bool streamResponse)
         {
             try
             {
@@ -135,34 +137,36 @@ namespace EasyHttp.Http
 
             GetHeaders();
 
-            using (var stream = _response.GetResponseStream())
+            if (!streamResponse)
             {
-
-                if (stream != null)
+                using (var stream = _response.GetResponseStream())
                 {
-                    if (!String.IsNullOrEmpty(filename))
-                    {
-                        using (var filestream = new FileStream(filename, FileMode.CreateNew))
-                        {
-                            int count;
-                            var buffer = new byte[8192];
 
-                            while ((count = stream.Read(buffer, 0, buffer.Length)) > 0)
+                    if (stream != null)
+                    {
+                        if (!String.IsNullOrEmpty(filename))
+                        {
+                            using (var filestream = new FileStream(filename, FileMode.CreateNew))
                             {
-                                filestream.Write(buffer, 0, count);
+                                int count;
+                                var buffer = new byte[8192];
+
+                                while ((count = stream.Read(buffer, 0, buffer.Length)) > 0)
+                                {
+                                    filestream.Write(buffer, 0, count);
+                                }
                             }
                         }
-                    }
-                    else
-                    {
-                        using (var reader = new StreamReader(stream))
+                        else
                         {
-                            RawText = reader.ReadToEnd();
+                            using (var reader = new StreamReader(stream))
+                            {
+                                RawText = reader.ReadToEnd();
+                            }
                         }
                     }
                 }
             }
-
         }
 
         void GetHeaders()

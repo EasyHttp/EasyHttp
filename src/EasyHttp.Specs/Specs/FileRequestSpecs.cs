@@ -6,7 +6,7 @@ using Machine.Specifications;
 namespace EasyHttp.Specs.Specs
 {
     [Subject(typeof(HttpClient))]
-    public class when_making_a_get_provided_filename
+    public class when_making_a_GET_provided_filename
     {
         Establish context = () =>
         {

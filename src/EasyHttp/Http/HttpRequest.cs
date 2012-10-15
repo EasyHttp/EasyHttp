@@ -1,59 +1,34 @@
 ﻿#region License
+
 // Distributed under the BSD License
-// =================================
-// 
-// Copyright (c) 2010, Hadi Hariri
+//   
+// YouTrackSharp Copyright (c) 2010-2012, Hadi Hariri and Contributors
 // All rights reserved.
-// 
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of Hadi Hariri nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
-// 
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-// =============================================================
-// 
-// 
-// Parts of this Software use JsonFX Serialization Library which is distributed under the MIT License:
-// 
-// Distributed under the terms of an MIT-style license:
-// 
-// The MIT License
-// 
-// Copyright (c) 2006-2009 Stephen M. McKamey
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+//   
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions are met:
+//      * Redistributions of source code must retain the above copyright
+//         notice, this list of conditions and the following disclaimer.
+//      * Redistributions in binary form must reproduce the above copyright
+//         notice, this list of conditions and the following disclaimer in the
+//         documentation and/or other materials provided with the distribution.
+//      * Neither the name of Hadi Hariri nor the
+//         names of its contributors may be used to endorse or promote products
+//         derived from this software without specific prior written permission.
+//   
+//   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+//   TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A 
+//   PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL 
+//   <COPYRIGHTHOLDER> BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//   SPECIAL,EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//   LIMITED  TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND  ON ANY
+//   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+//   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//   
+
 #endregion
 
 using System;
@@ -73,8 +48,30 @@ namespace EasyHttp.Http
     // TODO: This class needs cleaning up and abstracting the encoder one more level
     public class HttpRequest
     {
+        readonly IEncoder _encoder;
+        HttpRequestCachePolicy _cachePolicy;
+        bool _forceBasicAuth;
+        string _password;
+        string _username;
+        HttpWebRequest httpWebRequest;
 
-        public string Accept { get ; set; }
+        public HttpRequest(IEncoder encoder)
+        {
+            RawHeaders = new Dictionary<string, object>();
+
+            ClientCertificates = new X509CertificateCollection();
+
+            UserAgent = String.Format("EasyHttp HttpClient v{0}",
+                                      Assembly.GetAssembly(typeof (HttpClient)).GetName().Version);
+
+            Accept = String.Join(";", HttpContentTypes.TextHtml, HttpContentTypes.ApplicationXml,
+                                 HttpContentTypes.ApplicationJson);
+            _encoder = encoder;
+
+            Timeout = 100000; //http://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.timeout.aspx
+        }
+
+        public string Accept { get; set; }
         public string AcceptCharSet { get; set; }
         public string AcceptEncoding { get; set; }
         public string AcceptLanguage { get; set; }
@@ -104,39 +101,13 @@ namespace EasyHttp.Http
         public IList<FileData> MultiPartFileData { get; set; }
         public int Timeout { get; set; }
 
-        HttpWebRequest httpWebRequest;
-
-        readonly IEncoder _encoder;
-        string _username;
-        string _password;
-        private bool _forceBasicAuth;
-
-        
-        HttpRequestCachePolicy _cachePolicy;
-
 
         public bool ForceBasicAuth
         {
             get { return _forceBasicAuth; }
-            set {  _forceBasicAuth = value; }
-
+            set { _forceBasicAuth = value; }
         }
 
-        public HttpRequest(IEncoder encoder)
-        {
-            RawHeaders = new Dictionary<string, object>();
-
-            ClientCertificates = new X509CertificateCollection();
-
-            UserAgent = String.Format("EasyHttp HttpClient v{0}",
-                                       Assembly.GetAssembly(typeof(HttpClient)).GetName().Version);
-
-            Accept = String.Join(";", HttpContentTypes.TextHtml, HttpContentTypes.ApplicationXml,
-                                 HttpContentTypes.ApplicationJson);
-            _encoder = encoder;
-
-            Timeout = 100000; //http://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.timeout.aspx
-        }
 
 
         public void SetBasicAuthentication(string username, string password)
@@ -160,14 +131,14 @@ namespace EasyHttp.Http
 
             ServicePointManager.Expect100Continue = Expect;
             ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
-            
+
             if (Timeout > 0)
             {
                 httpWebRequest.Timeout = Timeout;
             }
-            
- 
-            if (Cookies != null )
+
+
+            if (Cookies != null)
             {
                 httpWebRequest.CookieContainer.Add(Cookies);
             }
@@ -228,7 +199,6 @@ namespace EasyHttp.Http
 
         void SetupBody()
         {
-            
             if (Data != null)
             {
                 SetupData();
@@ -265,7 +235,7 @@ namespace EasyHttp.Http
 
             using (var fileStream = new FileStream(PutFilename, FileMode.Open))
             {
-                byte[] buffer = new byte[81982];
+                var buffer = new byte[81982];
 
                 int bytesRead = fileStream.Read(buffer, 0, buffer.Length);
                 while (bytesRead > 0)
@@ -292,7 +262,6 @@ namespace EasyHttp.Http
 
             if (MultiPartFormData != null)
             {
-
                 foreach (var entry in MultiPartFormData)
                 {
                     requestStream.WriteString("\r\n");
@@ -342,7 +311,8 @@ namespace EasyHttp.Http
                     }
                 }
                 requestStream.WriteString("--");
-            } else
+            }
+            else
             {
                 if (MultiPartFormData != null)
                 {
@@ -352,19 +322,18 @@ namespace EasyHttp.Http
         }
 
 
-     
         public HttpWebRequest PrepareRequest()
         {
             httpWebRequest = (HttpWebRequest) WebRequest.Create(Uri);
 
             SetupHeader();
-            
+
             SetupBody();
 
             return httpWebRequest;
         }
 
-        private void SetupClientCertificates()
+        void SetupClientCertificates()
         {
             if (ClientCertificates == null || ClientCertificates.Count == 0)
                 return;
@@ -380,15 +349,13 @@ namespace EasyHttp.Http
             {
                 string authInfo = _username + ":" + _password;
                 authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
-                httpWebRequest.Headers["Authorization"] = "Basic " + authInfo; 
-
+                httpWebRequest.Headers["Authorization"] = "Basic " + authInfo;
             }
             else
             {
                 var networkCredential = new NetworkCredential(_username, _password);
                 httpWebRequest.Credentials = networkCredential;
             }
-           
         }
 
 
@@ -411,6 +378,5 @@ namespace EasyHttp.Http
         {
             _cachePolicy = new HttpRequestCachePolicy(HttpCacheAgeControl.MaxAgeAndMinFresh, minFresh);
         }
-
     }
 }

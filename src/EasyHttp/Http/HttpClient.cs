@@ -69,12 +69,12 @@ namespace EasyHttp.Http
     {
         readonly string _baseUri;
         readonly IEncoder _encoder;
-        string _downloadFilename;
         readonly IDecoder _decoder;
         readonly UriComposer _uriComposer;
         
         public bool LoggingEnabled { get; set; }
         public bool ThrowExceptionOnHttpError { get; set; }
+        public bool StreamResponse { get; set; }
       
 
         public HttpClient():this(new DefaultEncoderDecoderConfiguration())
@@ -117,10 +117,9 @@ namespace EasyHttp.Http
         public HttpResponse GetAsFile(string uri, string filename)
         {
             InitRequest(uri, HttpMethod.GET, null);
-            _downloadFilename = filename;
-            return ProcessRequest();
+            return ProcessRequest(filename);
         }
-        
+
         public HttpResponse Get(string uri, object query = null)
         {
             InitRequest(uri, HttpMethod.GET, query);
@@ -196,13 +195,13 @@ namespace EasyHttp.Http
             return ProcessRequest();
         }
 
-        HttpResponse ProcessRequest()
+        HttpResponse ProcessRequest(string filename = "")
         {
             var httpWebRequest = Request.PrepareRequest();
 
             Response = new HttpResponse(_decoder);
 
-            Response.GetResponse(httpWebRequest, _downloadFilename);
+            Response.GetResponse(httpWebRequest, filename, StreamResponse);
             
             if (ThrowExceptionOnHttpError && IsHttpError())
             {
