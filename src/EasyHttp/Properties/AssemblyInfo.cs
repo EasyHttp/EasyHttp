@@ -67,7 +67,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hadi Hariri")]
 [assembly: AssemblyProduct("EasyHttp")]
-[assembly: AssemblyCopyright("Copyright © 2010 - 2011 Hadi Hariri and Contributors")]
+[assembly: AssemblyCopyright("Copyright © 2010 - 2012 Hadi Hariri and Contributors")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
