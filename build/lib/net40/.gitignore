@@ -1,0 +1,14 @@
+bin/
+obj/
+_ReSharper.*
+*.csproj.user
+*.resharper.user
+*.resharper
+*.suo
+*.cache
+*.user
+*.nupkg
+*.bin
+~$*
+*ncrunch*
+
