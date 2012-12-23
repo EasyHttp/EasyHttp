@@ -102,7 +102,7 @@ namespace EasyHttp.Http
 
         void InitRequest(string uri, HttpMethod method, object query)
         {
-            Request.Uri = _uriComposer.Compose(_baseUri, uri, query);
+            Request.Uri = _uriComposer.Compose(_baseUri, uri, query, Request.ParametersAsSegments);
             Request.Data = null;
             Request.PutFilename = String.Empty;
             Request.Expect = false;

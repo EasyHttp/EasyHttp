@@ -100,7 +100,7 @@ namespace EasyHttp.Http
         public IDictionary<string, object> MultiPartFormData { get; set; }
         public IList<FileData> MultiPartFileData { get; set; }
         public int Timeout { get; set; }
-
+        public Boolean ParametersAsSegments { get; set; }
 
         public bool ForceBasicAuth
         {
