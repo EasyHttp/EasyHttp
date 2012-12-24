@@ -15,7 +15,7 @@ namespace EasyHttp.Infrastructure
             if (parameters != null)
             {
                 var paramsList = properties.Select(prop => System.Web.HttpUtility.UrlEncode(prop.Value)).ToList();
-                if (paramsList.Count > 0)  returnuri = String.Format("/", String.Join("/", paramsList));
+                if (paramsList.Count > 0)  returnuri = String.Format("/{0}", String.Join("/", paramsList));
             }
             return returnuri;
         }
