@@ -176,6 +176,36 @@ namespace EasyHttp.Specs.Specs
     }
 
     [Subject("HttpClient")]
+    public class when_making_a_GET_request_with_valid_uri_and__and_valid_parameters_using_segments
+    {
+        Establish context = () =>
+        {
+            httpClient = new HttpClient();
+            httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
+            httpClient.Request.ParametersAsSegments = true;
+        };
+
+        Because of = () =>
+        {
+            response = httpClient.Get("http://localhost:16000/hello", new { Name = "true" });
+        };
+
+
+        It should_return_dynamic_body_with_json_object = () =>
+        {
+            dynamic body = response.DynamicBody;
+
+            string couchdb = body.Result;
+
+            couchdb.ShouldEqual("Hello, true");
+
+        };
+
+        static HttpClient httpClient;
+        static dynamic response;
+    }
+
+    [Subject("HttpClient")]
     public class when_making_a_GET_request_with_valid_uri_and_content_type_set_to_application_json
     {
         Establish context = () =>
@@ -255,6 +285,33 @@ namespace EasyHttp.Specs.Specs
 
         };
 
+        It should_succeed = () =>
+        {
+            string id = response.DynamicBody.Result;
+
+            id.ShouldNotBeEmpty();
+        };
+
+        static HttpClient httpClient;
+        static dynamic response;
+    }
+
+    [Subject("HttpClient")]
+    public class when_making_a_POST_request_with_valid_uri_and_valid_data_and_content_type_set_to_application_json_and_parameters_as_segments
+    {
+        Establish context = () =>
+        {
+            httpClient = new HttpClient();
+            httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
+            httpClient.Request.ParametersAsSegments = true;
+        };
+
+        Because of = () =>
+        {
+
+            response = httpClient.Post("http://localhost:16000/hello", new Customer() { Name = "Hadi" }, HttpContentTypes.ApplicationJson);
+
+        };
 
         It should_succeed = () =>
         {
