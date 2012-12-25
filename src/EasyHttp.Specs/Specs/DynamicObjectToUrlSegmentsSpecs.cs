@@ -104,4 +104,28 @@ namespace EasyHttp.Specs.Specs
         static StaticObjectWithNameAndId parameter;
     }
 
+    [Subject(typeof(HttpClient))]
+    public class when_making_url_segments_with_two_parameters_using_static_object_in_different_order
+    {
+        Establish context = () =>
+        {
+            _objectToUrlSegments = new ObjectToUrlSegments();
+            parameter = new StaticObjectWithNameAndIdInDifferentOrder() { Name = "test", Id = 1 };
+        };
+
+        Because of = () => url = _objectToUrlSegments.ParametersToUrl(parameter);
+
+        It should_have_the_correct_url_segments = () => url.ShouldEqual("/1/test");
+
+        static ObjectToUrlSegments _objectToUrlSegments;
+        static string url;
+        static StaticObjectWithNameAndIdInDifferentOrder parameter;
+    }
+
+    public class StaticObjectWithNameAndIdInDifferentOrder
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
 }
