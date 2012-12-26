@@ -27,6 +27,9 @@ You can either download the source and compile or use nuget at http://nuget.org.
 
   Install-Package EasyHttp
 
+## Documentation
+
+The documentation can be found on the [wiki](https://github.com/hhariri/EasyHttp/wiki). 
 
 ## Usage
 
