@@ -53,15 +53,15 @@ namespace EasyHttp.Specs.Specs
         {
         
             var imageFile = Path.Combine("Helpers", "test.jpg");
-
+        
             IDictionary<string, object> data = new Dictionary<string, object>();
 
             data.Add("email", "hadi@hadi.com");
-
+       
             IList<FileData> files = new List<FileData>();
 
-            files.Add(new FileData() { FieldName = imageFile, ContentType = "image/jpeg", Filename = imageFile});
-            httpClient.Post(string.Format("{0}/fileupload", "http://localhost:16000"), data, files);
+            files.Add(new FileData() { FieldName = "image1", ContentType = "image/jpeg", Filename = imageFile});
+            httpClient.Post(string.Format("{0}/multipart", "http://localhost:16000"), data, files);
             
         };
 

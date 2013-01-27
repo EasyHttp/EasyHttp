@@ -222,22 +222,23 @@ namespace EasyHttp.Http
         {
             var bytes = _encoder.Encode(Data, ContentType);
 
+            httpWebRequest.ContentLength = bytes.Length;
+
             var requestStream = httpWebRequest.GetRequestStream();
 
-            
             requestStream.Write(bytes, 0, bytes.Length);
 
             requestStream.Close();
-
-            httpWebRequest.ContentLength = bytes.Length;
         }
 
         void SetupPutFilename()
         {
-            var requestStream = httpWebRequest.GetRequestStream();
-
             using (var fileStream = new FileStream(PutFilename, FileMode.Open))
             {
+                httpWebRequest.ContentLength = fileStream.Length;
+                
+                var requestStream = httpWebRequest.GetRequestStream();
+                
                 var buffer = new byte[81982];
 
                 int bytesRead = fileStream.Read(buffer, 0, buffer.Length);
@@ -247,103 +248,20 @@ namespace EasyHttp.Http
                     bytesRead = fileStream.Read(buffer, 0, buffer.Length);
                 }
                 requestStream.Close();
-                httpWebRequest.ContentLength = bytesRead;
             }
         }
 
    
-        // TODO:Refactor this. Clean it up. Move WriteString +Count to method, etc. 
+       
         void SetupMultiPartBody()
         {
-            var requestStream = httpWebRequest.GetRequestStream();
+            var multiPartStreamer = new MultiPartStreamer(MultiPartFormData, MultiPartFileData);
 
-            var boundayCode = DateTime.Now.Ticks.GetHashCode() + "548130";
+            httpWebRequest.ContentType = multiPartStreamer.GetContentType();
+            httpWebRequest.ContentLength = multiPartStreamer.GetContentLength();
 
-            var boundary = string.Format("----------------{0}", boundayCode);
-            var boundaryLength = boundary.Length;
+            multiPartStreamer.StreamMultiPart(httpWebRequest.GetRequestStream());
 
-            httpWebRequest.ContentType = string.Format("multipart/form-data; boundary=--------------{0}", boundayCode);
-
-            requestStream.WriteString(boundary);
-
-            var contentLength = boundaryLength;
-
-            if (MultiPartFormData != null)
-            {
-                foreach (var entry in MultiPartFormData)
-                {
-                    requestStream.WriteString("\r\n");
-                    contentLength += 2;
-
-                    var boundaryHeader = string.Format("Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}\r\n", entry.Key, entry.Value);
-                    requestStream.WriteString(boundaryHeader);
-                    contentLength += boundaryHeader.Length;
-
-                    requestStream.WriteString(boundary);
-                    contentLength += boundaryLength;
-                }
-            }
-
-
-            if (MultiPartFileData != null)
-            {
-                foreach (var fileData in MultiPartFileData)
-                {
-                    using (var file = new FileStream(fileData.Filename, FileMode.Open))
-                    {
-                        requestStream.WriteString("\r\n");
-                        contentLength += 2;
-
-                        string filename = Path.GetFileName(fileData.Filename);
-                        var boundaryHeader = string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\n", fileData.FieldName, filename);
-                        requestStream.WriteString(
-                            boundaryHeader);
-                        contentLength += boundaryHeader.Length;
-                        var boundaryContentType = string.Format("Content-Type: {0}\r\n", fileData.ContentType);
-                        requestStream.WriteString(boundaryContentType);
-                        contentLength += boundaryContentType.Length;
-                        var boundaryTransferEncoding = string.Format("Content-Transfer-Encoding: {0}\r\n", fileData.ContentTransferEncoding);
-                        requestStream.WriteString(boundaryTransferEncoding);
-                        contentLength += boundaryTransferEncoding.Length; // Not sure if this is correct since if transfer-encoding, content-length shouldn't be set?
-
-                        requestStream.WriteString("\r\n");
-                        contentLength += 2;
-                        var buffer = new byte[8192];
-
-                        int count = 0;
-
-                        while ((count = file.Read(buffer, 0, buffer.Length)) > 0)
-                        {
-                            if (fileData.ContentTransferEncoding == HttpContentEncoding.Base64)
-                            {
-                                var str = Convert.ToBase64String(buffer, 0, count);
-
-                                requestStream.WriteString(str);
-                            }
-                            else if (fileData.ContentTransferEncoding == HttpContentEncoding.Binary)
-                            {
-                                requestStream.Write(buffer, 0, count);
-                            }
-                        }
-                        contentLength += count;
-                        requestStream.WriteString("\r\n");
-                        contentLength += 2;
-                        requestStream.WriteString(boundary);
-                        contentLength += boundaryLength;
-                    }
-                }
-                requestStream.WriteString("--");
-                contentLength += 2;
-            }
-            else
-            {
-                if (MultiPartFormData != null)
-                {
-                    requestStream.WriteString("--");
-                    contentLength += 2;
-                }
-            }
-            httpWebRequest.ContentLength = contentLength;
         }
 
 
