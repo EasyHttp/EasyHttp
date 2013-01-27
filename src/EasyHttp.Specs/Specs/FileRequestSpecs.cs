@@ -17,12 +17,8 @@ namespace EasyHttp.Specs.Specs
             File.Delete(filename);
         };
 
-        Because of = () =>
-        {
-            httpClient.GetAsFile("http://www.jetbrains.com/img/logos/logo_jetbrains.gif",
-                           filename);
-
-        };
+        Because of = () => httpClient.GetAsFile("http://www.jetbrains.com/img/logos/logo_jetbrains.gif",
+                                                filename);
 
         It should_download_file_to_specified_filename = () =>
         {

@@ -67,10 +67,7 @@ namespace EasyHttp.Specs.BugRepros
             outputStatic = decoder.DecodeToStatic<User>(input, HttpContentTypes.ApplicationJson);
         };
 
-        It should_decode_correctly_to_dynamic_body = () =>
-        {
-            outputStatic.LockedOutUntil.ShouldEqual(new DateTime(2010, 11, 06, 19, 50, 14, 137));
-        };
+        It should_decode_correctly_to_dynamic_body = () => outputStatic.LockedOutUntil.ShouldEqual(new DateTime(2010, 11, 06, 19, 50, 14, 137));
 
         static DefaultDecoder decoder;
         static User outputStatic;
@@ -141,11 +138,7 @@ namespace EasyHttp.Specs.BugRepros
             formatted_address.ShouldEqual("Church Street, Wilmslow, SK9 1, United Kingdom");
         };
 
-        It should_drecode_correctly_to_static_body = () =>
-        {
-
-            outputStatic.result.formatted_address.ShouldEqual("Church Street, Wilmslow, SK9 1, United Kingdom");
-        };     
+        It should_drecode_correctly_to_static_body = () => outputStatic.result.formatted_address.ShouldEqual("Church Street, Wilmslow, SK9 1, United Kingdom");     
         
         static DefaultDecoder decoder;
         static dynamic outputDynamic;
