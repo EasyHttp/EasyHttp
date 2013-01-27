@@ -58,7 +58,7 @@ namespace EasyHttp.Specs.Helpers
 
         public override object OnPost(Files request)
         {
-            if (base.Request.Files.Length == 1) return new HttpResult() { StatusCode = HttpStatusCode.OK };
+            if (base.Request.Files.Length == 2) return new HttpResult() { StatusCode = HttpStatusCode.OK };
             return new HttpResult() { StatusCode = HttpStatusCode.NoContent };
         }
     }

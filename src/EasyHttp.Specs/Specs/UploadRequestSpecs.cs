@@ -57,11 +57,13 @@ namespace EasyHttp.Specs.Specs
             IDictionary<string, object> data = new Dictionary<string, object>();
 
             data.Add("email", "hadi@hadi.com");
+            data.Add("name", "hadi");
        
             IList<FileData> files = new List<FileData>();
 
             files.Add(new FileData() { FieldName = "image1", ContentType = "image/jpeg", Filename = imageFile});
-            httpClient.Post(string.Format("{0}/multipart", "http://localhost:16000"), data, files);
+            files.Add(new FileData() { FieldName = "image2", ContentType = "image/jpeg", Filename = imageFile });
+            httpClient.Post(string.Format("{0}/fileupload", "http://localhost:16000"), data, files);
             
         };
 
