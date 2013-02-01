@@ -222,7 +222,10 @@ namespace EasyHttp.Http
         {
             var bytes = _encoder.Encode(Data, ContentType);
 
-            httpWebRequest.ContentLength = bytes.Length;
+            if (bytes.Length > 0)
+            {
+                httpWebRequest.ContentLength = bytes.Length;
+            }
 
             var requestStream = httpWebRequest.GetRequestStream();
 
@@ -258,7 +261,12 @@ namespace EasyHttp.Http
             var multiPartStreamer = new MultiPartStreamer(MultiPartFormData, MultiPartFileData);
 
             httpWebRequest.ContentType = multiPartStreamer.GetContentType();
-            httpWebRequest.ContentLength = multiPartStreamer.GetContentLength();
+            var contentLength = multiPartStreamer.GetContentLength();
+            
+            if (contentLength > 0)
+            {
+                httpWebRequest.ContentLength = contentLength;
+            }
 
             multiPartStreamer.StreamMultiPart(httpWebRequest.GetRequestStream());
 
