@@ -73,7 +73,7 @@ namespace EasyHttp.Http
         readonly UriComposer _uriComposer;
         
         public bool LoggingEnabled { get; set; }
-        public bool ThrowExceptionOnHttpError { get; set; }
+        pub lic bool ThrowExceptionOnHttpError { get; set; }
         public bool StreamResponse { get; set; }
       
 
