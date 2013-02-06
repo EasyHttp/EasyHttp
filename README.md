@@ -1,6 +1,6 @@
 # EasyHttp
 
-Read this!
+
 
 An easy to use HTTP client that supports:
 
