@@ -11,7 +11,6 @@ An easy to use HTTP client that supports:
 * XML, JSON and WWW-Url form encoded encoding/decoding
 * File upload both via PUT and POST (multipart/formdata)
 
-among some other neat little features....
 
 ## License
 
