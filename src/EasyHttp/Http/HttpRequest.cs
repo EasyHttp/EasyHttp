@@ -54,6 +54,7 @@ namespace EasyHttp.Http
         string _password;
         string _username;
         HttpWebRequest httpWebRequest;
+        private ICredentials _credentials;
 
         public HttpRequest(IEncoder encoder)
         {
@@ -114,6 +115,11 @@ namespace EasyHttp.Http
         {
             _username = username;
             _password = password;
+        }
+
+        public void SetCredentials(ICredentials credentials)
+        {
+            _credentials = credentials;
         }
 
         void SetupHeader()
@@ -301,6 +307,10 @@ namespace EasyHttp.Http
                 string authInfo = _username + ":" + _password;
                 authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
                 httpWebRequest.Headers["Authorization"] = "Basic " + authInfo;
+            }
+            else if (_credentials != null)
+            {
+                httpWebRequest.Credentials = _credentials;
             }
             else
             {
