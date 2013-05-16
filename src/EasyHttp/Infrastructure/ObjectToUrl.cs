@@ -15,7 +15,7 @@ namespace EasyHttp.Infrastructure
         public string ParametersToUrl(object parameters)
         {
             var returnuri = "";
-            var properties = GetProperties((parameters));
+            var properties = GetProperties(parameters);
             if (parameters != null)
             {
                 var paramsList = properties.Select(BuildParam).ToList();
@@ -38,14 +38,16 @@ namespace EasyHttp.Infrastructure
                     yield return new PropertyValue { Name = property.Key, Value = property.Value.ToString() };
                 }
             }
-
-            var properties = TypeDescriptor.GetProperties(parameters);
-            foreach (PropertyDescriptor propertyDescriptor in properties)
+            else
             {
-                var val = propertyDescriptor.GetValue(parameters);
-                if (val != null)
+                var properties = TypeDescriptor.GetProperties(parameters);
+                foreach (PropertyDescriptor propertyDescriptor in properties)
                 {
-                    yield return new PropertyValue { Name = propertyDescriptor.Name, Value = val.ToString() };
+                    var val = propertyDescriptor.GetValue(parameters);
+                    if (val != null)
+                    {
+                        yield return new PropertyValue { Name = propertyDescriptor.Name, Value = val.ToString() };
+                    }
                 }
             }
         }
