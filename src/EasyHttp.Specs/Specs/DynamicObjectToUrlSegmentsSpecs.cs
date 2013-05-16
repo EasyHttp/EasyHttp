@@ -1,9 +1,49 @@
-﻿using EasyHttp.Http;
+﻿using System.Dynamic;
+using EasyHttp.Http;
 using EasyHttp.Infrastructure;
 using Machine.Specifications;
 
 namespace EasyHttp.Specs.Specs
 {
+    [Subject(typeof(HttpClient))]
+    public class when_making_url_segments_with_one_parameter_using_expando_object
+    {
+        Establish context = () =>
+        {
+            objectToUrlSegments = new ObjectToUrlSegments();
+            parameters = new ExpandoObject();
+            parameters.Name = "test";
+        };
+
+        Because of = () => url = objectToUrlSegments.ParametersToUrl(parameters);
+
+        It should_have_the_correct_url_parameters = () => url.ShouldEqual("/test");
+
+        static ObjectToUrlSegments objectToUrlSegments;
+        private static dynamic parameters;
+        static string url;
+    }
+
+    [Subject(typeof(HttpClient))]
+    public class when_making_url_segments_with_two_parameters_using_expando_object
+    {
+        Establish context = () =>
+        {
+            objectToUrlSegments = new ObjectToUrlSegments();
+            parameters = new ExpandoObject();
+            parameters.Name = "test";
+            parameters.Id = 1;
+        };
+
+        Because of = () => url = objectToUrlSegments.ParametersToUrl(parameters);
+
+        It should_have_the_correct_url_parameters = () => url.ShouldEqual("/test/1");
+
+        static ObjectToUrlSegments objectToUrlSegments;
+        private static dynamic parameters;
+        static string url;
+    }
+
     [Subject(typeof(HttpClient))]
     public class when_making_url_segments_with_one_parameter_using_anonymous_object
     {

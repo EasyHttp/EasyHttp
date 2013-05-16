@@ -1,45 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-
-namespace EasyHttp.Infrastructure
+﻿namespace EasyHttp.Infrastructure
 {
-    public class ObjectToUrlSegments
+    public class ObjectToUrlSegments : ObjectToUrl
     {
-        public string ParametersToUrl(object parameters)
+
+        protected override string PathStartCharacter
         {
-            var returnuri = "";
-            var properties = GetProperties((parameters));
-            if (parameters != null)
-            {
-                var paramsList = properties.Select(prop => System.Web.HttpUtility.UrlEncode(prop.Value)).ToList();
-                if (paramsList.Count > 0)  returnuri = String.Format("/{0}", String.Join("/", paramsList));
-            }
-            return returnuri;
+            get { return "/"; }
         }
 
-        private IEnumerable<PropertyValue> GetProperties(object parameters)
+        protected override string PathSeparatorCharacter
         {
-            if (parameters != null)
-            {
-                var properties = TypeDescriptor.GetProperties(parameters);
-                foreach (PropertyDescriptor propertyDescriptor in properties)
-                {
-                    var val = propertyDescriptor.GetValue(parameters);
-                    if (val != null)
-                    {
-                        yield return new PropertyValue { Name = propertyDescriptor.Name, Value = val.ToString() };
-                    }
-                }
-            }
+            get { return "/"; }
         }
 
-        private class PropertyValue
+        protected override string BuildParam(PropertyValue propertyValue)
         {
-            public string Name { get; set; }
-            public string Value { get; set; }
+            return System.Web.HttpUtility.UrlEncode(propertyValue.Value);
         }
     }
 }
