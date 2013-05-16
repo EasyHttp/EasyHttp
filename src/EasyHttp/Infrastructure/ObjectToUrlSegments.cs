@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 
@@ -22,16 +23,23 @@ namespace EasyHttp.Infrastructure
 
         private IEnumerable<PropertyValue> GetProperties(object parameters)
         {
-            if (parameters != null)
+            if (parameters == null) yield break;
+            if (parameters is ExpandoObject)
             {
-                var properties = TypeDescriptor.GetProperties(parameters);
-                foreach (PropertyDescriptor propertyDescriptor in properties)
+                var dictionary = parameters as IDictionary<string, object>;
+                foreach (var property in dictionary)
                 {
-                    var val = propertyDescriptor.GetValue(parameters);
-                    if (val != null)
-                    {
-                        yield return new PropertyValue { Name = propertyDescriptor.Name, Value = val.ToString() };
-                    }
+                    yield return new PropertyValue { Name = property.Key, Value = property.Value.ToString() };
+                }
+            }
+
+            var properties = TypeDescriptor.GetProperties(parameters);
+            foreach (PropertyDescriptor propertyDescriptor in properties)
+            {
+                var val = propertyDescriptor.GetValue(parameters);
+                if (val != null)
+                {
+                    yield return new PropertyValue { Name = propertyDescriptor.Name, Value = val.ToString() };
                 }
             }
         }

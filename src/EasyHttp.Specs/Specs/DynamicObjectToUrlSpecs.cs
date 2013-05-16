@@ -1,9 +1,49 @@
-﻿using EasyHttp.Http;
+﻿using System.Dynamic;
+using EasyHttp.Http;
 using EasyHttp.Infrastructure;
 using Machine.Specifications;
 
 namespace EasyHttp.Specs.Specs
 {
+    [Subject(typeof(HttpClient))]
+    public class when_making_url_parameters_with_one_parameter_using_expando_object
+    {
+        Establish context = () =>
+        {
+            objectToUrlParameters = new ObjectToUrlParameters();
+            parameters = new ExpandoObject();
+            parameters.Name = "test";
+        };
+
+        Because of = () => url = objectToUrlParameters.ParametersToUrl(parameters);
+
+        It should_have_the_correct_url_parameters = () => url.ShouldEqual("?Name=test");
+
+        static ObjectToUrlParameters objectToUrlParameters;
+        private static dynamic parameters;
+        static string url;
+    }
+
+    [Subject(typeof(HttpClient))]
+    public class when_making_url_parameters_with_two_parameters_using_expando_object
+    {
+        Establish context = () =>
+        {
+            objectToUrlParameters = new ObjectToUrlParameters();
+            parameters = new ExpandoObject();
+            parameters.Name = "test";
+            parameters.Id = 1;
+        };
+
+        Because of = () => url = objectToUrlParameters.ParametersToUrl(parameters);
+
+        It should_have_the_correct_url_parameters = () => url.ShouldEqual("?Name=test&Id=1");
+
+        static ObjectToUrlParameters objectToUrlParameters;
+        private static dynamic parameters;
+        static string url;
+    }
+
     [Subject(typeof(HttpClient))]
     public class when_making_url_parameters_with_one_parameter_using_anonymous_object
     {
