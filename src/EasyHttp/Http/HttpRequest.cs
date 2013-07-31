@@ -54,6 +54,7 @@ namespace EasyHttp.Http
         string _password;
         string _username;
         HttpWebRequest httpWebRequest;
+        CookieContainer cookieContainer;
 
         public HttpRequest(IEncoder encoder)
         {
@@ -118,7 +119,7 @@ namespace EasyHttp.Http
 
         void SetupHeader()
         {
-            var cookieContainer = new CookieContainer();
+            cookieContainer = cookieContainer ?? new CookieContainer();
 
             httpWebRequest.CookieContainer = cookieContainer;
             httpWebRequest.ContentType = ContentType;
