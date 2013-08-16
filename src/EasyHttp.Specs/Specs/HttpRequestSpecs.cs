@@ -353,12 +353,12 @@ namespace EasyHttp.Specs.Specs
     }
 
     [Subject("HttpClient")]
-    public class when_making_requests_and_reusing_cookie_container
+    public class when_making_requests_and_persisting_cookies
     {
         Establish context = () =>
         {
             httpClient = new HttpClient();
-            httpClient.Request.ReuseCookieContainer = true;
+            httpClient.Request.PersistCookies = true;
             httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
         };
 
@@ -381,12 +381,12 @@ namespace EasyHttp.Specs.Specs
     }
 
     [Subject("HttpClient")]
-    public class when_making_requests_and_not_reusing_cookie_container
+    public class when_making_requests_and_not_persisting_cookies
     {
         Establish context = () =>
         {
             httpClient = new HttpClient();
-            httpClient.Request.ReuseCookieContainer = false;
+            httpClient.Request.PersistCookies = false;
             httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
         };
 

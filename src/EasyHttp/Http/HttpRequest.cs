@@ -109,7 +109,7 @@ namespace EasyHttp.Http
             set { _forceBasicAuth = value; }
         }
 
-        public bool ReuseCookieContainer { get; set; }
+        public bool PersistCookies { get; set; }
 
 
         public void SetBasicAuthentication(string username, string password)
@@ -120,7 +120,7 @@ namespace EasyHttp.Http
 
         void SetupHeader()
         {
-            if(!ReuseCookieContainer || cookieContainer == null)
+            if(!PersistCookies || cookieContainer == null)
                 cookieContainer = new CookieContainer();
 
             httpWebRequest.CookieContainer = cookieContainer;
