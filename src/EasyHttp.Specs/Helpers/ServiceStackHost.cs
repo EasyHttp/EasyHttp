@@ -25,6 +25,12 @@ namespace EasyHttp.Specs.Helpers
         public string Result { get; set; }
     }
 
+    public class CookieInfo
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
+    }
+
     public class HelloService : RestServiceBase<Hello>
     {
         public override object OnGet(Hello request)
@@ -63,6 +69,22 @@ namespace EasyHttp.Specs.Helpers
         }
     }
 
+    public class CookieService : RestServiceBase<CookieInfo>
+    {
+        public override object OnGet(CookieInfo request)
+        {
+            if (!Request.Cookies.ContainsKey(request.Name))
+                return new HttpResult {StatusCode = HttpStatusCode.NotFound};
+            return new CookieInfo() { Name = request.Name, Value = Request.Cookies[request.Name].Value };
+        }
+
+        public override object OnPut(CookieInfo request)
+        {
+            Response.Cookies.AddCookie(new Cookie(request.Name, request.Value));
+            return new HttpResult() { StatusCode = HttpStatusCode.OK };
+        }
+    }
+
     //Define the Web Services AppHost
     public class ServiceStackHost : AppHostHttpListenerBase
     {
@@ -74,6 +96,7 @@ namespace EasyHttp.Specs.Helpers
                             .Add<Hello>("/hello")
                             .Add<Hello>("/hello/{Name}");
             Routes.Add<Files>("/fileupload/{Name}").Add<Files>("/fileupload");
+            Routes.Add<CookieInfo>("/cookie").Add<CookieInfo>("/cookie/{Name}");
         }
     }
 }
