@@ -54,6 +54,7 @@ namespace EasyHttp.Http
         string _password;
         string _username;
         HttpWebRequest httpWebRequest;
+        CookieContainer cookieContainer;
 
         public HttpRequest(IEncoder encoder)
         {
@@ -108,6 +109,7 @@ namespace EasyHttp.Http
             set { _forceBasicAuth = value; }
         }
 
+        public bool PersistCookies { get; set; }
 
 
         public void SetBasicAuthentication(string username, string password)
@@ -118,7 +120,8 @@ namespace EasyHttp.Http
 
         void SetupHeader()
         {
-            var cookieContainer = new CookieContainer();
+            if(!PersistCookies || cookieContainer == null)
+                cookieContainer = new CookieContainer();
 
             httpWebRequest.CookieContainer = cookieContainer;
             httpWebRequest.ContentType = ContentType;

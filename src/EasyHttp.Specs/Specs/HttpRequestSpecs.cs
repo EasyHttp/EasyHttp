@@ -352,4 +352,59 @@ namespace EasyHttp.Specs.Specs
         static dynamic response;
     }
 
+    [Subject("HttpClient")]
+    public class when_making_requests_and_persisting_cookies
+    {
+        Establish context = () =>
+        {
+            httpClient = new HttpClient();
+            httpClient.Request.PersistCookies = true;
+            httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
+        };
+
+        Because of = () =>
+        {
+            httpClient.Put("http://localhost:16000/cookie", new CookieInfo { Name = "test", Value = "test cookie" }, HttpContentTypes.ApplicationJson);
+            response = httpClient.Get("http://localhost:16000/cookie/test");
+        };
+
+
+        It should_send_returned_cookies = () =>
+        {
+            string cookieValue = response.DynamicBody.Value;
+
+            cookieValue.ShouldEqual("test cookie");
+        };
+
+        static HttpClient httpClient;
+        static dynamic response;
+    }
+
+    [Subject("HttpClient")]
+    public class when_making_requests_and_not_persisting_cookies
+    {
+        Establish context = () =>
+        {
+            httpClient = new HttpClient();
+            httpClient.Request.PersistCookies = false;
+            httpClient.Request.Accept = HttpContentTypes.ApplicationJson;
+        };
+
+        Because of = () =>
+        {
+            httpClient.Put("http://localhost:16000/cookie", new CookieInfo { Name = "test", Value = "test cookie" }, HttpContentTypes.ApplicationJson);
+            response = httpClient.Get("http://localhost:16000/cookie/test");
+        };
+
+
+        It should_not_send_returned_cookies = () =>
+        {
+            HttpStatusCode statusCode = response.StatusCode;
+
+            statusCode.ShouldEqual(HttpStatusCode.NotFound);
+        };
+
+        static HttpClient httpClient;
+        static dynamic response;
+    }
 }
