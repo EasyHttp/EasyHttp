@@ -36,15 +36,9 @@ namespace EasyHttp.Codecs.JsonFXExtensions
         {
             var type = DataProviderUtility.ParseMediaType(contentTypeHeader);
 
-            var readers = from reader in _readersByMime
-                                where Regex.Match(type, reader.Key, RegexOptions.Singleline).Success
-                                select reader;
-
-            if (readers.Count() > 0)
-            {
-                return readers.First().Value;
-            }
-            return null;
+            var readers = _readersByMime.Where(reader => Regex.Match(type, reader.Key, RegexOptions.Singleline).Success);
+			 
+            return readers.Any() ? readers.First().Value : null;
         }
     }
 }
