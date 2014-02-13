@@ -46,7 +46,7 @@ namespace EasyHttp.Codecs
             return deserializer;
         }
 
-        string NormalizeInputRemovingAmpersands(string input)
+		  static string NormalizeInputRemovingAmpersands(string input)
         {
             if (string.IsNullOrEmpty(input))
             {
