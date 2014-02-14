@@ -61,6 +61,7 @@ using System.Runtime.Serialization;
 
 namespace EasyHttp.Infrastructure
 {
+	 [Serializable]
     public class PropertyNotFoundException : Exception
     {
         public string PropertyName { get; private set; }
@@ -80,6 +81,6 @@ namespace EasyHttp.Infrastructure
 
         protected PropertyNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
-        }
+        }		
     }
 }

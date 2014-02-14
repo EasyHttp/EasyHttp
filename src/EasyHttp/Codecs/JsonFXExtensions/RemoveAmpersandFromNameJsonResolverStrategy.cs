@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 // Distributed under the BSD License
 // =================================
 // 
@@ -56,28 +56,24 @@
 // THE SOFTWARE.
 #endregion
 
-using System;
-using System.Runtime.Serialization;
+using System.Collections.Generic;
+using System.Reflection;
+using JsonFx.Json.Resolvers;
+using JsonFx.Serialization;
 
-namespace EasyHttp.Infrastructure
+namespace EasyHttp.Codecs.JsonFXExtensions
 {
-	 [Serializable]
-    public class ConfigurationException: Exception
+	using System;
+
+	public class RemoveAmpersandFromNameJsonResolverStrategy: JsonResolverStrategy
     {
-        public ConfigurationException()
+        public override IEnumerable<DataName> GetName(MemberInfo member)
         {
-        }
+	        if (!member.Name.StartsWith("@", StringComparison.InvariantCulture)) return base.GetName(member);
 
-        public ConfigurationException(string message) : base(message)
-        {
-        }
+	        string nameWithoutAmpersand = member.Name.Remove(0);
 
-        public ConfigurationException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected ConfigurationException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
+	        return new List<DataName> {new DataName(nameWithoutAmpersand)};
         }
     }
 }

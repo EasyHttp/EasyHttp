@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Text;
 using EasyHttp.Infrastructure;
 
@@ -25,11 +24,8 @@ namespace EasyHttp.Http
 
         public void StreamMultiPart(Stream stream)
         {
- 
-          
             stream.WriteString(_boundary);
-
-
+			 
             if (_multipartFormData != null)
             {
                 foreach (var entry in _multipartFormData)
@@ -38,8 +34,7 @@ namespace EasyHttp.Http
                     stream.WriteString(_boundary);
                 }
             }
-
-
+			 
             if (_multipartFileData != null)
             {
                 foreach (var fileData in _multipartFileData)
@@ -57,11 +52,11 @@ namespace EasyHttp.Http
             stream.WriteString("--");
         }
 
-        void StreamFileContents(FileStream file, FileData fileData, Stream requestStream)
+	    static void StreamFileContents(Stream file, FileData fileData, Stream requestStream)
         {
             var buffer = new byte[8192];
 
-            int count = 0;
+            int count;
 
             while ((count = file.Read(buffer, 0, buffer.Length)) > 0)
             {
@@ -110,7 +105,7 @@ namespace EasyHttp.Http
                 }
             }
 
-            contentLength += ascii.GetBytes("--").Length; // ending -- to the bounday
+				contentLength += ascii.GetBytes("--").Length; // ending -- to the boundary
 
             return contentLength;
         }

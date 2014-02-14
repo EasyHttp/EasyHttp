@@ -65,7 +65,9 @@ using JsonFx.Serialization;
 
 namespace EasyHttp.Codecs.JsonFXExtensions
 {
-    public class UrlEncoderTextFormatter : ITextFormatter<ModelTokenType>
+	using System.Globalization;
+
+	public class UrlEncoderTextFormatter : ITextFormatter<ModelTokenType>
     {
         public void Format(IEnumerable<Token<ModelTokenType>> tokens, TextWriter writer)
         {
@@ -97,7 +99,7 @@ namespace EasyHttp.Codecs.JsonFXExtensions
                         if (token.Value != null)
                         {
                             var urlEncode = HttpUtility.UrlEncode(token.Value.ToString());
-                            writer.Write(String.Format("={0}", urlEncode));
+                            writer.Write("={0}", urlEncode);
                         } else
                         {
                             writer.Write("=");
@@ -111,7 +113,7 @@ namespace EasyHttp.Codecs.JsonFXExtensions
 
         public string Format(IEnumerable<Token<ModelTokenType>> tokens)
         {
-            using (var writer = new StringWriter())
+            using (var writer = new StringWriter(CultureInfo.InvariantCulture))
             {
                 Format(tokens, writer);
 

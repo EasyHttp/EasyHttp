@@ -19,7 +19,7 @@ namespace EasyHttp.Infrastructure
             if(!String.IsNullOrEmpty(baseuri))
             {
                 returnUri = baseuri.EndsWith("/") ? baseuri : String.Concat(baseuri,"/");
-                returnUri += uri.StartsWith("/") ? uri.Substring(1) : uri;
+                returnUri += uri.StartsWith("/", StringComparison.InvariantCulture) ? uri.Substring(1) : uri;
             }
             if (parametersAsSegments)
             {

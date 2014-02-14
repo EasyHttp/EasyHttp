@@ -56,6 +56,7 @@
 // THE SOFTWARE.
 #endregion
 
+using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -67,7 +68,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hadi Hariri")]
 [assembly: AssemblyProduct("EasyHttp")]
-[assembly: AssemblyCopyright("Copyright © 2010 - 2012 Hadi Hariri and Contributors")]
+[assembly: AssemblyCopyright("Copyright © 2010 - 2013 Hadi Hariri and Contributors")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -91,3 +92,4 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.1.*")]
 [assembly: AssemblyFileVersion("1.1.*")]
+[assembly: CLSCompliant(true)]

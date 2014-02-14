@@ -62,27 +62,27 @@ using EasyHttp.Infrastructure;
 
 namespace EasyHttp.Codecs
 {
-    public class DynamicType: DynamicObject
-    {
-        
-        
+	using System.Globalization;
 
+	public class DynamicType: DynamicObject
+    {
         readonly Dictionary<string, object> _properties = new Dictionary<string, object>();
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            if (_properties.ContainsKey(binder.Name.ToLower()))
-            {
-                result = _properties[binder.Name.ToLower()];
-                return true;
-            }
-           
-            throw new PropertyNotFoundException(binder.Name);
+	        var binderName = binder.Name.ToLower(CultureInfo.InvariantCulture);
+	        object value;
+
+	        if (!_properties.TryGetValue(binderName, out value)) 
+				 throw new PropertyNotFoundException(binder.Name);
+
+	        result = value;
+	        return true;
         }
 
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
-            _properties[binder.Name.ToLower()] = value;
+            _properties[binder.Name.ToLower(CultureInfo.InvariantCulture)] = value;
             return true;
         }
 

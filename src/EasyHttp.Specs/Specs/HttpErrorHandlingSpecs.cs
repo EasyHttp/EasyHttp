@@ -40,7 +40,7 @@ namespace EasyHttp.Specs.Specs
             response.RawHeaders.Keys.Count.ShouldBeGreaterThan(0);
             response.RawHeaders["X-AspNetMvc-Version"].ShouldEqual("3.0");
             response.CacheControl.ToString().ShouldEqual("NoCache");
-            response.Server.ShouldEqual("Microsoft-IIS/7.5");
+            response.Server.ShouldEqual("Microsoft-IIS/8.0");
         };
 
         static HttpClient client;
