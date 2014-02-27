@@ -15,6 +15,11 @@ namespace EasyHttp.Specs.Helpers
         public string Result { get; set; }
     }
 
+    public class Redirect
+    {
+        public string Name { get; set; }
+    }
+
     public class Files
     {
         public string Name { get; set; }
@@ -80,6 +85,21 @@ namespace EasyHttp.Specs.Helpers
         }
     }
 
+    public class RedirectorService : RestServiceBase<Redirect>
+    {
+        public override object OnGet(Redirect request)
+        {
+            if (this.Request.AbsoluteUri.EndsWith("redirected"))
+                return new HttpResult() { StatusCode = HttpStatusCode.OK, };
+
+            return new HttpResult()
+                   {
+                       StatusCode = HttpStatusCode.Redirect,
+                       Location = this.Request.AbsoluteUri+"/redirected"
+                   };
+        }
+    }
+
     //Define the Web Services AppHost
     public class ServiceStackHost : AppHostHttpListenerBase
     {
@@ -87,11 +107,14 @@ namespace EasyHttp.Specs.Helpers
 
         public override void Configure(Funq.Container container)
         {
-            Routes
-                            .Add<Hello>("/hello")
-                            .Add<Hello>("/hello/{Name}");
-            Routes.Add<Files>("/fileupload/{Name}").Add<Files>("/fileupload");
-            Routes.Add<CookieInfo>("/cookie").Add<CookieInfo>("/cookie/{Name}");
+            Routes.Add<Hello>("/hello")
+                  .Add<Hello>("/hello/{Name}");
+            Routes.Add<Files>("/fileupload/{Name}")
+                  .Add<Files>("/fileupload");
+            Routes.Add<CookieInfo>("/cookie")
+                  .Add<CookieInfo>("/cookie/{Name}");
+            Routes.Add<Redirect>("/redirector")
+                  .Add<Redirect>("/redirector/redirected");
         }
     }
 }
