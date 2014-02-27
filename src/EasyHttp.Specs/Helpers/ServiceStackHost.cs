@@ -20,11 +20,6 @@ namespace EasyHttp.Specs.Helpers
         public string Name { get; set; }
     }
 
-    public class FilesResponse
-    {
-        public string Result { get; set; }
-    }
-
     public class CookieInfo
     {
         public string Name { get; set; }
