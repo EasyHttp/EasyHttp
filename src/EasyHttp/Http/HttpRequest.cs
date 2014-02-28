@@ -70,6 +70,8 @@ namespace EasyHttp.Http
             _encoder = encoder;
 
             Timeout = 100000; //http://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.timeout.aspx
+
+            AllowAutoRedirect = true;
         }
 
         public string Accept { get; set; }
@@ -110,7 +112,7 @@ namespace EasyHttp.Http
         }
 
         public bool PersistCookies { get; set; }
-
+        public bool AllowAutoRedirect { get; set; }
 
         public void SetBasicAuthentication(string username, string password)
         {
@@ -279,7 +281,7 @@ namespace EasyHttp.Http
         public HttpWebRequest PrepareRequest()
         {
             httpWebRequest = (HttpWebRequest) WebRequest.Create(Uri);
-
+            httpWebRequest.AllowAutoRedirect = AllowAutoRedirect;
             SetupHeader();
 
             SetupBody();

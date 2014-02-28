@@ -92,6 +92,7 @@
     <Compile Include="BugRepros\UploadFileIssue.cs" />
     <Compile Include="Helpers\DataSpecificationBase.cs" />
     <Compile Include="Helpers\ServiceStackHost.cs" />
+    <Compile Include="Specs\AutoFollowRedirectSpecs.cs" />
     <Compile Include="Specs\DynamicObjectToUrlSegmentsSpecs.cs" />
     <Compile Include="Specs\DynamicObjectToUrlSpecs.cs" />
     <Compile Include="Specs\HttpErrorHandlingSpecs.cs" />
