@@ -5,6 +5,6 @@ namespace EasyHttp.Configuration
     public interface IEncoderDecoderConfiguration
     {
         IEncoder GetEncoder();
-        IDecoder GetDecoder();
+        IDecoder GetDecoder(bool shouldRemoveAtSign = true);
     }
 }
