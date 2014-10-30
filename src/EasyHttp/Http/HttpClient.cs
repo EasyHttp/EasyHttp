@@ -71,33 +71,31 @@ namespace EasyHttp.Http
         readonly IEncoder _encoder;
         readonly IDecoder _decoder;
         readonly UriComposer _uriComposer;
-
+        
         public bool LoggingEnabled { get; set; }
         public bool ThrowExceptionOnHttpError { get; set; }
         public bool StreamResponse { get; set; }
       
 
-        public HttpClient(bool shouldRemoveAtSign = true):this(new DefaultEncoderDecoderConfiguration(), shouldRemoveAtSign)
+        public HttpClient():this(new DefaultEncoderDecoderConfiguration())
         {
 
         }
+      
 
-
-        public HttpClient(IEncoderDecoderConfiguration encoderDecoderConfiguration, bool shouldRemoveAtSign = true)
+        public HttpClient(IEncoderDecoderConfiguration encoderDecoderConfiguration)
         {
             _encoder = encoderDecoderConfiguration.GetEncoder();
-            _decoder = encoderDecoderConfiguration.GetDecoder(shouldRemoveAtSign);
+            _decoder = encoderDecoderConfiguration.GetDecoder();
             _uriComposer = new UriComposer();
             
             Request = new HttpRequest(_encoder);
         }
 
-        public HttpClient(string baseUri, bool shouldRemoveAtSign = true)
-            : this(new DefaultEncoderDecoderConfiguration(), shouldRemoveAtSign)
+        public HttpClient(string baseUri): this(new DefaultEncoderDecoderConfiguration())
         {
             _baseUri = baseUri;
         }
-
 
         public HttpResponse Response { get; private set; }
         public HttpRequest Request { get; private set; }

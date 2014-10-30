@@ -1,39 +1,40 @@
 ﻿using System;
+using System.IO;
 using JsonFx.Serialization;
 using JsonFx.Serialization.Providers;
 
 namespace EasyHttp.Codecs
 {
-    public class DefaultDecoder : IDecoder
+    public class DefaultDecoder: IDecoder
     {
-        private readonly IDataReaderProvider _dataReaderProvider;
-        private readonly bool _shouldRemoveAtSign;
+        readonly IDataReaderProvider _dataReaderProvider;
 
-        public DefaultDecoder(IDataReaderProvider dataReaderProvider, bool shouldRemoveAtSign = true)
+        public DefaultDecoder(IDataReaderProvider dataReaderProvider)
         {
             _dataReaderProvider = dataReaderProvider;
-            _shouldRemoveAtSign = shouldRemoveAtSign;
         }
 
         public T DecodeToStatic<T>(string input, string contentType)
         {
-            var parsedText = ReplaceAtSymbol(input);
+
+            var parsedText = NormalizeInputRemovingAmpersands(input);
 
             var deserializer = ObtainDeserializer(contentType);
 
             return deserializer.Read<T>(parsedText);
+
         }
 
         public dynamic DecodeToDynamic(string input, string contentType)
         {
-            var parsedText = ReplaceAtSymbol(input);
+            var parsedText = NormalizeInputRemovingAmpersands(input);
 
             var deserializer = ObtainDeserializer(contentType);
-
+       
             return deserializer.Read(parsedText);
         }
 
-        private IDataReader ObtainDeserializer(string contentType)
+        IDataReader ObtainDeserializer(string contentType)
         {
             var deserializer = _dataReaderProvider.Find(contentType);
 
@@ -45,17 +46,15 @@ namespace EasyHttp.Codecs
             return deserializer;
         }
 
-        private string ReplaceAtSymbol(string input)
+		  static string NormalizeInputRemovingAmpersands(string input)
         {
-            if (!_shouldRemoveAtSign) return input;
-
             if (string.IsNullOrEmpty(input))
             {
                 throw new ArgumentNullException("input");
             }
 
+            // this is a hack 
             var parsedText = input.Replace("\"@", "\"");
-
             return parsedText;
         }
     }

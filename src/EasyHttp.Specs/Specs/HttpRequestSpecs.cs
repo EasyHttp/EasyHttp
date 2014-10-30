@@ -176,32 +176,6 @@ namespace EasyHttp.Specs.Specs
     }
 
     [Subject("HttpClient")]
-    public class when_making_a_GET_request_with_valid_uri_and__and_valid_parameters_and_response_contains_at_sign
-    {
-        Establish context = () =>
-        {
-            httpClient = new HttpClient(false) {Request = {Accept = HttpContentTypes.ApplicationJson}};
-        };
-
-        Because of = () =>
-        {
-            response = httpClient.Get("http://localhost:16000/data", new { Id = "at sign" });
-        };
-
-
-        It should_return_static_body_with_json_object_with_at_sign = () =>
-        {
-            SomeDataResponse couchInformation = response.StaticBody<SomeDataResponse>();
-
-            couchInformation.SomeValue.ShouldEqual(@"@bormod how are you?");
-
-        };
-
-        static HttpClient httpClient;
-        static dynamic response;
-    }
-
-    [Subject("HttpClient")]
     public class when_making_a_GET_request_with_valid_uri_and__and_valid_parameters_using_segments
     {
         Establish context = () =>

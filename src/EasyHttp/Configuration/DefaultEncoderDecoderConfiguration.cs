@@ -88,7 +88,7 @@ namespace EasyHttp.Configuration
             return new DefaultEncoder(dataWriterProvider);
         }
 
-        public IDecoder GetDecoder(bool shouldRemoveAtSign = true)
+        public IDecoder GetDecoder()
         {
             var jsonReader = new JsonReader(new DataReaderSettings(CombinedResolverStrategy(), new Iso8601DateFilter()), new[] { "application/.*json", "text/.*json" });
             var xmlReader = new XmlReader(new DataReaderSettings(CombinedResolverStrategy(), new Iso8601DateFilter()),
@@ -97,8 +97,8 @@ namespace EasyHttp.Configuration
             var readers = new List<IDataReader> {jsonReader, xmlReader};
 
             var dataReaderProvider = new RegExBasedDataReaderProvider(readers);
-
-            return new DefaultDecoder(dataReaderProvider, shouldRemoveAtSign);
+            
+            return new DefaultDecoder(dataReaderProvider);
         }
 
         public static CombinedResolverStrategy CombinedResolverStrategy()
