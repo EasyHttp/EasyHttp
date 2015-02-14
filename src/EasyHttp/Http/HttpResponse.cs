@@ -59,6 +59,7 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Text;
 using EasyHttp.Codecs;
 
 namespace EasyHttp.Http
@@ -68,6 +69,7 @@ namespace EasyHttp.Http
         readonly IDecoder _decoder;
         HttpWebResponse _response;
 
+        public string CharacterSet { get; private set; }
         public string ContentType { get; private set; }
         public HttpStatusCode StatusCode { get; private set; }
         public string StatusDescription { get; private set; }
@@ -158,7 +160,8 @@ namespace EasyHttp.Http
 		        }
 		        else
 		        {
-			        using (var reader = new StreamReader(stream))
+                    var encoding = string.IsNullOrEmpty(CharacterSet) ? Encoding.UTF8 : Encoding.GetEncoding(CharacterSet);
+                    using (var reader = new StreamReader(stream, encoding))
 			        {
 				        RawText = reader.ReadToEnd();
 			        }
@@ -168,6 +171,7 @@ namespace EasyHttp.Http
 
         void GetHeaders()
         {
+            CharacterSet = _response.CharacterSet;
             ContentType = _response.ContentType;
             StatusCode = _response.StatusCode;
             StatusDescription = _response.StatusDescription;
