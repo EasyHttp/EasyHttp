@@ -60,13 +60,13 @@ namespace EasyHttp.Http
 
             while ((count = file.Read(buffer, 0, buffer.Length)) > 0)
             {
-                if (fileData.ContentTransferEncoding == HttpContentEncoding.Base64)
+                if (fileData.ContentTransferEncoding == HttpContentTransferEncoding.Base64)
                 {
                     string str = Convert.ToBase64String(buffer, 0, count);
 
                     requestStream.WriteString(str);
                 }
-                else if (fileData.ContentTransferEncoding == HttpContentEncoding.Binary)
+                else if (fileData.ContentTransferEncoding == HttpContentTransferEncoding.Binary)
                 {
                     requestStream.Write(buffer, 0, count);
                 }

@@ -168,7 +168,6 @@ namespace EasyHttp.Http
             {
                 Request.ContentType = contentType;
                 Request.Data = data;
-                Request.ContentEncoding = HttpContentEncoding.Utf8;
             }
         }
 

@@ -65,7 +65,7 @@
     <Compile Include="Configuration\IEncoderDecoderConfiguration.cs" />
     <Compile Include="Http\CacheControl.cs" />
     <Compile Include="Http\HttpClient.cs" />
-    <Compile Include="Http\HttpContentEncoding.cs" />
+    <Compile Include="Http\HttpContentTransferEncoding.cs" />
     <Compile Include="Http\HttpContentTypes.cs" />
     <Compile Include="Http\HttpMethod.cs" />
     <Compile Include="Http\HttpRequest.cs" />
