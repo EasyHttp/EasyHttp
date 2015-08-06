@@ -31,6 +31,17 @@ namespace EasyHttp.Specs.Helpers
         public string Value { get; set; }
     }
 
+    public class SomeData
+    {
+        public string Id { get; set; }
+    }
+
+    // ReSharper disable once ClassNeverInstantiated.Global
+    public class SomeDataResponse
+    {
+        public string SomeValue { get; set; }
+    }
+
     public class HelloService : RestServiceBase<Hello>
     {
         public override object OnGet(Hello request)
@@ -115,6 +126,8 @@ namespace EasyHttp.Specs.Helpers
                   .Add<CookieInfo>("/cookie/{Name}");
             Routes.Add<Redirect>("/redirector")
                   .Add<Redirect>("/redirector/redirected");
+            Routes.Add<SomeData>("/data")
+                  .Add<SomeData>("/data/{Id}");
         }
     }
 }
