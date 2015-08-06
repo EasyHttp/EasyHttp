@@ -8,16 +8,18 @@ namespace EasyHttp.Codecs
     public class DefaultDecoder: IDecoder
     {
         readonly IDataReaderProvider _dataReaderProvider;
+        private readonly bool _shouldRemoveAtSign;
 
-        public DefaultDecoder(IDataReaderProvider dataReaderProvider)
+        public DefaultDecoder(IDataReaderProvider dataReaderProvider, bool shouldRemoveAtSign = true)
         {
             _dataReaderProvider = dataReaderProvider;
+            _shouldRemoveAtSign = shouldRemoveAtSign;
         }
 
         public T DecodeToStatic<T>(string input, string contentType)
         {
 
-            var parsedText = NormalizeInputRemovingAmpersands(input);
+            var parsedText = ReplaceAtSymbol(input);
 
             var deserializer = ObtainDeserializer(contentType);
 
@@ -27,7 +29,7 @@ namespace EasyHttp.Codecs
 
         public dynamic DecodeToDynamic(string input, string contentType)
         {
-            var parsedText = NormalizeInputRemovingAmpersands(input);
+            var parsedText = ReplaceAtSymbol(input);
 
             var deserializer = ObtainDeserializer(contentType);
        
@@ -46,15 +48,17 @@ namespace EasyHttp.Codecs
             return deserializer;
         }
 
-		  static string NormalizeInputRemovingAmpersands(string input)
+        private string ReplaceAtSymbol(string input)
         {
+            if (!_shouldRemoveAtSign) return input;
+
             if (string.IsNullOrEmpty(input))
             {
                 throw new ArgumentNullException("input");
             }
 
-            // this is a hack 
             var parsedText = input.Replace("\"@", "\"");
+
             return parsedText;
         }
     }

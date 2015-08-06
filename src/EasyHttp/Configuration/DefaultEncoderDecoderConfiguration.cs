@@ -71,6 +71,13 @@ namespace EasyHttp.Configuration
 {
     public class DefaultEncoderDecoderConfiguration : IEncoderDecoderConfiguration
     {
+        private readonly bool _shouldRemoveAtSign;
+
+        public DefaultEncoderDecoderConfiguration(bool shouldRemoveAtSign = true)
+        {
+            _shouldRemoveAtSign = shouldRemoveAtSign;
+        }
+
         public IEncoder GetEncoder()
         {
             var jsonWriter = new JsonWriter(new DataWriterSettings(CombinedResolverStrategy()),
@@ -97,8 +104,8 @@ namespace EasyHttp.Configuration
             var readers = new List<IDataReader> {jsonReader, xmlReader};
 
             var dataReaderProvider = new RegExBasedDataReaderProvider(readers);
-            
-            return new DefaultDecoder(dataReaderProvider);
+
+            return new DefaultDecoder(dataReaderProvider, _shouldRemoveAtSign);
         }
 
         public static CombinedResolverStrategy CombinedResolverStrategy()

@@ -206,6 +206,58 @@ namespace EasyHttp.Specs.Specs
     }
 
     [Subject("HttpClient")]
+    public class when_making_a_GET_request_response_contains_at_sign_and_remove_at_sign_is_false_then_at_sign_remains
+    {
+        Establish context = () =>
+        {
+            httpClient = new HttpClient(false) { Request = { Accept = HttpContentTypes.ApplicationJson } };
+        };
+
+        Because of = () =>
+        {
+            response = httpClient.Get("http://localhost:16000/data", new { Id = "at sign" });
+        };
+
+
+        It should_return_static_body_with_json_object_with_at_sign = () =>
+        {
+            SomeDataResponse couchInformation = response.StaticBody<SomeDataResponse>();
+
+            couchInformation.SomeValue.ShouldEqual(@"@bormod how are you?");
+
+        };
+
+        static HttpClient httpClient;
+        static dynamic response;
+    }
+
+    [Subject("HttpClient")]
+    public class when_making_a_GET_request_with_response_contains_at_sign_backward_compatability
+    {
+        Establish context = () =>
+        {
+            httpClient = new HttpClient { Request = { Accept = HttpContentTypes.ApplicationJson } };
+        };
+
+        Because of = () =>
+        {
+            response = httpClient.Get("http://localhost:16000/data", new { Id = "at sign" });
+        };
+
+
+        It should_return_static_body_with_json_object_without_at_sign = () =>
+        {
+            SomeDataResponse couchInformation = response.StaticBody<SomeDataResponse>();
+
+            couchInformation.SomeValue.ShouldEqual("bormod how are you?");
+
+        };
+
+        static HttpClient httpClient;
+        static dynamic response;
+    }
+
+    [Subject("HttpClient")]
     public class when_making_a_GET_request_with_valid_uri_and_content_type_set_to_application_json
     {
         Establish context = () =>
