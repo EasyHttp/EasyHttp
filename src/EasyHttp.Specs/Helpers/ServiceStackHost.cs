@@ -65,6 +65,13 @@ namespace EasyHttp.Specs.Helpers
         }
     }
 
+    public class SomeDataService : RestServiceBase<SomeData>
+    {
+        public override object OnGet(SomeData request)
+        {
+            return new SomeDataResponse() { SomeValue = @"@bormod how are you?" };
+        }
+    }
     public class FilesService : RestServiceBase<Files>
     {
         public override object OnPut(Files request)
