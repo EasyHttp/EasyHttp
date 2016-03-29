@@ -71,7 +71,7 @@ namespace EasyHttp.Http
         readonly IEncoder _encoder;
         readonly IDecoder _decoder;
         readonly UriComposer _uriComposer;
-        private bool m_ShouldRemoveAtSign;
+        private bool m_ShouldRemoveAtSign = true;
 
         public bool LoggingEnabled { get; set; }
         public bool ThrowExceptionOnHttpError { get; set; }
@@ -89,7 +89,6 @@ namespace EasyHttp.Http
 
         public HttpClient():this(new DefaultEncoderDecoderConfiguration())
         {
-
         }
       
 
@@ -97,6 +96,7 @@ namespace EasyHttp.Http
         {
             _encoder = encoderDecoderConfiguration.GetEncoder();
             _decoder = encoderDecoderConfiguration.GetDecoder();
+            _decoder.ShouldRemoveAtSign = ShouldRemoveAtSign;
             _uriComposer = new UriComposer();
             
             Request = new HttpRequest(_encoder);
