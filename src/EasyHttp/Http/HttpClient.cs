@@ -71,14 +71,23 @@ namespace EasyHttp.Http
         readonly IEncoder _encoder;
         readonly IDecoder _decoder;
         readonly UriComposer _uriComposer;
-        
+        private bool m_ShouldRemoveAtSign;
+
         public bool LoggingEnabled { get; set; }
         public bool ThrowExceptionOnHttpError { get; set; }
         public bool StreamResponse { get; set; }
 
+        public bool ShouldRemoveAtSign
+        {
+            get { return m_ShouldRemoveAtSign; }
+            set
+            {
+                m_ShouldRemoveAtSign = value;
+                _decoder.ShouldRemoveAtSign = value;
+            }
+        }
 
-        public HttpClient(bool shouldRemoveAtSign = true)
-            :this(new DefaultEncoderDecoderConfiguration(shouldRemoveAtSign))
+        public HttpClient():this(new DefaultEncoderDecoderConfiguration())
         {
 
         }
@@ -93,8 +102,7 @@ namespace EasyHttp.Http
             Request = new HttpRequest(_encoder);
         }
 
-        public HttpClient(string baseUri, bool shouldRemoveAtSign = true)
-            : this(new DefaultEncoderDecoderConfiguration(shouldRemoveAtSign))
+        public HttpClient(string baseUri): this(new DefaultEncoderDecoderConfiguration())
         {
             _baseUri = baseUri;
         }

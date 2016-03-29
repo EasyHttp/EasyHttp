@@ -210,7 +210,11 @@ namespace EasyHttp.Specs.Specs
     {
         Establish context = () =>
         {
-            httpClient = new HttpClient(false) { Request = { Accept = HttpContentTypes.ApplicationJson } };
+            httpClient = new HttpClient()
+            {
+                ShouldRemoveAtSign = false,
+                Request = { Accept = HttpContentTypes.ApplicationJson }
+            };
         };
 
         Because of = () =>

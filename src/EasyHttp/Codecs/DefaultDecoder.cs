@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using JsonFx.Serialization;
 using JsonFx.Serialization.Providers;
 
@@ -8,17 +7,14 @@ namespace EasyHttp.Codecs
     public class DefaultDecoder: IDecoder
     {
         readonly IDataReaderProvider _dataReaderProvider;
-        private readonly bool _shouldRemoveAtSign;
 
-        public DefaultDecoder(IDataReaderProvider dataReaderProvider, bool shouldRemoveAtSign = true)
+        public DefaultDecoder(IDataReaderProvider dataReaderProvider)
         {
             _dataReaderProvider = dataReaderProvider;
-            _shouldRemoveAtSign = shouldRemoveAtSign;
         }
 
         public T DecodeToStatic<T>(string input, string contentType)
         {
-
             var parsedText = ReplaceAtSymbol(input);
 
             var deserializer = ObtainDeserializer(contentType);
@@ -36,6 +32,8 @@ namespace EasyHttp.Codecs
             return deserializer.Read(parsedText);
         }
 
+        public bool ShouldRemoveAtSign { get; set; }
+
         IDataReader ObtainDeserializer(string contentType)
         {
             var deserializer = _dataReaderProvider.Find(contentType);
@@ -50,7 +48,7 @@ namespace EasyHttp.Codecs
 
         private string ReplaceAtSymbol(string input)
         {
-            if (!_shouldRemoveAtSign) return input;
+            if (!ShouldRemoveAtSign) return input;
 
             if (string.IsNullOrEmpty(input))
             {
