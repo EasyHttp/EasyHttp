@@ -97,7 +97,6 @@ namespace EasyHttp.Configuration
             var readers = new List<IDataReader> {jsonReader, xmlReader};
 
             var dataReaderProvider = new RegExBasedDataReaderProvider(readers);
-            
             return new DefaultDecoder(dataReaderProvider);
         }
 
