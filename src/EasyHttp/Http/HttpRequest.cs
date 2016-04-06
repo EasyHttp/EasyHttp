@@ -104,6 +104,7 @@ namespace EasyHttp.Http
         public IList<FileData> MultiPartFileData { get; set; }
         public int Timeout { get; set; }
         public Boolean ParametersAsSegments { get; set; }
+        public bool UseDefaultCredentials { get; set; }
 
         public bool ForceBasicAuth
         {
@@ -307,6 +308,10 @@ namespace EasyHttp.Http
                 string authInfo = _username + ":" + _password;
                 authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
                 httpWebRequest.Headers["Authorization"] = "Basic " + authInfo;
+            }
+            else if (UseDefaultCredentials)
+            {
+                httpWebRequest.UseDefaultCredentials = true;
             }
             else
             {
