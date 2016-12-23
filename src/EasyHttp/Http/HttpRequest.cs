@@ -74,6 +74,7 @@ namespace EasyHttp.Http
             AllowAutoRedirect = true;
         }
 
+        public bool DisableAutomaticCompression { get; set; }
         public string Accept { get; set; }
         public string AcceptCharSet { get; set; }
         public string AcceptEncoding { get; set; }
