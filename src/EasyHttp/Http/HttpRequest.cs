@@ -134,7 +134,9 @@ namespace EasyHttp.Http
             httpWebRequest.Referer = Referer;
             httpWebRequest.CachePolicy = _cachePolicy;
             httpWebRequest.KeepAlive = KeepAlive;
-            httpWebRequest.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip | DecompressionMethods.None;
+            httpWebRequest.AutomaticDecompression = DisableAutomaticCompression
+                                                    ? DecompressionMethods.None
+                                                    : DecompressionMethods.Deflate | DecompressionMethods.GZip | DecompressionMethods.None;
 
             ServicePointManager.Expect100Continue = Expect;
             ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
