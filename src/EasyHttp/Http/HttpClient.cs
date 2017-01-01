@@ -72,6 +72,7 @@ namespace EasyHttp.Http
         readonly IDecoder _decoder;
         readonly UriComposer _uriComposer;
         private bool _shouldRemoveAtSign = true;
+        private readonly Func<string, HttpResponse> _getResponse;
 
         public bool LoggingEnabled { get; set; }
         public bool ThrowExceptionOnHttpError { get; set; }
@@ -87,12 +88,12 @@ namespace EasyHttp.Http
             }
         }
 
-        public HttpClient():this(new DefaultEncoderDecoderConfiguration())
+        public HttpClient(Func<string,HttpResponse> getResponse = null):this(new DefaultEncoderDecoderConfiguration(), getResponse)
         {
         }
       
 
-        public HttpClient(IEncoderDecoderConfiguration encoderDecoderConfiguration)
+        public HttpClient(IEncoderDecoderConfiguration encoderDecoderConfiguration, Func<string, HttpResponse> getResponse = null)
         {
             _encoder = encoderDecoderConfiguration.GetEncoder();
             _decoder = encoderDecoderConfiguration.GetDecoder();
@@ -100,9 +101,10 @@ namespace EasyHttp.Http
             _uriComposer = new UriComposer();
             
             Request = new HttpRequest(_encoder);
+            _getResponse = getResponse ?? GetResponse;
         }
 
-        public HttpClient(string baseUri): this(new DefaultEncoderDecoderConfiguration())
+        public HttpClient(string baseUri, Func<string,HttpResponse> getResponse = null): this(new DefaultEncoderDecoderConfiguration(), getResponse)
         {
             _baseUri = baseUri;
         }
@@ -206,7 +208,7 @@ namespace EasyHttp.Http
 
         HttpResponse ProcessRequest(string filename = "")
         {
-            Response = GetResponse(filename);
+            Response = _getResponse(filename);
 
             if (ThrowExceptionOnHttpError && IsHttpError())
             {
