@@ -206,17 +206,24 @@ namespace EasyHttp.Http
 
         HttpResponse ProcessRequest(string filename = "")
         {
-            var httpWebRequest = Request.PrepareRequest();
+            Response = GetResponse(filename);
 
-            Response = new HttpResponse(_decoder);
-
-            Response.GetResponse(httpWebRequest, filename, StreamResponse);
-            
             if (ThrowExceptionOnHttpError && IsHttpError())
             {
                 throw new HttpException(Response.StatusCode, Response.StatusDescription);
             }
             return Response;
+        }
+
+        private HttpResponse GetResponse(string filename)
+        {
+            var httpWebRequest = Request.PrepareRequest();
+
+            var response = new HttpResponse(_decoder);
+
+            response.GetResponse(httpWebRequest, filename, StreamResponse);
+
+            return response;
         }
 
         public void AddClientCertificates(X509CertificateCollection certificates)
