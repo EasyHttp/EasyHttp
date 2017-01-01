@@ -148,7 +148,7 @@ namespace EasyHttp.Specs.Specs
     }
 
     [Subject("HttpClient")]
-    public class when_mocking_a_GET_request_with_valid_uri_to_return_a_NotFound
+    public class when_injecting_a_single_response_factory_to_return_NotFound
     {
         Establish context = () =>
         {
@@ -162,6 +162,31 @@ namespace EasyHttp.Specs.Specs
         {
             httpResponse = httpClient.Get("http://localhost:16000");
 
+        };
+
+        It should_return_a_NotFound =
+            () => httpResponse.StatusCode.ShouldEqual(HttpStatusCode.NotFound);
+
+
+        static HttpClient httpClient;
+        static HttpResponse httpResponse;
+    }
+
+    [Subject("HttpClient")]
+    public class when_mocking_a_GET_request_with_valid_uri_to_return_a_NotFound
+    {
+        Establish context = () =>
+        {
+            var injectedResponse = Substitute.For<HttpResponse>();
+            injectedResponse.StatusCode.Returns(HttpStatusCode.NotFound);
+
+            httpClient = Substitute.For<HttpClient>();
+            httpClient.Get(Arg.Any<string>()).Returns(injectedResponse);
+        };
+
+        Because of = () =>
+        {
+            httpResponse = httpClient.Get("http://localhost:16000");
         };
 
         It should_return_a_NotFound =

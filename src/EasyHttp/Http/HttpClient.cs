@@ -74,11 +74,11 @@ namespace EasyHttp.Http
         private bool _shouldRemoveAtSign = true;
         private readonly Func<string, HttpResponse> _getResponse;
 
-        public bool LoggingEnabled { get; set; }
-        public bool ThrowExceptionOnHttpError { get; set; }
-        public bool StreamResponse { get; set; }
+        public virtual bool LoggingEnabled { get; set; }
+        public virtual bool ThrowExceptionOnHttpError { get; set; }
+        public virtual bool StreamResponse { get; set; }
 
-        public bool ShouldRemoveAtSign
+        public virtual bool ShouldRemoveAtSign
         {
             get { return _shouldRemoveAtSign; }
             set
@@ -86,6 +86,10 @@ namespace EasyHttp.Http
                 _shouldRemoveAtSign = value;
                 _decoder.ShouldRemoveAtSign = value;
             }
+        }
+
+        public HttpClient() : this(null)
+        {
         }
 
         public HttpClient(Func<string,HttpResponse> getResponse = null):this(new DefaultEncoderDecoderConfiguration(), getResponse)
@@ -97,7 +101,7 @@ namespace EasyHttp.Http
         {
             _encoder = encoderDecoderConfiguration.GetEncoder();
             _decoder = encoderDecoderConfiguration.GetDecoder();
-            _decoder.ShouldRemoveAtSign = ShouldRemoveAtSign;
+            _decoder.ShouldRemoveAtSign = _shouldRemoveAtSign;
             _uriComposer = new UriComposer();
 
             Request = new HttpRequest(_encoder);
@@ -109,8 +113,8 @@ namespace EasyHttp.Http
             _baseUri = baseUri;
         }
 
-        public HttpResponse Response { get; private set; }
-        public HttpRequest Request { get; private set; }
+        public virtual HttpResponse Response { get; private set; }
+        public virtual HttpRequest Request { get; private set; }
 
         void InitRequest(string uri, HttpMethod method, object query)
         {
@@ -126,39 +130,39 @@ namespace EasyHttp.Http
         }
 
 
-        public HttpResponse GetAsFile(string uri, string filename)
+        public virtual HttpResponse GetAsFile(string uri, string filename)
         {
             InitRequest(uri, HttpMethod.GET, null);
             return ProcessRequest(filename);
         }
 
-        public HttpResponse Get(string uri, object query = null)
+        public virtual HttpResponse Get(string uri, object query = null)
         {
             InitRequest(uri, HttpMethod.GET, query);
             return ProcessRequest();
         }
 
-        public HttpResponse Options(string uri)
+        public virtual HttpResponse Options(string uri)
         {
             InitRequest(uri, HttpMethod.OPTIONS, null);
             return ProcessRequest();
         }
 
-        public HttpResponse Post(string uri, object data, string contentType, object query = null)
+        public virtual HttpResponse Post(string uri, object data, string contentType, object query = null)
         {
             InitRequest(uri, HttpMethod.POST, query);
             InitData(data, contentType);
             return ProcessRequest();
         }
 
-        public HttpResponse Patch(string uri, object data, string contentType, object query = null)
+        public virtual HttpResponse Patch(string uri, object data, string contentType, object query = null)
         {
             InitRequest(uri, HttpMethod.PATCH, query);
             InitData(data, contentType);
             return ProcessRequest();
         }
 
-        public HttpResponse Post(string uri, IDictionary<string, object> formData, IList<FileData> files, object query = null)
+        public virtual HttpResponse Post(string uri, IDictionary<string, object> formData, IList<FileData> files, object query = null)
         {
             InitRequest(uri, HttpMethod.POST, query);
             Request.MultiPartFormData = formData;
@@ -167,7 +171,7 @@ namespace EasyHttp.Http
             return ProcessRequest();
         }
 
-        public HttpResponse Put(string uri, object data, string contentType, object query = null)
+        public virtual HttpResponse Put(string uri, object data, string contentType, object query = null)
         {
             InitRequest(uri, HttpMethod.PUT, query);
             InitData(data, contentType);
@@ -183,20 +187,20 @@ namespace EasyHttp.Http
             }
         }
 
-        public HttpResponse Delete(string uri, object query = null)
+        public virtual HttpResponse Delete(string uri, object query = null)
         {
             InitRequest(uri, HttpMethod.DELETE, query);
             return ProcessRequest();
         }
 
 
-        public HttpResponse Head(string uri, object query = null)
+        public virtual HttpResponse Head(string uri, object query = null)
         {
             InitRequest(uri, HttpMethod.HEAD, query);
             return ProcessRequest();
         }
 
-        public HttpResponse PutFile(string uri, string filename, string contentType)
+        public virtual HttpResponse PutFile(string uri, string filename, string contentType)
         {
             InitRequest(uri, HttpMethod.PUT, null);
             Request.ContentType = contentType;
@@ -228,7 +232,7 @@ namespace EasyHttp.Http
             return response;
         }
 
-        public void AddClientCertificates(X509CertificateCollection certificates)
+        public virtual void AddClientCertificates(X509CertificateCollection certificates)
         {
             if(certificates == null || certificates.Count == 0)
                 return;
