@@ -61,6 +61,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using EasyHttp.Codecs;
+using EasyHttp.Configuration;
 
 namespace EasyHttp.Http
 {
@@ -69,42 +70,42 @@ namespace EasyHttp.Http
         readonly IDecoder _decoder;
         HttpWebResponse _response;
 
-        public string CharacterSet { get; private set; }
-        public string ContentType { get; private set; }
-        public HttpStatusCode StatusCode { get; private set; }
-        public string StatusDescription { get; private set; }
-        public CookieCollection Cookies { get; private set; }
-        public int Age { get; private set; }
-        public HttpMethod[] Allow { get; private set; }
-        public CacheControl CacheControl { get; private set; }
-        public string ContentEncoding { get; private set; }
-        public string ContentLanguage { get; private set; }
-        public long ContentLength { get; private set; }
-        public string ContentLocation { get; private set; }
+        public virtual string CharacterSet { get; private set; }
+        public virtual string ContentType { get; private set; }
+        public virtual HttpStatusCode StatusCode { get; private set; }
+        public virtual string StatusDescription { get; private set; }
+        public virtual CookieCollection Cookies { get; private set; }
+        public virtual int Age { get; private set; }
+        public virtual HttpMethod[] Allow { get; private set; }
+        public virtual CacheControl CacheControl { get; private set; }
+        public virtual string ContentEncoding { get; private set; }
+        public virtual string ContentLanguage { get; private set; }
+        public virtual long ContentLength { get; private set; }
+        public virtual string ContentLocation { get; private set; }
         
         // TODO :This should be files
-        public string ContentDisposition { get; private set; }
+        public virtual string ContentDisposition { get; private set; }
         
-        public DateTime Date { get; private set; }
-        public string ETag { get; private set; }
-        public DateTime Expires { get; private set; }
-        public DateTime LastModified { get; private set; }
-        public string Location { get; private set; }
-        public CacheControl Pragma { get; private set; }
-        public string Server { get; private set; }
-        public WebHeaderCollection RawHeaders { get; private set; }
-        public Stream ResponseStream { get { return _response.GetResponseStream(); }
+        public virtual DateTime Date { get; private set; }
+        public virtual string ETag { get; private set; }
+        public virtual DateTime Expires { get; private set; }
+        public virtual DateTime LastModified { get; private set; }
+        public virtual string Location { get; private set; }
+        public virtual CacheControl Pragma { get; private set; }
+        public virtual string Server { get; private set; }
+        public virtual WebHeaderCollection RawHeaders { get; private set; }
+        public virtual Stream ResponseStream { get { return _response.GetResponseStream(); }
         }
 
 
-        public dynamic DynamicBody
+        public virtual dynamic DynamicBody
         {
             get { return _decoder.DecodeToDynamic(RawText, ContentType); }
         }
 
-        public string RawText { get; private set; }
+        public virtual string RawText { get; private set; }
 
-        public T StaticBody<T>(string overrideContentType = null)
+        public virtual T StaticBody<T>(string overrideContentType = null)
         {
             if (overrideContentType != null)
             {
@@ -113,14 +114,18 @@ namespace EasyHttp.Http
             return _decoder.DecodeToStatic<T>(RawText, ContentType);
         }
 
+        public HttpResponse() : this(null)
+        {
+        }
+
         public HttpResponse(IDecoder decoder)
         {
-            _decoder = decoder;
+            _decoder = decoder ?? new DefaultEncoderDecoderConfiguration().GetDecoder();
         }
 
        
 
-        public void GetResponse(WebRequest request, string filename, bool streamResponse)
+        public virtual void GetResponse(WebRequest request, string filename, bool streamResponse)
         {
             try
             {
