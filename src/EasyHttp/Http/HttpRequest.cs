@@ -1,10 +1,10 @@
 ﻿#region License
 
 // Distributed under the BSD License
-//   
+//
 // YouTrackSharp Copyright (c) 2010-2012, Hadi Hariri and Contributors
 // All rights reserved.
-//   
+//
 //  Redistribution and use in source and binary forms, with or without
 //  modification, are permitted provided that the following conditions are met:
 //      * Redistributions of source code must retain the above copyright
@@ -15,11 +15,11 @@
 //      * Neither the name of Hadi Hariri nor the
 //         names of its contributors may be used to endorse or promote products
 //         derived from this software without specific prior written permission.
-//   
+//
 //   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 //   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
-//   TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A 
-//   PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL 
+//   TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+//   PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
 //   <COPYRIGHTHOLDER> BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
 //   SPECIAL,EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
 //   LIMITED  TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
@@ -27,7 +27,7 @@
 //   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 //   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 //   THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//   
+//
 
 #endregion
 
@@ -248,9 +248,9 @@ namespace EasyHttp.Http
             using (var fileStream = new FileStream(PutFilename, FileMode.Open))
             {
                 httpWebRequest.ContentLength = fileStream.Length;
-                
+
                 var requestStream = httpWebRequest.GetRequestStream();
-                
+
                 var buffer = new byte[81982];
 
                 int bytesRead = fileStream.Read(buffer, 0, buffer.Length);
@@ -263,15 +263,15 @@ namespace EasyHttp.Http
             }
         }
 
-   
-       
+
+
         void SetupMultiPartBody()
         {
             var multiPartStreamer = new MultiPartStreamer(MultiPartFormData, MultiPartFileData);
 
             httpWebRequest.ContentType = multiPartStreamer.GetContentType();
             var contentLength = multiPartStreamer.GetContentLength();
-            
+
             if (contentLength > 0)
             {
                 httpWebRequest.ContentLength = contentLength;
