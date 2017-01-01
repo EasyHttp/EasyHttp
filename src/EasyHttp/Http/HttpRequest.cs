@@ -74,48 +74,48 @@ namespace EasyHttp.Http
             AllowAutoRedirect = true;
         }
 
-        public bool DisableAutomaticCompression { get; set; }
-        public string Accept { get; set; }
-        public string AcceptCharSet { get; set; }
-        public string AcceptEncoding { get; set; }
-        public string AcceptLanguage { get; set; }
-        public bool KeepAlive { get; set; }
-        public X509CertificateCollection ClientCertificates { get; set; }
-        public string ContentLength { get; private set; }
-        public string ContentType { get; set; }
-        public string ContentEncoding { get; set; }
-        public CookieCollection Cookies { get; set; }
-        public DateTime Date { get; set; }
-        public bool Expect { get; set; }
-        public string From { get; set; }
-        public string Host { get; set; }
-        public string IfMatch { get; set; }
-        public DateTime IfModifiedSince { get; set; }
-        public string IfRange { get; set; }
-        public int MaxForwards { get; set; }
-        public string Referer { get; set; }
-        public int Range { get; set; }
-        public string UserAgent { get; set; }
-        public IDictionary<string, object> RawHeaders { get; private set; }
-        public HttpMethod Method { get; set; }
-        public object Data { get; set; }
-        public string Uri { get; set; }
-        public string PutFilename { get; set; }
-        public IDictionary<string, object> MultiPartFormData { get; set; }
-        public IList<FileData> MultiPartFileData { get; set; }
-        public int Timeout { get; set; }
-        public Boolean ParametersAsSegments { get; set; }
+        public virtual bool DisableAutomaticCompression { get; set; }
+        public virtual string Accept { get; set; }
+        public virtual string AcceptCharSet { get; set; }
+        public virtual string AcceptEncoding { get; set; }
+        public virtual string AcceptLanguage { get; set; }
+        public virtual bool KeepAlive { get; set; }
+        public virtual X509CertificateCollection ClientCertificates { get; set; }
+        public virtual string ContentLength { get; private set; }
+        public virtual string ContentType { get; set; }
+        public virtual string ContentEncoding { get; set; }
+        public virtual CookieCollection Cookies { get; set; }
+        public virtual DateTime Date { get; set; }
+        public virtual bool Expect { get; set; }
+        public virtual string From { get; set; }
+        public virtual string Host { get; set; }
+        public virtual string IfMatch { get; set; }
+        public virtual DateTime IfModifiedSince { get; set; }
+        public virtual string IfRange { get; set; }
+        public virtual int MaxForwards { get; set; }
+        public virtual string Referer { get; set; }
+        public virtual int Range { get; set; }
+        public virtual string UserAgent { get; set; }
+        public virtual IDictionary<string, object> RawHeaders { get; private set; }
+        public virtual HttpMethod Method { get; set; }
+        public virtual object Data { get; set; }
+        public virtual string Uri { get; set; }
+        public virtual string PutFilename { get; set; }
+        public virtual IDictionary<string, object> MultiPartFormData { get; set; }
+        public virtual IList<FileData> MultiPartFileData { get; set; }
+        public virtual int Timeout { get; set; }
+        public virtual Boolean ParametersAsSegments { get; set; }
 
-        public bool ForceBasicAuth
+        public virtual bool ForceBasicAuth
         {
             get { return _forceBasicAuth; }
             set { _forceBasicAuth = value; }
         }
 
-        public bool PersistCookies { get; set; }
-        public bool AllowAutoRedirect { get; set; }
+        public virtual bool PersistCookies { get; set; }
+        public virtual bool AllowAutoRedirect { get; set; }
 
-        public void SetBasicAuthentication(string username, string password)
+        public virtual void SetBasicAuthentication(string username, string password)
         {
             _username = username;
             _password = password;
@@ -198,7 +198,7 @@ namespace EasyHttp.Http
             return true;
         }
 
-        public void AddExtraHeader(string header, object value)
+        public virtual void AddExtraHeader(string header, object value)
         {
             if (value != null && !RawHeaders.ContainsKey(header))
             {
@@ -282,7 +282,7 @@ namespace EasyHttp.Http
         }
 
 
-        public HttpWebRequest PrepareRequest()
+        public virtual HttpWebRequest PrepareRequest()
         {
             httpWebRequest = (HttpWebRequest) WebRequest.Create(Uri);
             httpWebRequest.AllowAutoRedirect = AllowAutoRedirect;
@@ -319,22 +319,22 @@ namespace EasyHttp.Http
         }
 
 
-        public void SetCacheControlToNoCache()
+        public virtual void SetCacheControlToNoCache()
         {
             _cachePolicy = new HttpRequestCachePolicy(HttpRequestCacheLevel.NoCacheNoStore);
         }
 
-        public void SetCacheControlWithMaxAge(TimeSpan maxAge)
+        public virtual void SetCacheControlWithMaxAge(TimeSpan maxAge)
         {
             _cachePolicy = new HttpRequestCachePolicy(HttpCacheAgeControl.MaxAge, maxAge);
         }
 
-        public void SetCacheControlWithMaxAgeAndMaxStale(TimeSpan maxAge, TimeSpan maxStale)
+        public virtual void SetCacheControlWithMaxAgeAndMaxStale(TimeSpan maxAge, TimeSpan maxStale)
         {
             _cachePolicy = new HttpRequestCachePolicy(HttpCacheAgeControl.MaxAgeAndMaxStale, maxAge, maxStale);
         }
 
-        public void SetCacheControlWithMaxAgeAndMinFresh(TimeSpan maxAge, TimeSpan minFresh)
+        public virtual void SetCacheControlWithMaxAgeAndMinFresh(TimeSpan maxAge, TimeSpan minFresh)
         {
             _cachePolicy = new HttpRequestCachePolicy(HttpCacheAgeControl.MaxAgeAndMinFresh, maxAge, minFresh);
         }
