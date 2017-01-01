@@ -61,6 +61,7 @@ using System.Net;
 using EasyHttp.Http;
 using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
+using NSubstitute;
 using Result = EasyHttp.Specs.Helpers.ResultResponse;
 
 namespace EasyHttp.Specs.Specs
@@ -142,6 +143,31 @@ namespace EasyHttp.Specs.Specs
             () => httpResponse.RawText.ShouldNotBeEmpty();
 
     
+        static HttpClient httpClient;
+        static HttpResponse httpResponse;
+    }
+
+    [Subject("HttpClient")]
+    public class when_mocking_a_GET_request_with_valid_uri_to_return_a_NotFound
+    {
+        Establish context = () =>
+        {
+            var injectedResponse = Substitute.For<HttpResponse>();
+            injectedResponse.StatusCode.Returns(HttpStatusCode.NotFound);
+
+            httpClient = new HttpClient(x => injectedResponse);
+        };
+
+        Because of = () =>
+        {
+            httpResponse = httpClient.Get("http://localhost:16000");
+
+        };
+
+        It should_return_a_NotFound =
+            () => httpResponse.StatusCode.ShouldEqual(HttpStatusCode.NotFound);
+
+
         static HttpClient httpClient;
         static HttpResponse httpResponse;
     }
