@@ -72,7 +72,6 @@ namespace EasyHttp.Http
         readonly IDecoder _decoder;
         readonly UriComposer _uriComposer;
         private bool _shouldRemoveAtSign = true;
-        private readonly Func<string, HttpResponse> _getResponse;
 
         public virtual bool LoggingEnabled { get; set; }
         public virtual bool ThrowExceptionOnHttpError { get; set; }
@@ -88,16 +87,12 @@ namespace EasyHttp.Http
             }
         }
 
-        public HttpClient() : this(null)
-        {
-        }
-
-        public HttpClient(Func<string,HttpResponse> getResponse = null):this(new DefaultEncoderDecoderConfiguration(), getResponse)
+        public HttpClient():this(new DefaultEncoderDecoderConfiguration())
         {
         }
 
 
-        public HttpClient(IEncoderDecoderConfiguration encoderDecoderConfiguration, Func<string, HttpResponse> getResponse = null)
+        public HttpClient(IEncoderDecoderConfiguration encoderDecoderConfiguration)
         {
             _encoder = encoderDecoderConfiguration.GetEncoder();
             _decoder = encoderDecoderConfiguration.GetDecoder();
@@ -105,10 +100,9 @@ namespace EasyHttp.Http
             _uriComposer = new UriComposer();
 
             Request = new HttpRequest(_encoder);
-            _getResponse = getResponse ?? GetResponse;
         }
 
-        public HttpClient(string baseUri, Func<string,HttpResponse> getResponse = null): this(new DefaultEncoderDecoderConfiguration(), getResponse)
+        public HttpClient(string baseUri, Func<string,HttpResponse> getResponse = null): this(new DefaultEncoderDecoderConfiguration())
         {
             _baseUri = baseUri;
         }
@@ -212,24 +206,19 @@ namespace EasyHttp.Http
 
         HttpResponse ProcessRequest(string filename = "")
         {
-            Response = _getResponse(filename);
-
-            if (ThrowExceptionOnHttpError && IsHttpError())
-            {
-                throw new HttpException(Response.StatusCode, Response.StatusDescription);
-            }
-            return Response;
-        }
-
-        private HttpResponse GetResponse(string filename)
-        {
             var httpWebRequest = Request.PrepareRequest();
 
             var response = new HttpResponse(_decoder);
 
             response.GetResponse(httpWebRequest, filename, StreamResponse);
 
-            return response;
+            Response = response;
+
+            if (ThrowExceptionOnHttpError && IsHttpError())
+            {
+                throw new HttpException(Response.StatusCode, Response.StatusDescription);
+            }
+            return Response;
         }
 
         public virtual void AddClientCertificates(X509CertificateCollection certificates)
