@@ -41,6 +41,7 @@ using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using EasyHttp.Codecs;
+using EasyHttp.Http.Abstractions;
 using EasyHttp.Infrastructure;
 
 namespace EasyHttp.Http
@@ -53,7 +54,7 @@ namespace EasyHttp.Http
         bool _forceBasicAuth;
         string _password;
         string _username;
-        HttpWebRequest httpWebRequest;
+        IHttpWebRequest httpWebRequest;
         CookieContainer cookieContainer;
 
         public HttpRequest(IEncoder encoder)
@@ -282,9 +283,9 @@ namespace EasyHttp.Http
         }
 
 
-        public virtual HttpWebRequest PrepareRequest()
+        public virtual IHttpWebRequest PrepareRequest()
         {
-            httpWebRequest = (HttpWebRequest) WebRequest.Create(Uri);
+            httpWebRequest = new HttpWebRequestWrapper((HttpWebRequest) WebRequest.Create(Uri));
             httpWebRequest.AllowAutoRedirect = AllowAutoRedirect;
             SetupHeader();
 

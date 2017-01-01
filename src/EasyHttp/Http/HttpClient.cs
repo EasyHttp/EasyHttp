@@ -58,9 +58,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using EasyHttp.Codecs;
 using EasyHttp.Configuration;
+using EasyHttp.Http.Abstractions;
+using EasyHttp.Http.Injection;
 using EasyHttp.Infrastructure;
 
 namespace EasyHttp.Http
@@ -87,10 +90,11 @@ namespace EasyHttp.Http
             }
         }
 
+        public IList<HttpRequestInterception> RegisteredInterceptions { get; set; }
+
         public HttpClient():this(new DefaultEncoderDecoderConfiguration())
         {
         }
-
 
         public HttpClient(IEncoderDecoderConfiguration encoderDecoderConfiguration)
         {
@@ -100,6 +104,8 @@ namespace EasyHttp.Http
             _uriComposer = new UriComposer();
 
             Request = new HttpRequest(_encoder);
+
+            RegisteredInterceptions = new List<HttpRequestInterception>();
         }
 
         public HttpClient(string baseUri, Func<string,HttpResponse> getResponse = null): this(new DefaultEncoderDecoderConfiguration())
@@ -206,7 +212,11 @@ namespace EasyHttp.Http
 
         HttpResponse ProcessRequest(string filename = "")
         {
-            var httpWebRequest = Request.PrepareRequest();
+            var matchingInterceptor = RegisteredInterceptions.FirstOrDefault(i => i.Matches(Request));
+
+            var httpWebRequest = matchingInterceptor != null
+                ? new StubbedHttpWebRequest(matchingInterceptor)
+                : Request.PrepareRequest();
 
             var response = new HttpResponse(_decoder);
 
@@ -236,5 +246,22 @@ namespace EasyHttp.Http
             return (num == 4 || num == 5);
         }
 
+        public IHttpRequestInterceptionBuilder OnRequest(Func<HttpRequest,bool> requestPredicate = null)
+        {
+            var interceptor = new HttpRequestInterception(requestPredicate);
+
+            RegisteredInterceptions.Add(interceptor);
+
+            return interceptor; // so the caller can customize it
+        }
+
+        public IHttpRequestInterceptionBuilder OnRequest(HttpMethod method, string url = null)
+        {
+            var interceptor = new HttpRequestInterception(method, url);
+
+            RegisteredInterceptions.Add(interceptor);
+
+            return interceptor; // so the caller can customize it
+        }
     }
 }

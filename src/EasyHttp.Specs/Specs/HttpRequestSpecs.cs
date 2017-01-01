@@ -57,6 +57,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Net;
 using EasyHttp.Http;
 using EasyHttp.Specs.Helpers;
@@ -170,6 +171,65 @@ namespace EasyHttp.Specs.Specs
 
         static HttpClient httpClient;
         static HttpResponse httpResponse;
+    }
+
+    [Subject("HttpClient")]
+    public class when_mocking_a_GET_request_with_valid_uri_to_inject_a_specific_response
+    {
+        Establish context = () =>
+        {
+            var injectedResponseBody =
+@"{
+    'name': 'Serenity',
+    'characterNames': [
+        'Mal',
+        'Wash',
+        'Zoe'
+    ]
+}";
+            httpClient = new HttpClient();
+
+            httpClient.OnRequest(r =>
+                        r.Uri.Contains("localhost:16000")
+                        && r.Method == HttpMethod.POST
+                )
+                .InjectResponse(
+                    HttpStatusCode.BadRequest,
+                    HttpContentTypes.ApplicationJson,
+                    injectedResponseBody
+                );
+        };
+
+        Because of = () =>
+        {
+            httpGetResponse = httpClient.Get("http://localhost:16000");
+            httpPostResponse = httpClient.Post("http://localhost:16000", null, HttpContentTypes.ApplicationJson);
+        };
+
+        It should_return_OK_for_the_Get =
+            () => httpGetResponse.StatusCode.ShouldEqual(HttpStatusCode.OK);
+
+        It should_return_BadRequest_for_the_Post =
+            () => httpPostResponse.StatusCode.ShouldEqual(HttpStatusCode.BadRequest);
+
+        It should_return_the_injected_content_type_for_the_Post =
+            () => httpPostResponse.ContentType.ShouldEndWith(HttpContentTypes.ApplicationJson);
+
+        It should_return_the_injected_body_content_for_the_Post =
+            () =>
+            {
+                // have to explicitly cast this dynamic member so that the
+                // Should extensions can bind properly at run-time.
+                var characterNames = httpPostResponse.DynamicBody.characterNames as string[];
+
+                characterNames.ShouldNotBeNull();
+                characterNames.Length.ShouldEqual(3);
+                characterNames[1].ShouldEqual("Wash");
+            };
+
+        static HttpClient httpClient;
+        static HttpResponse httpGetResponse;
+        static HttpResponse httpPostResponse;
     }
 
     [Subject("HttpClient")]
