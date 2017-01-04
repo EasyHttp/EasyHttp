@@ -1,6 +1,6 @@
 # Project Status
 
-This project is now maintained by [David Alpert](https://github.com/davidalpert).
+This project alive and maintained by [David Alpert](https://github.com/davidalpert).
 
 # EasyHttp
 
