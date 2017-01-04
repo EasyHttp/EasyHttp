@@ -1,3 +1,4 @@
+
 # EasyHttp
 
 
@@ -113,6 +114,6 @@ For serialization / deserialization, you can use pretty much any type of naming 
 
 ## Credits
 
-Copyright (c) 2010 - 2011 Hadi Hariri and Project Contributors
+Copyright (c) 2010 - 2017 Hadi Hariri and Project Contributors
 
 JsonFX: Licensed under MIT. EasyHttp uses the awesome JsonFX library at http://github.com/jsonfx
