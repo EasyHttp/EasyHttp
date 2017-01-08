@@ -63,6 +63,7 @@
     <Compile Include="Codecs\JsonFXExtensions\UrlEncoderWriter.cs" />
     <Compile Include="Configuration\DefaultEncoderDecoderConfiguration.cs" />
     <Compile Include="Configuration\IEncoderDecoderConfiguration.cs" />
+    <Compile Include="Http\Abstractions\IHttpRequestInterceptionBuilder.cs" />
     <Compile Include="Http\CacheControl.cs" />
     <Compile Include="Http\HttpClient.cs" />
     <Compile Include="Http\HttpContentTransferEncoding.cs" />
@@ -70,7 +71,18 @@
     <Compile Include="Http\HttpMethod.cs" />
     <Compile Include="Http\HttpRequest.cs" />
     <Compile Include="Http\HttpResponse.cs" />
+    <Compile Include="Http\Injection\HttpRequestInterception.cs" />
+    <Compile Include="Http\Abstractions\HttpWebRequestWrapper.cs" />
+    <Compile Include="Http\Abstractions\HttpWebResponseWrapper.cs" />
+    <Compile Include="Http\Abstractions\IHttpRequestInterception.cs" />
+    <Compile Include="Http\Abstractions\IHttpWebRequest.cs" />
+    <Compile Include="Http\Abstractions\IHttpWebResponse.cs" />
+    <Compile Include="Http\Abstractions\IWebResponse.cs" />
     <Compile Include="Http\MultipartStreamer.cs" />
+    <Compile Include="Http\StreamExtensions.cs" />
+    <Compile Include="Http\Injection\StubbedHttpWebRequest.cs" />
+    <Compile Include="Http\Injection\StubbedHttpWebResponse.cs" />
+    <Compile Include="Http\Abstractions\WebResponseWrapper.cs" />
     <Compile Include="Infrastructure\ConfigurationException.cs" />
     <Compile Include="Infrastructure\ObjectToUrl.cs" />
     <Compile Include="Infrastructure\ObjectToUrlSegments.cs" />

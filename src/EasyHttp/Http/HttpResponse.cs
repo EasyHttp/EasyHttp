@@ -1,10 +1,10 @@
 ﻿#region License
 // Distributed under the BSD License
 // =================================
-// 
+//
 // Copyright (c) 2010, Hadi Hariri
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //     * Redistributions of source code must retain the above copyright
@@ -15,7 +15,7 @@
 //     * Neither the name of Hadi Hariri nor the
 //       names of its contributors may be used to endorse or promote products
 //       derived from this software without specific prior written permission.
-// 
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 // ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 // WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -27,26 +27,26 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // =============================================================
-// 
-// 
+//
+//
 // Parts of this Software use JsonFX Serialization Library which is distributed under the MIT License:
-// 
+//
 // Distributed under the terms of an MIT-style license:
-// 
+//
 // The MIT License
-// 
+//
 // Copyright (c) 2006-2009 Stephen M. McKamey
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -61,50 +61,52 @@ using System.IO;
 using System.Net;
 using System.Text;
 using EasyHttp.Codecs;
+using EasyHttp.Configuration;
+using EasyHttp.Http.Abstractions;
 
 namespace EasyHttp.Http
 {
     public class HttpResponse
     {
         readonly IDecoder _decoder;
-        HttpWebResponse _response;
+        IHttpWebResponse _response;
 
-        public string CharacterSet { get; private set; }
-        public string ContentType { get; private set; }
-        public HttpStatusCode StatusCode { get; private set; }
-        public string StatusDescription { get; private set; }
-        public CookieCollection Cookies { get; private set; }
-        public int Age { get; private set; }
-        public HttpMethod[] Allow { get; private set; }
-        public CacheControl CacheControl { get; private set; }
-        public string ContentEncoding { get; private set; }
-        public string ContentLanguage { get; private set; }
-        public long ContentLength { get; private set; }
-        public string ContentLocation { get; private set; }
-        
+        public virtual string CharacterSet { get; private set; }
+        public virtual string ContentType { get; private set; }
+        public virtual HttpStatusCode StatusCode { get; private set; }
+        public virtual string StatusDescription { get; private set; }
+        public virtual CookieCollection Cookies { get; private set; }
+        public virtual int Age { get; private set; }
+        public virtual HttpMethod[] Allow { get; private set; }
+        public virtual CacheControl CacheControl { get; private set; }
+        public virtual string ContentEncoding { get; private set; }
+        public virtual string ContentLanguage { get; private set; }
+        public virtual long ContentLength { get; private set; }
+        public virtual string ContentLocation { get; private set; }
+
         // TODO :This should be files
-        public string ContentDisposition { get; private set; }
-        
-        public DateTime Date { get; private set; }
-        public string ETag { get; private set; }
-        public DateTime Expires { get; private set; }
-        public DateTime LastModified { get; private set; }
-        public string Location { get; private set; }
-        public CacheControl Pragma { get; private set; }
-        public string Server { get; private set; }
-        public WebHeaderCollection RawHeaders { get; private set; }
-        public Stream ResponseStream { get { return _response.GetResponseStream(); }
+        public virtual string ContentDisposition { get; private set; }
+
+        public virtual DateTime Date { get; private set; }
+        public virtual string ETag { get; private set; }
+        public virtual DateTime Expires { get; private set; }
+        public virtual DateTime LastModified { get; private set; }
+        public virtual string Location { get; private set; }
+        public virtual CacheControl Pragma { get; private set; }
+        public virtual string Server { get; private set; }
+        public virtual WebHeaderCollection RawHeaders { get; private set; }
+        public virtual Stream ResponseStream { get { return _response.GetResponseStream(); }
         }
 
 
-        public dynamic DynamicBody
+        public virtual dynamic DynamicBody
         {
             get { return _decoder.DecodeToDynamic(RawText, ContentType); }
         }
 
-        public string RawText { get; private set; }
+        public virtual string RawText { get; private set; }
 
-        public T StaticBody<T>(string overrideContentType = null)
+        public virtual T StaticBody<T>(string overrideContentType = null)
         {
             if (overrideContentType != null)
             {
@@ -113,18 +115,22 @@ namespace EasyHttp.Http
             return _decoder.DecodeToStatic<T>(RawText, ContentType);
         }
 
-        public HttpResponse(IDecoder decoder)
+        public HttpResponse() : this(null)
         {
-            _decoder = decoder;
         }
 
-       
+        public HttpResponse(IDecoder decoder)
+        {
+            _decoder = decoder ?? new DefaultEncoderDecoderConfiguration().GetDecoder();
+        }
 
-        public void GetResponse(WebRequest request, string filename, bool streamResponse)
+
+
+        public virtual void GetResponse(IHttpWebRequest request, string filename, bool streamResponse)
         {
             try
             {
-                _response = (HttpWebResponse) request.GetResponse();
+                _response = request.GetResponse();
 
             }
             catch (WebException webException)
@@ -133,7 +139,7 @@ namespace EasyHttp.Http
                 {
                     throw;
                 }
-                _response = (HttpWebResponse) webException.Response;
+                _response = new HttpWebResponseWrapper((HttpWebResponse) webException.Response);
 
             }
 
@@ -192,10 +198,10 @@ namespace EasyHttp.Http
             ContentDisposition = GetHeader("Content-Disposition");
             ETag = GetHeader("ETag");
             Location = GetHeader("Location");
-                
+
             if (!String.IsNullOrEmpty(GetHeader("Expires")))
             {
-                DateTime expires; 
+                DateTime expires;
                 if (DateTime.TryParse(GetHeader("Expires"), out expires))
                 {
                     Expires = expires;
