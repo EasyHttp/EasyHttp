@@ -1,5 +1,6 @@
 bin/
 obj/
+packages/
 _ReSharper.*
 *.csproj.user
 *.resharper.user
