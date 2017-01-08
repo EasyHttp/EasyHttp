@@ -1,12 +1,58 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="CIBuild">
+
   <PropertyGroup>
-    <ProjectFolder>..\src\</ProjectFolder>
-    <Version>1.0.0.0</Version>
+    <Version>0.0.0.1</Version>
+    <BuildConfiguration>Debug</BuildConfiguration>
+
+    <RootDir>$(MSBuildFileThisDirectory)..\</RootDir>
+    <SourceDir>$(RootDir)src\</SourceDir>
+    <PackageDir>$(SourceDir)packages\</PackageDir>
+    <BinDir>$(RootDir)Bin\</BinDir>
+
+    <MSpecConsoleRunner>$(PackageDir)Machine.Specifications.0.5.10\tools\mspec-x86-clr4.exe</MSpecConsoleRunner>
+    <NugetExe>$(SourceDir).nuget\nuget.exe</NugetExe>
+    <NuspecFile>$(MSBuildFileThisDirectory)EasyHttp.nuspec</NuspecFile>
   </PropertyGroup>
-  <Target Name="BuildNuGet">
-    <MSBuild Projects="$(ProjectFolder)\EasyHttp.sln" Properties="Configuration=Release;" />
-    <Exec Command="NuGet pack EasyHttp.nuspec -Properties Configuration=Release -Version $(version)" />
+
+  <Target Name="CIBuild" DependsOnTargets="$(CIBuild_DependsOn)"/>
+
+  <ItemGroup>
+    <Solution Include="$(SourceDir)EasyHttp.sln"/>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <CIBuild_DependsOn>
+      <!-- Step 1 --> Build;
+      <!-- Step 2 --> RunTests;
+      <!-- Step 3 --> BuildPackage;
+    </CIBuild_DependsOn>
+  </PropertyGroup>
+
+  <Target Name="Build">
+    <MSBuild Projects="%(Solution.Identity)"
+             Targets="Rebuild"
+             Properties="Configuration=$(BuildConfiguration)" />
+  </Target>
+
+  <Target Name="RunTests">
+    <ItemGroup>
+      <TestAssemblies Include="$(SourceDir)EasyHttp.Specs\bin\$(BuildConfiguration)\EasyHttp.Specs.dll"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+      <cmd>"$(MSpecConsoleRunner)" @(TestAssemblies)</cmd>
+    </PropertyGroup>
+
+    <Exec Command="$(cmd)"/>
+  </Target>
+
+  <Target Name="BuildPackage">
+    <PropertyGroup>
+      <cmd>"$(NugetExe)" pack "$(NuspecFile)" -Properties Configuration=$(BuildConfiguration) -Version $(Version)</cmd>
+    </PropertyGroup>
+
+    <Exec Command="$(cmd)"/>
   </Target>
 
 </Project>
