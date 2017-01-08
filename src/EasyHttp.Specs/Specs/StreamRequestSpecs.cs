@@ -1,30 +1,27 @@
-﻿using System.IO;
-using System.Reflection;
-using EasyHttp.Http;
-using Machine.Specifications;
+﻿using EasyHttp.Http;
+using NUnit.Framework;
 
 namespace EasyHttp.Specs.Specs
 {
-    [Subject(typeof(HttpClient))]
     public class when_making_a_GET_with_stream_response_true
     {
-        Establish context = () =>
+        HttpClient httpClient;
+
+        [SetUp]
+        public void SetUp()
         {
             httpClient = new HttpClient();
-        };
 
-        Because of = () =>
-        {
             httpClient.StreamResponse = true;
+        }
 
-            httpClient.Get("http://localhost:16000/hello");
-           
-        };
-
-        It should_allow_access_to_response_stream = () =>
+        [Test(TestOf = typeof(HttpClient))]
+        public void should_allow_access_to_response_stream()
         {
-             using (var stream = httpClient.Response.ResponseStream)
-             {
+            httpClient.Get("http://localhost:16000/hello");
+
+            using (var stream = httpClient.Response.ResponseStream)
+            {
                 int count;
                 int total = 0;
                 var buffer = new byte[8192];
@@ -33,15 +30,16 @@ namespace EasyHttp.Specs.Specs
                 {
                     total += count;
                 }
-                total.ShouldBeGreaterThan(0);
-             }
+                Assert.IsTrue(total > 0);
+            }
+        }
 
-        };
-
-        It raw_text_should_be_empty = () =>
+        [Test(TestOf = typeof(HttpClient))]
+        public void raw_text_should_be_empty()
         {
-            httpClient.Response.RawText.ShouldBeNull();
-        };
-        static HttpClient httpClient;
+            httpClient.Get("http://localhost:16000/hello");
+
+            Assert.IsNull(httpClient.Response.RawText);
+        }
     }
 }

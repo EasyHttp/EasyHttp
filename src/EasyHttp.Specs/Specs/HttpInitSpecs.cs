@@ -1,30 +1,28 @@
 using EasyHttp.Http;
 using EasyHttp.Specs.Helpers;
-using Machine.Specifications;
+using NUnit.Framework;
 
 namespace EasyHttp.Specs.Specs
 {
-    [Subject("HttpClient Init")]
+    [TestFixture(Category = "HttpClient Init")]
     public class when_creating_a_new_instance
     {
-        static HttpClient httpClient;
-        Because of = () => { httpClient = new HttpClient(); };
-
-        It should_return_new_instance_using_default_configuration = () => httpClient.ShouldNotBeNull();
-    }
-
-    [Subject("Initializing with base url")]
-    public class when_creating_a_new_instance_with_base_url
-    {
-        Because of = () =>
+        [Test]
+        public void when_creating_a_new_instance_it_should_return_new_instance_using_the_default_configuration()
         {
-            httpClient = new HttpClient("http://localhost:16000");
+            var client = new HttpClient();
 
-            httpClient.Get("/hello");
-        };
+            Assert.NotNull(client);
+        }
 
-        It should_prefix_all_requests_with_the_base_url = () => httpClient.Request.Uri.ShouldEqual("http://localhost:16000/hello");
+        [Test]
+        public void when_creating_a_new_instance_with_base_url_should_prefix_all_requests_with_the_base_url()
+        {
+            var client = new HttpClient("http://localhost:16000");
 
-        static HttpClient httpClient;
+            client.Get("/hello");
+
+            Assert.AreEqual("http://localhost:16000/hello", client.Request.Uri);
+        }
     }
 }

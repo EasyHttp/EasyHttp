@@ -4,41 +4,30 @@ using EasyHttp.Codecs.JsonFXExtensions;
 using EasyHttp.Http;
 using JsonFx.Json;
 using JsonFx.Serialization;
-using Machine.Specifications;
-
-
-
+using NUnit.Framework;
 
 namespace EasyHttp.Specs.BugRepros
 {
-    [Subject("Encoding Enums")]
-    public class when_encoding_an_object_that_contains_an_enum
+    public class EncodingEnums
     {
-
-        Establish context = () =>
+        [Test, Category("Encoding Enums")]
+        public void when_encoding_an_object_that_contains_an_enum()
         {
-            IEnumerable<IDataWriter> writers = new List<IDataWriter> { new JsonWriter(new DataWriterSettings(), "application/.*json") };
+            IEnumerable<IDataWriter> writers = new List<IDataWriter>
+            {
+                new JsonWriter(new DataWriterSettings(), "application/.*json")
+            };
 
-            _encoder = new DefaultEncoder(new RegExBasedDataWriterProvider(writers));
-        };
+            var _encoder = new DefaultEncoder(new RegExBasedDataWriterProvider(writers));
 
-        Because of = () =>
-        {
             var data = new Foo {Baz = Bar.First};
 
-            result = _encoder.Encode(data, "application/vnd.fubar+json");
-        };
+            var result = _encoder.Encode(data, "application/vnd.fubar+json");
 
-        It should_encode_correctly = () =>
-        {
-            result.Length.ShouldBeGreaterThan(0);
-        };
-
-        static HttpClient client;
-        static DefaultEncoder _encoder;
-        static byte[] result;
+            Assert.Greater(result.Length, 0);
+        }
     }
- 
+
     public class Foo
     {
         public Bar Baz { get; set; }
@@ -50,5 +39,4 @@ namespace EasyHttp.Specs.BugRepros
         Second,
         Third
     }
- 
 }
