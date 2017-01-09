@@ -81,5 +81,3 @@ using System.Runtime.InteropServices;
 [assembly: Guid("a75f86cc-b989-4128-9589-64f345d75a72")]
 
 // Version information for an assembly managed by GitVersionTask
-
-[assembly: CLSCompliant(true)]
