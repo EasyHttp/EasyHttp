@@ -2,32 +2,54 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="CIBuild">
 
   <PropertyGroup>
-    <Version>0.0.0.1</Version>
     <BuildConfiguration>Debug</BuildConfiguration>
 
-    <RootDir>$(MSBuildFileThisDirectory)..\</RootDir>
-    <SourceDir>$(RootDir)src\</SourceDir>
-    <PackageDir>$(SourceDir)packages\</PackageDir>
+    <RootDir>$([System.IO.Path]::GetFullPath("$(MSBuildThisFileDirectory)..\"))</RootDir>
+    <SoultionDir>$(RootDir)src\</SoultionDir>
+    <PackageDir>$(SoultionDir)packages\</PackageDir>
     <BinDir>$(RootDir)Bin\</BinDir>
 
+    <VersionStemFile>$(RootDir)version.txt</VersionStemFile>
+
     <MSpecConsoleRunner>$(PackageDir)Machine.Specifications.0.5.10\tools\mspec-x86-clr4.exe</MSpecConsoleRunner>
-    <NugetExe>$(SourceDir).nuget\nuget.exe</NugetExe>
+    <NugetExe>$(SoultionDir).nuget\nuget.exe</NugetExe>
     <NuspecFile>$(MSBuildFileThisDirectory)EasyHttp.nuspec</NuspecFile>
   </PropertyGroup>
 
   <Target Name="CIBuild" DependsOnTargets="$(CIBuild_DependsOn)"/>
+  <Target Name="Next" DependsOnTargets="$(Next_DependsOn)"/>
 
   <ItemGroup>
-    <Solution Include="$(SourceDir)EasyHttp.sln"/>
+    <Solution Include="$(SoultionDir)EasyHttp.sln"/>
   </ItemGroup>
+
+  <Import Project="$(PackagesDir)GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets"/>
 
   <PropertyGroup>
     <CIBuild_DependsOn>
-      <!-- Step 1 --> Build;
-      <!-- Step 2 --> RunTests;
-      <!-- Step 3 --> BuildPackage;
+      GetVersion;   <!-- from GitVersionTask.targets -->
+      Describe;     <!-- self-documenting -->
+      Build;        <!-- Step 1 -->
+      RunTests;     <!-- Step 2 -->
+      BuildPackage; <!-- Step 3 -->
     </CIBuild_DependsOn>
   </PropertyGroup>
+
+  <Target Name="Describe" DependsOnTargets="GetVersion">
+    <Message Text="             RootDir: $(RootDir)"/>
+    <Message Text="           SourceDir: $(SoultionDir)"/>
+    <Message Text="          PackageDir: $(PackageDir)"/>
+    <Message Text="              BinDir: $(BinDir)"/>
+    <Message Text=""/>
+    <Message Text="  BuildConfiguration: $(BuildConfiguration)"/>
+    <Message Text="          BranchName: $(GitVersion_BranchName)"/>
+    <Message Text=""/>
+    <Message Text="      AssemblySemVer: $(GitVersion_AssemblySemVer)"/>
+    <Message Text="          FullSemVer: $(GitVersion_FullSemVer)"/>
+    <Message Text="InformationalVersion: $(GitVersion_InformationalVersion)"/>
+    <Message Text=""/>
+    <Message Text="        NugetVersion: $(GitVersion_NugetVersion)"/>
+  </Target>
 
   <Target Name="Build">
     <MSBuild Projects="%(Solution.Identity)"
@@ -37,7 +59,7 @@
 
   <Target Name="RunTests">
     <ItemGroup>
-      <TestAssemblies Include="$(SourceDir)EasyHttp.Specs\bin\$(BuildConfiguration)\EasyHttp.Specs.dll"/>
+      <TestAssemblies Include="$(SoultionDir)EasyHttp.Specs\bin\$(BuildConfiguration)\EasyHttp.Specs.dll"/>
     </ItemGroup>
 
     <PropertyGroup>
@@ -49,7 +71,7 @@
 
   <Target Name="BuildPackage">
     <PropertyGroup>
-      <cmd>"$(NugetExe)" pack "$(NuspecFile)" -Properties Configuration=$(BuildConfiguration) -Version $(Version)</cmd>
+      <cmd>"$(NugetExe)" pack "$(NuspecFile)" -Properties Configuration=$(BuildConfiguration) -Version $(GitVersion_NugetVersion)</cmd>
     </PropertyGroup>
 
     <Exec Command="$(cmd)"/>
