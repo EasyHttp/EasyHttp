@@ -18,6 +18,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\src\EasyHttp\bin\Release\EasyHttp.*" target="lib\net40" />
+    <file src="..\src\EasyHttp\bin\$configuration$\EasyHttp.*" target="lib\net40" />
   </files>
 </package>

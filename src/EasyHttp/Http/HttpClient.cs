@@ -1,10 +1,10 @@
 ﻿#region License
 // Distributed under the BSD License
 // =================================
-// 
+//
 // Copyright (c) 2010, Hadi Hariri
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //     * Redistributions of source code must retain the above copyright
@@ -15,7 +15,7 @@
 //     * Neither the name of Hadi Hariri nor the
 //       names of its contributors may be used to endorse or promote products
 //       derived from this software without specific prior written permission.
-// 
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 // ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 // WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -27,26 +27,26 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // =============================================================
-// 
-// 
+//
+//
 // Parts of this Software use JsonFX Serialization Library which is distributed under the MIT License:
-// 
+//
 // Distributed under the terms of an MIT-style license:
-// 
+//
 // The MIT License
-// 
+//
 // Copyright (c) 2006-2009 Stephen M. McKamey
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -58,9 +58,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using EasyHttp.Codecs;
 using EasyHttp.Configuration;
+using EasyHttp.Http.Abstractions;
+using EasyHttp.Http.Injection;
 using EasyHttp.Infrastructure;
 
 namespace EasyHttp.Http
@@ -73,11 +76,11 @@ namespace EasyHttp.Http
         readonly UriComposer _uriComposer;
         private bool _shouldRemoveAtSign = true;
 
-        public bool LoggingEnabled { get; set; }
-        public bool ThrowExceptionOnHttpError { get; set; }
-        public bool StreamResponse { get; set; }
+        public virtual bool LoggingEnabled { get; set; }
+        public virtual bool ThrowExceptionOnHttpError { get; set; }
+        public virtual bool StreamResponse { get; set; }
 
-        public bool ShouldRemoveAtSign
+        public virtual bool ShouldRemoveAtSign
         {
             get { return _shouldRemoveAtSign; }
             set
@@ -87,28 +90,31 @@ namespace EasyHttp.Http
             }
         }
 
+        public IList<HttpRequestInterception> RegisteredInterceptions { get; set; }
+
         public HttpClient():this(new DefaultEncoderDecoderConfiguration())
         {
         }
-      
 
         public HttpClient(IEncoderDecoderConfiguration encoderDecoderConfiguration)
         {
             _encoder = encoderDecoderConfiguration.GetEncoder();
             _decoder = encoderDecoderConfiguration.GetDecoder();
-            _decoder.ShouldRemoveAtSign = ShouldRemoveAtSign;
+            _decoder.ShouldRemoveAtSign = _shouldRemoveAtSign;
             _uriComposer = new UriComposer();
-            
+
             Request = new HttpRequest(_encoder);
+
+            RegisteredInterceptions = new List<HttpRequestInterception>();
         }
 
-        public HttpClient(string baseUri): this(new DefaultEncoderDecoderConfiguration())
+        public HttpClient(string baseUri, Func<string,HttpResponse> getResponse = null): this(new DefaultEncoderDecoderConfiguration())
         {
             _baseUri = baseUri;
         }
 
-        public HttpResponse Response { get; private set; }
-        public HttpRequest Request { get; private set; }
+        public virtual HttpResponse Response { get; private set; }
+        public virtual HttpRequest Request { get; private set; }
 
         void InitRequest(string uri, HttpMethod method, object query)
         {
@@ -124,39 +130,39 @@ namespace EasyHttp.Http
         }
 
 
-        public HttpResponse GetAsFile(string uri, string filename)
+        public virtual HttpResponse GetAsFile(string uri, string filename)
         {
             InitRequest(uri, HttpMethod.GET, null);
             return ProcessRequest(filename);
         }
 
-        public HttpResponse Get(string uri, object query = null)
+        public virtual HttpResponse Get(string uri, object query = null)
         {
             InitRequest(uri, HttpMethod.GET, query);
             return ProcessRequest();
         }
 
-        public HttpResponse Options(string uri)
+        public virtual HttpResponse Options(string uri)
         {
             InitRequest(uri, HttpMethod.OPTIONS, null);
             return ProcessRequest();
         }
 
-        public HttpResponse Post(string uri, object data, string contentType, object query = null)
+        public virtual HttpResponse Post(string uri, object data, string contentType, object query = null)
         {
             InitRequest(uri, HttpMethod.POST, query);
             InitData(data, contentType);
             return ProcessRequest();
         }
 
-        public HttpResponse Patch(string uri, object data, string contentType, object query = null)
+        public virtual HttpResponse Patch(string uri, object data, string contentType, object query = null)
         {
             InitRequest(uri, HttpMethod.PATCH, query);
             InitData(data, contentType);
             return ProcessRequest();
         }
 
-        public HttpResponse Post(string uri, IDictionary<string, object> formData, IList<FileData> files, object query = null)
+        public virtual HttpResponse Post(string uri, IDictionary<string, object> formData, IList<FileData> files, object query = null)
         {
             InitRequest(uri, HttpMethod.POST, query);
             Request.MultiPartFormData = formData;
@@ -165,7 +171,7 @@ namespace EasyHttp.Http
             return ProcessRequest();
         }
 
-        public HttpResponse Put(string uri, object data, string contentType, object query = null)
+        public virtual HttpResponse Put(string uri, object data, string contentType, object query = null)
         {
             InitRequest(uri, HttpMethod.PUT, query);
             InitData(data, contentType);
@@ -181,20 +187,20 @@ namespace EasyHttp.Http
             }
         }
 
-        public HttpResponse Delete(string uri, object query = null)
+        public virtual HttpResponse Delete(string uri, object query = null)
         {
             InitRequest(uri, HttpMethod.DELETE, query);
             return ProcessRequest();
         }
 
- 
-        public HttpResponse Head(string uri, object query = null)
+
+        public virtual HttpResponse Head(string uri, object query = null)
         {
             InitRequest(uri, HttpMethod.HEAD, query);
             return ProcessRequest();
         }
 
-        public HttpResponse PutFile(string uri, string filename, string contentType)
+        public virtual HttpResponse PutFile(string uri, string filename, string contentType)
         {
             InitRequest(uri, HttpMethod.PUT, null);
             Request.ContentType = contentType;
@@ -206,12 +212,18 @@ namespace EasyHttp.Http
 
         HttpResponse ProcessRequest(string filename = "")
         {
-            var httpWebRequest = Request.PrepareRequest();
+            var matchingInterceptor = RegisteredInterceptions.FirstOrDefault(i => i.Matches(Request));
 
-            Response = new HttpResponse(_decoder);
+            var httpWebRequest = matchingInterceptor != null
+                ? new StubbedHttpWebRequest(matchingInterceptor)
+                : Request.PrepareRequest();
 
-            Response.GetResponse(httpWebRequest, filename, StreamResponse);
-            
+            var response = new HttpResponse(_decoder);
+
+            response.GetResponse(httpWebRequest, filename, StreamResponse);
+
+            Response = response;
+
             if (ThrowExceptionOnHttpError && IsHttpError())
             {
                 throw new HttpException(Response.StatusCode, Response.StatusDescription);
@@ -219,7 +231,7 @@ namespace EasyHttp.Http
             return Response;
         }
 
-        public void AddClientCertificates(X509CertificateCollection certificates)
+        public virtual void AddClientCertificates(X509CertificateCollection certificates)
         {
             if(certificates == null || certificates.Count == 0)
                 return;
@@ -234,5 +246,22 @@ namespace EasyHttp.Http
             return (num == 4 || num == 5);
         }
 
+        public IHttpRequestInterceptionBuilder OnRequest(Func<HttpRequest,bool> requestPredicate = null)
+        {
+            var interceptor = new HttpRequestInterception(requestPredicate);
+
+            RegisteredInterceptions.Add(interceptor);
+
+            return interceptor; // so the caller can customize it
+        }
+
+        public IHttpRequestInterceptionBuilder OnRequest(HttpMethod method, string url = null)
+        {
+            var interceptor = new HttpRequestInterception(method, url);
+
+            RegisteredInterceptions.Add(interceptor);
+
+            return interceptor; // so the caller can customize it
+        }
     }
 }
