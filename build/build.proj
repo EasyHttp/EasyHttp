@@ -43,16 +43,18 @@
     <Message Text="           SourceDir: $(SoultionDir)"/>
     <Message Text="          PackageDir: $(PackagesDir)"/>
     <Message Text="              BinDir: $(BinDir)"/>
-    <Message Text=""/>
+    <Message Text=" "/>
     <Message Text="  BuildConfiguration: $(BuildConfiguration)"/>
     <Message Text="          BranchName: $(GitVersion_BranchName)"/>
     <Message Text="       PreReleaseTag: $(GitVersion_PreReleaseTag)"/>
-    <Message Text=""/>
+    <Message Text=" "/>
     <Message Text="      AssemblySemVer: $(GitVersion_AssemblySemVer)"/>
     <Message Text="          FullSemVer: $(GitVersion_FullSemVer)"/>
     <Message Text="InformationalVersion: $(GitVersion_InformationalVersion)"/>
-    <Message Text=""/>
+    <Message Text=" "/>
     <Message Text="        NugetVersion: $(GitVersion_NugetVersion)"/>
+    <Message Text=" "/>
+    <Message Text="##teamcity[setParameter name='NugetPackageVersion' value='$(GitVersion_NugetVersion)']"/>
   </Target>
 
   <Target Name="Build">
