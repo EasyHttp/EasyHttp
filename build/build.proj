@@ -54,7 +54,7 @@
   <Target Name="Build">
     <MSBuild Projects="%(Solution.Identity)"
              Targets="Rebuild"
-             Properties="Configuration=$(BuildConfiguration)" />
+             Properties="Configuration=$(BuildConfiguration);TreatWarningsAsErrors=True" />
   </Target>
 
   <Target Name="RunTests">
