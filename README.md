@@ -5,6 +5,7 @@ This project is active and maintained by [David Alpert](https://github.com/david
 # EasyHttp
 
 
+This shoudn't break anything
 
 An easy to use HTTP client that supports:
 
@@ -14,7 +15,7 @@ An easy to use HTTP client that supports:
 * Dynamic and Static Typing
 * XML, JSON and WWW-Url form encoded encoding/decoding
 * File upload both via PUT and POST (multipart/formdata)
-* Some other neat little features....
+
 
 ## License
 
