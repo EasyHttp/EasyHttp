@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyHttp", "EasyHttp\EasyHttp.csproj", "{9239DA70-1736-4291-8D18-266999E54445}"
 EndProject
@@ -10,7 +10,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{1E909D
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{50BFC87E-51D5-4EF8-B3F0-63DED1F151E6}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\build.proj = ..\build\build.proj
+		..\build\EasyHttp.nuspec = ..\build\EasyHttp.nuspec
+		..\go.cmd = ..\go.cmd
+		..\build\logo.png = ..\build\logo.png
+		..\version.txt = ..\version.txt
 	EndProjectSection
 EndProject
 Global

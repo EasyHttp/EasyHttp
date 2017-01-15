@@ -1,10 +1,10 @@
 ﻿#region License
 // Distributed under the BSD License
 // =================================
-// 
+//
 // Copyright (c) 2010, Hadi Hariri
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //     * Redistributions of source code must retain the above copyright
@@ -15,7 +15,7 @@
 //     * Neither the name of Hadi Hariri nor the
 //       names of its contributors may be used to endorse or promote products
 //       derived from this software without specific prior written permission.
-// 
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 // ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 // WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -27,26 +27,26 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // =============================================================
-// 
-// 
+//
+//
 // Parts of this Software use JsonFX Serialization Library which is distributed under the MIT License:
-// 
+//
 // Distributed under the terms of an MIT-style license:
-// 
+//
 // The MIT License
-// 
+//
 // Copyright (c) 2006-2009 Stephen M. McKamey
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -57,10 +57,12 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Net;
 using EasyHttp.Http;
 using EasyHttp.Specs.Helpers;
 using Machine.Specifications;
+using NSubstitute;
 using Result = EasyHttp.Specs.Helpers.ResultResponse;
 
 namespace EasyHttp.Specs.Specs
@@ -86,7 +88,7 @@ namespace EasyHttp.Specs.Specs
     }
 
     [Subject("HttpClient")]
-    public class when_making_a_DELETE_request_with_a_valid_uri 
+    public class when_making_a_DELETE_request_with_a_valid_uri
     {
         Establish context = () =>
         {
@@ -141,9 +143,93 @@ namespace EasyHttp.Specs.Specs
         It should_return_body_with_rawtext =
             () => httpResponse.RawText.ShouldNotBeEmpty();
 
-    
+
         static HttpClient httpClient;
         static HttpResponse httpResponse;
+    }
+
+    [Subject("HttpClient")]
+    public class when_mocking_a_GET_request_with_valid_uri_to_return_a_NotFound
+    {
+        Establish context = () =>
+        {
+            var injectedResponse = Substitute.For<HttpResponse>();
+            injectedResponse.StatusCode.Returns(HttpStatusCode.NotFound);
+
+            httpClient = Substitute.For<HttpClient>();
+            httpClient.Get(Arg.Any<string>()).Returns(injectedResponse);
+        };
+
+        Because of = () =>
+        {
+            httpResponse = httpClient.Get("http://localhost:16000");
+        };
+
+        It should_return_a_NotFound =
+            () => httpResponse.StatusCode.ShouldEqual(HttpStatusCode.NotFound);
+
+
+        static HttpClient httpClient;
+        static HttpResponse httpResponse;
+    }
+
+    [Subject("HttpClient")]
+    public class when_mocking_a_GET_request_with_valid_uri_to_inject_a_specific_response
+    {
+        Establish context = () =>
+        {
+            var injectedResponseBody =
+@"{
+    'name': 'Serenity',
+    'characterNames': [
+        'Mal',
+        'Wash',
+        'Zoe'
+    ]
+}";
+            httpClient = new HttpClient();
+
+            httpClient.OnRequest(r =>
+                        r.Uri.Contains("localhost:16000")
+                        && r.Method == HttpMethod.POST
+                )
+                .InjectResponse(
+                    HttpStatusCode.BadRequest,
+                    HttpContentTypes.ApplicationJson,
+                    injectedResponseBody
+                );
+        };
+
+        Because of = () =>
+        {
+            httpGetResponse = httpClient.Get("http://localhost:16000");
+            httpPostResponse = httpClient.Post("http://localhost:16000", null, HttpContentTypes.ApplicationJson);
+        };
+
+        It should_return_OK_for_the_Get =
+            () => httpGetResponse.StatusCode.ShouldEqual(HttpStatusCode.OK);
+
+        It should_return_BadRequest_for_the_Post =
+            () => httpPostResponse.StatusCode.ShouldEqual(HttpStatusCode.BadRequest);
+
+        It should_return_the_injected_content_type_for_the_Post =
+            () => httpPostResponse.ContentType.ShouldEndWith(HttpContentTypes.ApplicationJson);
+
+        It should_return_the_injected_body_content_for_the_Post =
+            () =>
+            {
+                // have to explicitly cast this dynamic member so that the
+                // Should extensions can bind properly at run-time.
+                var characterNames = httpPostResponse.DynamicBody.characterNames as string[];
+
+                characterNames.ShouldNotBeNull();
+                characterNames.Length.ShouldEqual(3);
+                characterNames[1].ShouldEqual("Wash");
+            };
+
+        static HttpClient httpClient;
+        static HttpResponse httpGetResponse;
+        static HttpResponse httpPostResponse;
     }
 
     [Subject("HttpClient")]
@@ -302,7 +388,7 @@ namespace EasyHttp.Specs.Specs
         static HttpResponse response;
     }
 
-  
+
     [Subject("HttpClient")]
     public class when_making_a_HEAD_request_with_valid_uri
     {
