@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{50BFC8
 	ProjectSection(SolutionItems) = preProject
 		..\build\build.proj = ..\build\build.proj
 		..\build\EasyHttp.nuspec = ..\build\EasyHttp.nuspec
+		..\GitVersion.yml = ..\GitVersion.yml
 		..\go.cmd = ..\go.cmd
 		..\build\logo.png = ..\build\logo.png
 		..\version.txt = ..\version.txt

@@ -9,8 +9,7 @@
     <PackagesDir>$(SoultionDir)packages\</PackagesDir>
     <BinDir>$(RootDir)bin\</BinDir>
 
-    <VersionStemFile>$(RootDir)version.txt</VersionStemFile>
-
+    <GitVersionTaskPackageVersion>4.0.0-beta0009</GitVersionTaskPackageVersion>
     <MSpecConsoleRunner>$(PackagesDir)Machine.Specifications.0.5.10\tools\mspec-x86-clr4.exe</MSpecConsoleRunner>
     <NugetExe>$(SoultionDir).nuget\nuget.exe</NugetExe>
     <NuspecFile>$(MSBuildFileThisDirectory)EasyHttp.nuspec</NuspecFile>
@@ -23,7 +22,7 @@
     <Solution Include="$(SoultionDir)EasyHttp.sln"/>
   </ItemGroup>
 
-  <Import Project="$(PackagesDir)GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets"/>
+  <Import Project="$(PackagesDir)GitVersionTask.$(GitVersionTaskPackageVersion)\build\GitVersionTask.targets"/>
 
   <PropertyGroup>
     <CIBuild_DependsOn>
