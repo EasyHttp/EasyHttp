@@ -1,157 +1,109 @@
 ﻿using System.Dynamic;
 using EasyHttp.Http;
 using EasyHttp.Infrastructure;
-using Machine.Specifications;
+using NUnit.Framework;
 
 namespace EasyHttp.Specs.Specs
 {
-    [Subject(typeof(HttpClient))]
-    public class when_making_url_parameters_with_one_parameter_using_expando_object
+    [TestFixture(TestOf = typeof(HttpClient))]
+    public class DynamicObjectToUrlSpecs
     {
-        Establish context = () =>
+        [Test]
+        public void when_making_url_parameters_with_one_parameter_using_expando_object_it_should_have_the_correct_url_parameters()
         {
-            objectToUrlParameters = new ObjectToUrlParameters();
-            parameters = new ExpandoObject();
+            var objectToUrlParameters = new ObjectToUrlParameters();
+            dynamic parameters = new ExpandoObject();
             parameters.Name = "test";
-        };
 
-        Because of = () => url = objectToUrlParameters.ParametersToUrl(parameters);
+            var url = objectToUrlParameters.ParametersToUrl(parameters);
 
-        It should_have_the_correct_url_parameters = () => url.ShouldEqual("?Name=test");
+            Assert.AreEqual("?Name=test", url);
+        }
 
-        static ObjectToUrlParameters objectToUrlParameters;
-        private static dynamic parameters;
-        static string url;
-    }
-
-    [Subject(typeof(HttpClient))]
-    public class when_making_url_parameters_with_two_parameters_using_expando_object
-    {
-        Establish context = () =>
+        [Test]
+        public void when_making_url_parameters_with_two_parameters_using_expando_object_it_should_have_the_correct_url_parameters()
         {
-            objectToUrlParameters = new ObjectToUrlParameters();
-            parameters = new ExpandoObject();
+            var objectToUrlParameters = new ObjectToUrlParameters();
+            dynamic parameters = new ExpandoObject();
             parameters.Name = "test";
             parameters.Id = 1;
-        };
 
-        Because of = () => url = objectToUrlParameters.ParametersToUrl(parameters);
+            var url = objectToUrlParameters.ParametersToUrl(parameters);
 
-        It should_have_the_correct_url_parameters = () => url.ShouldEqual("?Name=test&Id=1");
+            Assert.AreEqual("?Name=test&Id=1", url);
+        }
 
-        static ObjectToUrlParameters objectToUrlParameters;
-        private static dynamic parameters;
-        static string url;
-    }
-
-    [Subject(typeof(HttpClient))]
-    public class when_making_url_parameters_with_one_parameter_using_anonymous_object
-    {
-        Establish context = () =>
+        [Test]
+        public void when_making_url_parameters_with_one_parameter_using_anonymous_object_it_should_have_the_correct_url_parameters()
         {
-            objectToUrlParameters = new ObjectToUrlParameters();
-        };
+            var objectToUrlParameters = new ObjectToUrlParameters();
 
-        Because of = () => url = objectToUrlParameters.ParametersToUrl(new {Name = "test"});
+            var url = objectToUrlParameters.ParametersToUrl(new {Name = "test"});
 
-        It should_have_the_correct_url_parameters = () => url.ShouldEqual("?Name=test");
+            Assert.AreEqual("?Name=test", url);
+        }
 
-        static ObjectToUrlParameters objectToUrlParameters;
-        static string url;
-    }
-
-    [Subject(typeof(HttpClient))]
-    public class when_making_url_parameters_with_two_parameters_using_anonymous_object
-    {
-        Establish context = () =>
+        [Test]
+        public void when_making_url_parameters_with_two_parameters_using_anonymous_object_it_should_have_the_correct_url_parameters()
         {
-            objectToUrlParameters = new ObjectToUrlParameters();
-        };
+            var objectToUrlParameters = new ObjectToUrlParameters();
 
-        Because of = () => url = objectToUrlParameters.ParametersToUrl(new { Name = "test", Id=1 });
+            var url = objectToUrlParameters.ParametersToUrl(new {Name = "test", Id = 1});
 
-        It should_have_the_correct_url_parameters = () => url.ShouldEqual("?Name=test&Id=1");
+            Assert.AreEqual("?Name=test&Id=1", url);
+        }
 
-        static ObjectToUrlParameters objectToUrlParameters;
-        static string url;
-    }
-
-    [Subject(typeof(HttpClient))]
-    public class when_making_url_parameters_it_should_encode_value
-    {
-        Establish context = () =>
+        [Test]
+        public void when_making_url_parameters_it_should_encode_value_it_should_have_the_correct_url_parameters()
         {
-            objectToUrlParameters = new ObjectToUrlParameters();
-        };
+            var objectToUrlParameters = new ObjectToUrlParameters();
 
-        Because of = () => url = objectToUrlParameters.ParametersToUrl(new { Name = "test<>&;"});
+            var url = objectToUrlParameters.ParametersToUrl(new {Name = "test<>&;"});
 
-        It should_have_the_correct_url_parameters = () => url.ShouldEqual("?Name=test%3c%3e%26%3b");
+            Assert.AreEqual("?Name=test%3c%3e%26%3b", url);
+        }
 
-        static ObjectToUrlParameters objectToUrlParameters;
-        static string url;
-    }
-
-    [Subject(typeof(HttpClient))]
-    public class when_making_url_parameters_it_should_be_empty_when_passing_null
-    {
-        Establish context = () =>
+        [Test]
+        public void when_making_url_parameters_it_should_be_empty_when_passing_null_it_should_have_the_correct_url_parameters()
         {
-            objectToUrlParameters = new ObjectToUrlParameters();
-        };
+            var objectToUrlParameters = new ObjectToUrlParameters();
 
-        Because of = () => url = objectToUrlParameters.ParametersToUrl(null);
+            var url = objectToUrlParameters.ParametersToUrl(null);
 
-        It should_have_the_correct_url_parameters = () => url.ShouldBeEmpty();
+            Assert.IsEmpty(url);
+        }
 
-        static ObjectToUrlParameters objectToUrlParameters;
-        static string url;
-    }
-
-    [Subject(typeof(HttpClient))]
-    public class when_making_url_parameters_with_one_parameter_using_static_object
-    {
-        Establish context = () =>
+        [Test]
+        public void when_making_url_parameters_with_one_parameter_using_static_object_it_should_have_the_correct_url_parameters()
         {
-            objectToUrlParameters = new ObjectToUrlParameters();
-            parameter = new StaticObjectWithName() {Name="test"};
-        };
+            var objectToUrlParameters = new ObjectToUrlParameters();
+            dynamic parameter = new StaticObjectWithName() {Name = "test"};
 
-        Because of = () => url = objectToUrlParameters.ParametersToUrl(parameter);
+            var url = objectToUrlParameters.ParametersToUrl(parameter);
 
-        It should_have_the_correct_url_parameters = () => url.ShouldEqual("?Name=test");
+            Assert.AreEqual("?Name=test", url);
+        }
 
-        static ObjectToUrlParameters objectToUrlParameters;
-        static string url;
-        static StaticObjectWithName parameter;
-    }
-
-    [Subject(typeof(HttpClient))]
-    public class when_making_url_parameters_with_two_parameters_using_static_object
-    {
-        Establish context = () =>
+        [Test]
+        public void when_making_url_parameters_with_two_parameters_using_static_object_it_should_have_the_correct_url_parameters()
         {
-            objectToUrlParameters = new ObjectToUrlParameters();
-            parameter = new StaticObjectWithNameAndId() { Name = "test", Id=1 };
-        };
+            var objectToUrlParameters = new ObjectToUrlParameters();
+            var parameter = new StaticObjectWithNameAndId() {Name = "test", Id = 1};
 
-        Because of = () => url = objectToUrlParameters.ParametersToUrl(parameter);
+            var url = objectToUrlParameters.ParametersToUrl(parameter);
 
-        It should_have_the_correct_url_parameters = () => url.ShouldEqual("?Name=test&Id=1");
+            Assert.AreEqual("?Name=test&Id=1", url);
+        }
 
-        static ObjectToUrlParameters objectToUrlParameters;
-        static string url;
-        static StaticObjectWithNameAndId parameter;
-    }
+        public class StaticObjectWithName
+        {
+            public string Name { get; set; }
+        }
 
-    public class StaticObjectWithName
-    {
-        public string Name { get; set; }
-    }
-
-    public class StaticObjectWithNameAndId
-    {
-        public string Name { get; set; }
-        public int Id { get; set; }
+        public class StaticObjectWithNameAndId
+        {
+            public string Name { get; set; }
+            public int Id { get; set; }
+        }
     }
 }

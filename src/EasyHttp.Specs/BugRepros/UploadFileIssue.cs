@@ -1,44 +1,33 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Net;
+using System.Reflection;
+using System.Reflection.Emit;
 using EasyHttp.Http;
 using EasyHttp.Infrastructure;
-using Machine.Specifications;
+using NUnit.Framework;
 
 namespace EasyHttp.Specs.BugRepros
 {
-
-    public class file_upload_was_failing_because_fieldname_for_file_field_was_not_being_set
+    public class UploadFileIssues
     {
-        Establish context = () =>
-            {
-                httpClient = new HttpClient();
-            };
+        [Test]
+        public void file_upload_was_failing_because_fieldname_for_file_field_was_not_being_set()
+        {
+            var httpClient = new HttpClient();
 
-        Because of = () =>
-            {
+            var filename = Path.Combine(TestRunContext.WorkingDirectory.FullName, "Helpers", "test.xml");
 
-                var filename = Path.Combine("Helpers", "test.xml"); 
-                
+            IDictionary<string, object> data = new Dictionary<string, object>();
 
-                IDictionary<string, object> data = new Dictionary<string, object>();
+            data.Add("runTest", " Run Test ");
 
+            IList<FileData> files = new List<FileData>();
 
-                data.Add("runTest", " Run Test ");
+            files.Add(new FileData() {FieldName = "file", ContentType = "text/xml", Filename = filename});
 
-                IList<FileData> files = new List<FileData>();
+            httpClient.Post("https://loandelivery.intgfanniemae.com/mismoxtt/mismoValidator.do", data, files);
 
-                files.Add(new FileData() { FieldName = "file", ContentType = "text/xml", Filename = filename });
-
-                httpClient.Post("https://loandelivery.intgfanniemae.com/mismoxtt/mismoValidator.do", data, files);
-
-                response = httpClient.Response;
-            };
-
-
-        It should_say_that_operation_was_successful = () => response.RawText.ShouldNotContain("Please select a file to test.");
-        
-        static HttpClient httpClient;
-        static HttpResponse response;
+            StringAssert.DoesNotContain("Please select a file to test.", httpClient.Response.RawText);
+        }
     }
 }

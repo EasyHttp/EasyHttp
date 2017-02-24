@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using EasyHttp.Codecs;
 using EasyHttp.Codecs.JsonFXExtensions;
@@ -8,16 +7,16 @@ using JsonFx.Json.Resolvers;
 using JsonFx.Serialization;
 using JsonFx.Serialization.Resolvers;
 using JsonFx.Xml.Resolvers;
-using Machine.Specifications;
+using NUnit.Framework;
 
 namespace EasyHttp.Specs.BugRepros
 {
-    [Subject("Custom Decoding")]
-    public class when_decoding_an_object_with_custom_naming_of_property
+    public class CustomPropertyNameIssue
     {
-        static CombinedResolverStrategy CombinedResolverStrategy()
+        [Test, Category("Custom Decoding")]
+        public void when_decoding_an_object_with_custom_naming_of_property_should_decode_taking_into_account_custom_property_name()
         {
-            return new CombinedResolverStrategy(
+            var combinedResolverStrategy = new CombinedResolverStrategy(
                 new JsonResolverStrategy(),
                 new DataContractResolverStrategy(),
                 new XmlResolverStrategy(),
@@ -25,36 +24,23 @@ namespace EasyHttp.Specs.BugRepros
                 new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.CamelCase),
                 new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.Lowercase, "-"),
                 new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.Uppercase, "_"));
+
+            IEnumerable<IDataReader> readers = new List<IDataReader>
+            {
+                new JsonReader(new DataReaderSettings(combinedResolverStrategy), HttpContentTypes.ApplicationJson)
+            };
+
+            var decoder = new DefaultDecoder(new RegExBasedDataReaderProvider(readers));
+
+            var obj = decoder.DecodeToStatic<CustomNaming>("{\"abc\":\"def\"}", "application/json");
+
+            Assert.AreEqual("def", obj.PropertyName);
         }
-        Establish context = () =>
+
+        [Test, Category("Custom Encoding")]
+        public void when_encoding_an_object_with_custom_naming_of_property_it_should_decode_taking_into_account_custom_property_name()
         {
-            IEnumerable<IDataReader> readers = new List<IDataReader> { new JsonReader(new DataReaderSettings(CombinedResolverStrategy()), HttpContentTypes.ApplicationJson) };
-            
-            decoder = new DefaultDecoder(new RegExBasedDataReaderProvider(readers));
-        };
-
-        Because of = () =>
-        {
-
-            obj = decoder.DecodeToStatic<CustomNaming>("{\"abc\":\"def\"}", "application/json");
-        };
-
-        It should_decode_taking_into_account_custom_property_name = () =>
-        {
-            obj.PropertyName.ShouldEqual("def");
-        };
-
-        static IDecoder decoder;
-        static CustomNaming obj;
-    }
-
-    
-    [Subject("Custom Encoding")]
-    public class when_encoding_an_object_with_custom_naming_of_property
-    {
-        static CombinedResolverStrategy CombinedResolverStrategy()
-        {
-            return new CombinedResolverStrategy(
+            var CombinedResolverStrategy = new CombinedResolverStrategy(
                 new JsonResolverStrategy(),
                 new DataContractResolverStrategy(),
                 new XmlResolverStrategy(),
@@ -62,47 +48,33 @@ namespace EasyHttp.Specs.BugRepros
                 new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.CamelCase),
                 new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.Lowercase, "-"),
                 new ConventionResolverStrategy(ConventionResolverStrategy.WordCasing.Uppercase, "_"));
-        }
 
-        Establish context = () =>
-        {
-    
-            
-            IEnumerable<IDataWriter> writers = new List<IDataWriter> { new JsonWriter(new DataWriterSettings(CombinedResolverStrategy()), HttpContentTypes.ApplicationJson) };
+            IEnumerable<IDataWriter> writers = new List<IDataWriter>
+            {
+                new JsonWriter(new DataWriterSettings(CombinedResolverStrategy), HttpContentTypes.ApplicationJson)
+            };
 
-            encoder = new DefaultEncoder(new RegExBasedDataWriterProvider(writers));
-        };
+            var encoder = new DefaultEncoder(new RegExBasedDataWriterProvider(writers));
 
-        Because of = () =>
-        {
             var customObject = new CustomNamedObject {UpperPropertyName = "someValue"};
 
-            encoded = encoder.Encode(customObject, HttpContentTypes.ApplicationJson);
+            var encoded = encoder.Encode(customObject, HttpContentTypes.ApplicationJson);
 
-
-        };
-
-        It should_decode_taking_into_account_custom_property_name = () =>
-        {
             var str = System.Text.Encoding.UTF8.GetString(encoded);
-            str.ShouldContain("upperPropertyName");
-        };
 
-        static IEncoder encoder;
-        static byte[] encoded;
+            StringAssert.Contains("upperPropertyName", str);
+        }
+
+        public class CustomNamedObject
+        {
+            [JsonName("upperPropertyName")]
+            public string UpperPropertyName { get; set; }
+        }
+
+        public class CustomNaming
+        {
+            [JsonName("abc")]
+            public string PropertyName { get; set; }
+        }
     }
-
-    public class CustomNamedObject
-    {
-        [JsonName("upperPropertyName")]
-        public string UpperPropertyName { get; set; }
-    }
-
-
-    public class CustomNaming
-    {
-        [JsonName("abc")]
-        public string PropertyName { get; set; }
-    }
- 
 }

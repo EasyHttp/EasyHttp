@@ -7,10 +7,12 @@
     <RootDir>$([System.IO.Path]::GetFullPath("$(MSBuildThisFileDirectory)..\"))</RootDir>
     <SoultionDir>$(RootDir)src\</SoultionDir>
     <PackagesDir>$(SoultionDir)packages\</PackagesDir>
+    <NugetDir>$(SoultionDir).nuget\</NugetDir>
     <BinDir>$(RootDir)bin\</BinDir>
 
+    <SolutionPackagesFile>$(NugetDir)packages.config</SolutionPackagesFile>
     <GitVersionTaskPackageVersion>4.0.0-beta0009</GitVersionTaskPackageVersion>
-    <MSpecConsoleRunner>$(PackagesDir)Machine.Specifications.0.5.10\tools\mspec-x86-clr4.exe</MSpecConsoleRunner>
+    <NUnitExe>$(PackagesDir)NUnit.ConsoleRunner.3.5.0\tools\nunit3-console.exe</NUnitExe>
     <NugetExe>$(SoultionDir).nuget\nuget.exe</NugetExe>
     <NuspecFile>$(MSBuildFileThisDirectory)EasyHttp.nuspec</NuspecFile>
   </PropertyGroup>
@@ -26,6 +28,7 @@
 
   <PropertyGroup>
     <CIBuild_DependsOn>
+      RestoreSolutionPackages;
       GetVersion;   <!-- from GitVersionTask.targets -->
       Describe;     <!-- self-documenting -->
       Build;        <!-- Step 1 -->
@@ -68,9 +71,24 @@
     </ItemGroup>
 
     <PropertyGroup>
-      <cmd>"$(MSpecConsoleRunner)" @(TestAssemblies)</cmd>
+      <cmd>"$(NunitExe)" @(TestAssemblies)</cmd>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(TEAMCITY_VERSION)'==''">
+      <cmd>$(cmd) --labels=All</cmd> <!-- we are not running in TC so lets' show a bit more output -->
+    </PropertyGroup>
+
+    <Exec Command="$(cmd)"/>
+  </Target>
+
+  <Target Name="RestoreSolutionPackages">
+    <PropertyGroup>
+      <cmd>"$(NugetExe)" restore "$(SolutionPackagesFile)" -packagesdirectory "$(PackagesDir)."</cmd>
+    </PropertyGroup>
+    <Exec Command="$(cmd)"/>
+    <PropertyGroup>
+      <cmd>"$(NugetExe)" restore "%(Solution.Identity)"</cmd>
+    </PropertyGroup>
     <Exec Command="$(cmd)"/>
   </Target>
 

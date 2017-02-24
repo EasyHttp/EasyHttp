@@ -1,161 +1,107 @@
 ﻿using EasyHttp.Infrastructure;
-using Machine.Specifications;
+using NUnit.Framework;
 
 namespace EasyHttp.Specs.Specs
 {
-    public class When_baseuri_is_null_and_query_is_null
+    public class UriComposerSpecs
     {
-        Establish context = () =>
+        [Test]
+        public void When_baseuri_is_null_and_query_is_null_it_should_return_the_uri()
         {
-            uriComposer = new UriComposer();
-            uri = "uri";
-        };
+            var uriComposer = new UriComposer();
+            var uri = "uri";
 
-        Because of = () => url = uriComposer.Compose(null, uri, null, false);
+            var url = uriComposer.Compose(null, uri, null, false);
 
-        It should_return_the_uri = () => url.ShouldEqual("uri");
+            Assert.AreEqual("uri", url);
+        }
 
-        static UriComposer uriComposer;
-        static string url;
-        static string uri;
-    }
-
-    public class When_baseuri_is_empty_and_query_is_null
-    {
-        Establish context = () =>
+        [Test]
+        public void When_baseuri_is_empty_and_query_is_null_should_return_the_uri_it_should_return_the_uri()
         {
-            uriComposer = new UriComposer();
-            baseuri = "";
-            uri = "uri";
-        };
+            var uriComposer = new UriComposer();
+            var baseuri = "";
+            var uri = "uri";
 
-        Because of = () => url = uriComposer.Compose(baseuri, uri, null, false);
+            var url = uriComposer.Compose(baseuri, uri, null, false);
 
-        It should_return_the_uri = () => url.ShouldEqual("uri");
+            Assert.AreEqual("uri", url);
+        }
 
-        static UriComposer uriComposer;
-        static string url;
-        static string uri;
-        static string baseuri;
-    }
-
-    public class When_baseuri_is_filled_and_does_not_end_with_a_forwardslash_and_query_is_null
-    {
-        Establish context = () =>
+        [Test]
+        public void When_baseuri_is_filled_and_does_not_end_with_a_forwardslash_and_query_is_null_it_should_return_the_baseuri_plus_uri()
         {
-            uriComposer = new UriComposer();
-            baseuri = "baseuri";
-            uri = "uri";
-        };
+            var uriComposer = new UriComposer();
+            var baseuri = "baseuri";
+            var uri = "uri";
 
-        Because of = () => url = uriComposer.Compose(baseuri, uri, null, false);
+            var url = uriComposer.Compose(baseuri, uri, null, false);
 
-        It should_return_the_baseuri_plus_uri = () => url.ShouldEqual("baseuri/uri");
+            Assert.AreEqual("baseuri/uri", url);
+        }
 
-        static UriComposer uriComposer;
-        static string url;
-        static string uri;
-        static string baseuri;
-    }
-
-    public class When_baseuri_is_filled_and_ends_with_a_forwardslash_and_query_is_null
-    {
-        Establish context = () =>
+        [Test]
+        public void When_baseuri_is_filled_and_ends_with_a_forwardslash_and_query_is_null_it_should_return_the_baseuri_plus_uri()
         {
-            uriComposer = new UriComposer();
-            baseuri = "baseuri/";
-            uri = "uri";
-        };
+            var uriComposer = new UriComposer();
+            var baseuri = "baseuri/";
+            var uri = "uri";
 
-        Because of = () => url = uriComposer.Compose(baseuri, uri, null, false);
+            var url = uriComposer.Compose(baseuri, uri, null, false);
 
-        It should_return_the_baseuri_plus_uri = () => url.ShouldEqual("baseuri/uri");
+            Assert.AreEqual("baseuri/uri", url);
+        }
 
-        static UriComposer uriComposer;
-        static string url;
-        static string uri;
-        static string baseuri;
-    }
-
-    public class When_baseuri_is_filled_and_ends_with_a_forwardslash_and_uri_starartswith_a_forwardslash_and_query_is_null
-    {
-        Establish context = () =>
+        [Test]
+        public void
+            When_baseuri_is_filled_and_ends_with_a_forwardslash_and_uri_starartswith_a_forwardslash_and_query_is_null_it_should_return_the_baseuri_plus_uri
+            ()
         {
-            uriComposer = new UriComposer();
-            baseuri = "baseuri/";
-            uri = "/uri";
-        };
+            var uriComposer = new UriComposer();
+            var baseuri = "baseuri/";
+            var uri = "/uri";
 
-        Because of = () => url = uriComposer.Compose(baseuri, uri, null, false);
+            var url = uriComposer.Compose(baseuri, uri, null, false);
 
-        It should_return_the_baseuri_plus_uri = () => url.ShouldEqual("baseuri/uri");
+            Assert.AreEqual("baseuri/uri", url);
+        }
 
-        static UriComposer uriComposer;
-        static string url;
-        static string uri;
-        static string baseuri;
-    }
-
-    public class When_baseuri_is_filled_and_does_not_end_with_a_forwardslash_and_uri_starartswith_a_forwardslash_and_query_is_null
-    {
-        Establish context = () =>
+        [Test]
+        public void When_baseuri_is_filled_and_does_not_end_with_a_forwardslash_and_uri_starartswith_a_forwardslash_and_query_is_null_it_should_return_the_baseuri_plus_uri()
         {
-            uriComposer = new UriComposer();
-            baseuri = "baseuri";
-            uri = "/uri";
-        };
+            var uriComposer = new UriComposer();
+            var baseuri = "baseuri";
+            var uri = "/uri";
 
-        Because of = () => url = uriComposer.Compose(baseuri, uri, null, false);
+            var url = uriComposer.Compose(baseuri, uri, null, false);
 
-        It should_return_the_baseuri_plus_uri = () => url.ShouldEqual("baseuri/uri");
+            Assert.AreEqual("baseuri/uri", url);
+        }
 
-        static UriComposer uriComposer;
-        static string url;
-        static string uri;
-        static string baseuri;
-    }
-
-    public class When_baseuri_and_url_are_filled_and_query_is_not_null
-    {
-        Establish context = () =>
+        [Test]
+        public void When_baseuri_and_url_are_filled_and_query_is_not_null_it_should_return_the_baseuri_plus_uri()
         {
-            uriComposer = new UriComposer();
-            baseuri = "baseuri";
-            uri = "/uri";
-            query = new {Name = "test"};
-        };
+            var uriComposer = new UriComposer();
+            var baseuri = "baseuri";
+            var uri = "/uri";
+            var query = new {Name = "test"};
 
-        Because of = () => url = uriComposer.Compose(baseuri, uri, query, false);
+            var url = uriComposer.Compose(baseuri, uri, query, false);
 
-        It should_return_the_baseuri_plus_uri = () => url.ShouldEqual("baseuri/uri?Name=test");
+            Assert.AreEqual("baseuri/uri?Name=test", url);
+        }
 
-        static UriComposer uriComposer;
-        static string url;
-        static string uri;
-        static string baseuri;
-        static object query;
-    }
-
-    public class When_baseuri_and_url_are_filled_and_query_is_not_null_and_ParametersAsSegments_is_true
-    {
-        Establish context = () =>
+        [Test]
+        public void When_baseuri_and_url_are_filled_and_query_is_not_null_and_ParametersAsSegments_is_true_should_return_the_baseuri_plus_uri()
         {
-            uriComposer = new UriComposer();
-            baseuri = "baseuri";
-            uri = "/uri";
-            query = new { Name = "test" };
-        };
+            var uriComposer = new UriComposer();
+            var baseuri = "baseuri";
+            var uri = "/uri";
+            var query = new {Name = "test"};
 
-        Because of = () => url = uriComposer.Compose(baseuri, uri, query, true);
+            var url = uriComposer.Compose(baseuri, uri, query, true);
 
-        It should_return_the_baseuri_plus_uri = () => url.ShouldEqual("baseuri/uri/test");
-
-        static UriComposer uriComposer;
-        static string url;
-        static string uri;
-        static string baseuri;
-        static object query;
+            Assert.AreEqual("baseuri/uri/test", url);
+        }
     }
-
-
 }

@@ -2,69 +2,69 @@
 using EasyHttp.Http;
 using EasyHttp.Http.Abstractions;
 using EasyHttp.Specs.Helpers;
-using Machine.Specifications;
-using ServiceStack.WebHost.Endpoints.Extensions;
+using NUnit.Framework;
 
 namespace EasyHttp.Specs.BugRepros
 {
-    [Subject("Accept-Encoding")]
+    [TestFixture(Category = "Accept-Encoding")]
     public class when_preparing_a_web_request
     {
-        Establish context = () =>
+        private HttpWebRequest underlyingWebRequest;
+
+        [SetUp]
+        public void BecauseOf()
         {
-            http = new HttpClient()
+            var http = new HttpClient()
             {
-                Request = { Uri = "http://github.com/" } // a Uri is required by the PrepareRequest() method
-            };
-        };
-
-        Because of = () =>
-            {
-                underlyingRequest = (http.Request.PrepareRequest() as HttpWebRequestWrapper).InnerRequest;
+                Request = {Uri = "http://github.com/"} // a Uri is required by the PrepareRequest() method
             };
 
-        It should_enable_automatic_gzip_compression_on_the_underlying_web_request_by_default = () =>
-            {
-                underlyingRequest.AutomaticDecompression.ShouldHaveFlag(DecompressionMethods.GZip);
-            };
+            underlyingWebRequest = (http.Request.PrepareRequest() as HttpWebRequestWrapper).InnerRequest;
+        }
 
-        It should_enable_automatic_deflate_compression_on_the_underlying_web_request_by_default = () =>
-            {
-                underlyingRequest.AutomaticDecompression.ShouldHaveFlag(DecompressionMethods.Deflate);
-            };
-        static HttpClient http;
-        private static HttpWebRequest underlyingRequest;
+        [Test]
+        public void should_enable_automatic_gzip_compression_on_the_underlying_web_request_by_default()
+        {
+            underlyingWebRequest.AutomaticDecompression.ShouldHaveFlag(DecompressionMethods.GZip);
+        }
+
+        [Test]
+        public void should_enable_automatic_deflate_compression_on_the_underlying_web_request_by_default()
+        {
+            underlyingWebRequest.AutomaticDecompression.ShouldHaveFlag(DecompressionMethods.Deflate);
+        }
     }
 
-    [Subject("Accept-Encoding")]
+    [TestFixture(Category = "Accept-Encoding")]
     public class when_disabling_automatic_compression
     {
-        Establish context = () =>
+        private HttpWebRequest underlyingWebRequest;
+
+        [SetUp]
+        public void BecauseOf()
         {
-            http = new HttpClient()
+            var http = new HttpClient()
             {
-                Request = {
-                    Uri = "http://github.com/" , // a Uri is required by the PrepareRequest() method
+                Request =
+                {
+                    Uri = "http://github.com/", // a Uri is required by the PrepareRequest() method
                     DisableAutomaticCompression = true
                 }
             };
-        };
 
-        Because of = () =>
-            {
-                underlyingRequest = (http.Request.PrepareRequest() as HttpWebRequestWrapper).InnerRequest;
-            };
+            underlyingWebRequest = (http.Request.PrepareRequest() as HttpWebRequestWrapper).InnerRequest;
+        }
 
-        It should_disable_automatic_gzip_compression_on_the_underlying_web_request = () =>
-            {
-                underlyingRequest.AutomaticDecompression.ShouldNotHaveFlag(DecompressionMethods.GZip);
-            };
+        [Test]
+        public void should_disable_automatic_gzip_compression_on_the_underlying_web_request()
+        {
+            underlyingWebRequest.AutomaticDecompression.ShouldNotHaveFlag(DecompressionMethods.GZip);
+        }
 
-        It should_disable_automatic_deflate_compression_on_the_underlying_web_request = () =>
-            {
-                underlyingRequest.AutomaticDecompression.ShouldNotHaveFlag(DecompressionMethods.Deflate);
-            };
-        static HttpClient http;
-        private static HttpWebRequest underlyingRequest;
+        [Test]
+        public void should_disable_automatic_deflate_compression_on_the_underlying_web_request()
+        {
+            underlyingWebRequest.AutomaticDecompression.ShouldNotHaveFlag(DecompressionMethods.Deflate);
+        }
     }
 }

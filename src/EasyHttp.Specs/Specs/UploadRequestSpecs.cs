@@ -1,81 +1,46 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Reflection;
 using EasyHttp.Http;
 using EasyHttp.Infrastructure;
-using EasyHttp.Specs.Helpers;
-using Machine.Specifications;
+using NUnit.Framework;
 
 namespace EasyHttp.Specs.Specs
 {
-    [Subject(typeof (HttpClient))]
-    public class when_sending_binary_data_as_put
+    [TestFixture(TestOf = typeof(HttpClient))]
+    public class UploadRequestSpecs
     {
-        Establish context = () =>
+        [Test]
+        public void when_sending_binary_data_as_put_it_should_upload_it_succesfully()
         {
-            httpClient = new HttpClient();
-        };
+            var httpClient = new HttpClient();
 
-        Because of = () =>
-        {
-        
-            var imageFile = Path.Combine("Helpers", "test.jpg");
+            var imageFile = Path.Combine(TestRunContext.WorkingDirectory.FullName, "Helpers", "test.jpg");
 
             httpClient.PutFile(string.Format("{0}/fileupload/test.jpg", "http://localhost:16000"),
-                                               imageFile,
-                                               "image/jpeg");
+                imageFile,
+                "image/jpeg");
+            Assert.AreEqual(HttpStatusCode.Created, httpClient.Response.StatusCode);
+        }
 
-            
-        };
-
-        It should_upload_it_succesfully = () =>
+        [Test] public void when_sending_binary_data_as_multipart_post_it_should_upload_it_succesfully()
         {
-            httpClient.Response.StatusCode.ShouldEqual(HttpStatusCode.Created);
-        };
+            var httpClient = new HttpClient();
 
-        static HttpClient httpClient;
-        static Guid guid;
-        static HttpResponse response;
-        static string rev;
-    }
+            var imageFile = Path.Combine(TestRunContext.WorkingDirectory.FullName, "Helpers", "test.jpg");
 
-    [Subject(typeof (HttpClient))]
-    public class when_sending_binary_data_as_multipart_post
-    {
-        Establish context = () =>
-        {
-            httpClient = new HttpClient();
-        };
-
-        Because of = () =>
-        {
-        
-            var imageFile = Path.Combine("Helpers", "test.jpg");
-        
             IDictionary<string, object> data = new Dictionary<string, object>();
 
             data.Add("email", "hadi@hadi.com");
             data.Add("name", "hadi");
-       
+
             IList<FileData> files = new List<FileData>();
 
-            files.Add(new FileData() { FieldName = "image1", ContentType = "image/jpeg", Filename = imageFile});
-            files.Add(new FileData() { FieldName = "image2", ContentType = "image/jpeg", Filename = imageFile });
+            files.Add(new FileData() {FieldName = "image1", ContentType = "image/jpeg", Filename = imageFile});
+            files.Add(new FileData() {FieldName = "image2", ContentType = "image/jpeg", Filename = imageFile});
             httpClient.Post(string.Format("{0}/fileupload", "http://localhost:16000"), data, files);
-            
-        };
 
-        It should_upload_it_succesfully = () =>
-        {
-            httpClient.Response.StatusCode.ShouldEqual(HttpStatusCode.OK);
-        };
-
-        static HttpClient httpClient;
-        static Guid guid;
-        static HttpResponse response;
-        static string rev;
+            Assert.AreEqual(HttpStatusCode.OK, httpClient.Response.StatusCode);
+        }
     }
-
 }
