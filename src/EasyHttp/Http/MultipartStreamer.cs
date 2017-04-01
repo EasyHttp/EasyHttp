@@ -58,7 +58,7 @@ namespace EasyHttp.Http
 
 	    void StreamFileContents(Stream file, FileData fileData, Stream requestStream)
         {
-            var buffer = new byte[ChunkSize];
+            var buffer = new byte[_chunkSize];
 
             int count;
 
