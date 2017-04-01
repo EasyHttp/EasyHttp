@@ -73,6 +73,8 @@ namespace EasyHttp.Http
             Timeout = 100000; //http://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.timeout.aspx
 
             AllowAutoRedirect = true;
+
+            MultiPartChunkSize = 8192;
         }
 
         public virtual bool DisableAutomaticCompression { get; set; }
@@ -104,6 +106,10 @@ namespace EasyHttp.Http
         public virtual string PutFilename { get; set; }
         public virtual IDictionary<string, object> MultiPartFormData { get; set; }
         public virtual IList<FileData> MultiPartFileData { get; set; }
+        /// <summary>
+        /// A chunk's size in bytes during a multipart/form-data upload
+        /// </summary>
+        public virtual long MultiPartChunkSize { get; set; }
         public virtual int Timeout { get; set; }
         public virtual Boolean ParametersAsSegments { get; set; }
 
@@ -268,7 +274,8 @@ namespace EasyHttp.Http
 
         void SetupMultiPartBody()
         {
-            var multiPartStreamer = new MultiPartStreamer(MultiPartFormData, MultiPartFileData);
+            var multiPartStreamer = new MultiPartStreamer(MultiPartFormData, MultiPartFileData,
+                                    MultiPartChunkSize);
 
             httpWebRequest.ContentType = multiPartStreamer.GetContentType();
             var contentLength = multiPartStreamer.GetContentLength();

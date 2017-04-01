@@ -79,6 +79,10 @@ namespace EasyHttp.Http
         public virtual bool LoggingEnabled { get; set; }
         public virtual bool ThrowExceptionOnHttpError { get; set; }
         public virtual bool StreamResponse { get; set; }
+        /// <summary>
+        /// Size of a chunk sent in a multipart/form-data upload
+        /// </summary>
+        public virtual long MultiPartChunkSize { get; set; }
 
         public virtual bool ShouldRemoveAtSign
         {
@@ -168,6 +172,8 @@ namespace EasyHttp.Http
             Request.MultiPartFormData = formData;
             Request.MultiPartFileData = files;
             Request.KeepAlive = true;
+            if (MultiPartChunkSize != 0)
+                Request.MultiPartChunkSize = MultiPartChunkSize;
             return ProcessRequest();
         }
 
@@ -192,7 +198,6 @@ namespace EasyHttp.Http
             InitRequest(uri, HttpMethod.DELETE, query);
             return ProcessRequest();
         }
-
 
         public virtual HttpResponse Head(string uri, object query = null)
         {
