@@ -12,14 +12,18 @@ namespace EasyHttp.Http
         readonly String _boundaryCode;
         readonly IList<FileData> _multipartFileData;
         readonly IDictionary<string, object> _multipartFormData;
+        readonly long _chunkSize;
 
-        public MultiPartStreamer(IDictionary<string, object> multipartFormData, IList<FileData> multipartFileData)
+        public MultiPartStreamer(IDictionary<string, object> multipartFormData, IList<FileData> multipartFileData,
+                                 long chunkSize)
         {
             _boundaryCode = DateTime.Now.Ticks.GetHashCode() + "548130";
             _boundary = string.Format("\r\n----------------{0}", _boundaryCode);
 
             _multipartFormData = multipartFormData;
             _multipartFileData = multipartFileData;
+
+            _chunkSize = chunkSize;
         }
 
         public void StreamMultiPart(Stream stream)
@@ -52,9 +56,9 @@ namespace EasyHttp.Http
             stream.WriteString("--");
         }
 
-	    static void StreamFileContents(Stream file, FileData fileData, Stream requestStream)
+	    void StreamFileContents(Stream file, FileData fileData, Stream requestStream)
         {
-            var buffer = new byte[8192];
+            var buffer = new byte[_chunkSize];
 
             int count;
 
