@@ -108,6 +108,7 @@ namespace EasyHttp.Http
             RegisteredInterceptions = new List<HttpRequestInterception>();
         }
 
+        [Obsolete]
         public HttpClient(string baseUri, Func<string,HttpResponse> getResponse = null): this(new DefaultEncoderDecoderConfiguration())
         {
             _baseUri = baseUri;
