@@ -4,115 +4,110 @@ This project is active and maintained by [David Alpert](https://github.com/david
 
 # EasyHttp
 
-
-
 An easy to use HTTP client that supports:
 
-* HEAD, PUT, DELETE, GET, POST
-* Cookies
-* Authentication
-* Dynamic and Static Typing
-* XML, JSON and WWW-Url form encoded encoding/decoding
-* File upload both via PUT and POST (multipart/formdata)
-* Some other neat little features....
+- HEAD, PUT, DELETE, GET, POST
+- Cookies
+- Authentication
+- Dynamic and Static Typing
+- XML, JSON and WWW-Url form encoded encoding/decoding
+- File upload both via PUT and POST (multipart/formdata)
+- Some other neat little features....
 
 ## License
 
-Licensed under Modified BSD (i.e. pretty much MIT). 
+Licensed under Modified BSD (i.e. pretty much MIT).
 
 For full License and included software licenses please see LICENSE.TXT
-
 
 Please log all issues here: http://youtrack.codebetter.com/issues/EHTTP
 
 ## Installation
 
-You can either download the source and compile or use nuget at http://nuget.org. To install with nuget:
+You can either download the source and compile, or use nuget at http://nuget.org. To install with nuget:
 
-  Install-Package EasyHttp
+```
+Install-Package EasyHttp
+```
 
 ## Documentation
 
-The documentation can be found on the [wiki](https://github.com/hhariri/EasyHttp/wiki). 
+The documentation can be found on the [wiki](https://github.com/hhariri/EasyHttp/wiki).
 
 ## Usage
 
-### Using static types 
+### Using static types
 
-To post/put a customer to  some service: 
+To post/put a customer to some service:
 
-  
+```csharp
+var customer = new Customer();
+customer.Name = "Joe";
+customer.Email = "joe@smith.com";
+var http = new HttpClient();
+http.Post("url", customer, HttpContentTypes.ApplicationJson);
 ```
-	var customer = new Customer(); 
-	customer.Name = "Joe"; 
-	customer.Email = "joe@smith.com";
-	var http = new HttpClient();
-	http.Post("url", customer, HttpContentTypes.ApplicationJson);
-```
- 
+
 To get some data in JSON format:
 
-```
-	var http = new HttpClient();
-	http.Request.Accept = HttpContentTypes.ApplicationJson;
-	var response = http.Get("url");
-	var customer = response.StaticBody<Customer>();
-	Console.WriteLine("Name: {0}", customer.Name);
+```csharp
+var http = new HttpClient();
+http.Request.Accept = HttpContentTypes.ApplicationJson;
+var response = http.Get("url");
+var customer = response.StaticBody<Customer>();
+Console.WriteLine("Name: {0}", customer.Name);
 ```
 
-### Using dynamic  types
+### Using dynamic types
 
-To post/put a customer to  some service: 
+To post/put a customer to some service:
 
+```csharp
+var customer = new ExpandoObject(); // Or any dynamic type
+customer.Name = "Joe";
+customer.Email = "joe@smith.com";
+var http = new HttpClient();
+http.Post("url", customer, HttpContentTypes.ApplicationJson);
 ```
-	var customer = new ExpandoObject(); // Or any dynamic type
-	customer.Name = "Joe";
-	customer.Email = "joe@smith.com";
-	var http = new HttpClient();
-	http.Post("url", customer, HttpContentTypes.ApplicationJson);
-```
- 
+
 To get some data in JSON format:
 
-
-```
-	var http = new HttpClient();
-	http.Request.Accept = HttpContentTypes.ApplicationJson;
-	var response = http.Get("url");
-	var customer = response.DynamicBody;
-	Console.WriteLine("Name {0}", customer.Name);
+```csharp
+var http = new HttpClient();
+http.Request.Accept = HttpContentTypes.ApplicationJson;
+var response = http.Get("url");
+var customer = response.DynamicBody;
+Console.WriteLine("Name {0}", customer.Name);
 ```
 
 Both in Static and Dynamic versions, hierarchies are supported.
 
-## Perform a get with parameters
+## Perform a get with query string parameters
 
 To get some data from a service
 
- ```
-	var http = new HttpClient();
-	http.Get("url", new {Name = "test"});
+```csharp
+var http = new HttpClient();
+http.Get("https://sample.com", new {Name = "test"});
 ```
 
-Should translate to the following url being passed. url?Name=test the value will be urlencoded.
+Should translate to the url `https://sample.com/?Name=test`, with the value being urlencoded.
 
-To get some data in JSon format.
+To get some data in JSON format.
 
- ```
-	var http = new HttpClient();
-	http.Request.Accept = HttpContentTypes.ApplicationJson;
-	http.Get("url", new {Name = "test"});
+```csharp
+var http = new HttpClient();
+http.Request.Accept = HttpContentTypes.ApplicationJson;
+http.Get("url", new {Name = "test"});
 ```
-
 
 ## Serialization / Deserialization Conventions
 
 For serialization / deserialization, you can use pretty much any type of naming convention, be it Propercase, CamelCase, lowerCamelCase, with_underscores, etc. If for some reason, your convention is not picked up, you can always decorate the property with an attribute:
 
-```
- 
-   [JsonName("mycustomname")] 
-   public string SomeWeirdCombination { get; set; }
+```csharp
+[JsonName("mycustomname")]
+public string SomeWeirdCombination { get; set; }
 ```
 
 ## Credits
