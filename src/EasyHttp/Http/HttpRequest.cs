@@ -101,9 +101,10 @@ namespace EasyHttp.Http
         public virtual HttpMethod Method { get; set; }
         public virtual object Data { get; set; }
         public virtual string Uri { get; set; }
+        public virtual Stream PutStream { get; set; }
         public virtual string PutFilename { get; set; }
         public virtual IDictionary<string, object> MultiPartFormData { get; set; }
-        public virtual IList<FileData> MultiPartFileData { get; set; }
+        public virtual IList<MultiPartFileDataAbstraction> MultiPartFileData { get; set; }
         public virtual int Timeout { get; set; }
         public virtual Boolean ParametersAsSegments { get; set; }
 
@@ -216,6 +217,12 @@ namespace EasyHttp.Http
                 return;
             }
 
+            if (PutStream != null)
+            {
+                SetupPutStream();
+                return;
+            }
+
             if (!String.IsNullOrEmpty(PutFilename))
             {
                 SetupPutFilename();
@@ -246,7 +253,7 @@ namespace EasyHttp.Http
 
         void SetupPutFilename()
         {
-            using (var fileStream = new FileStream(PutFilename, FileMode.Open))
+            using (var fileStream = new FileStream(PutFilename, FileMode.Open, FileAccess.Read))
             {
                 httpWebRequest.ContentLength = fileStream.Length;
 
@@ -262,6 +269,27 @@ namespace EasyHttp.Http
                 }
                 requestStream.Close();
             }
+        }
+
+        
+        void SetupPutStream()
+        {
+            if (PutStream.Length > 0)
+            {
+                httpWebRequest.ContentLength = PutStream.Length;
+            }
+
+            var requestStream = httpWebRequest.GetRequestStream();
+
+            var buffer = new byte[81982];
+
+            int bytesRead = PutStream.Read(buffer, 0, buffer.Length);
+            while (bytesRead > 0)
+            {
+                requestStream.Write(buffer, 0, bytesRead);
+                bytesRead = PutStream.Read(buffer, 0, buffer.Length);
+            }
+            requestStream.Close();
         }
 
 

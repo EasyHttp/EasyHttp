@@ -58,6 +58,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using EasyHttp.Codecs;
@@ -121,6 +122,7 @@ namespace EasyHttp.Http
             Request.Uri = _uriComposer.Compose(_baseUri, uri, query, Request.ParametersAsSegments);
             Request.Data = null;
             Request.PutFilename = String.Empty;
+            Request.PutStream = null;
             Request.Expect = false;
             Request.KeepAlive = true;
             Request.MultiPartFormData = null;
@@ -162,7 +164,7 @@ namespace EasyHttp.Http
             return ProcessRequest();
         }
 
-        public virtual HttpResponse Post(string uri, IDictionary<string, object> formData, IList<FileData> files, object query = null)
+        public virtual HttpResponse Post(string uri, IDictionary<string, object> formData, IList<MultiPartFileDataAbstraction> files, object query = null)
         {
             InitRequest(uri, HttpMethod.POST, query);
             Request.MultiPartFormData = formData;
@@ -205,6 +207,16 @@ namespace EasyHttp.Http
             InitRequest(uri, HttpMethod.PUT, null);
             Request.ContentType = contentType;
             Request.PutFilename = filename;
+            Request.Expect = true;
+            Request.KeepAlive = true;
+            return ProcessRequest();
+        }
+
+        public virtual HttpResponse PutStream(string uri, Stream stream, string contentType)
+        {
+            InitRequest(uri, HttpMethod.PUT, null);
+            Request.ContentType = contentType;
+            Request.PutStream = stream;
             Request.Expect = true;
             Request.KeepAlive = true;
             return ProcessRequest();

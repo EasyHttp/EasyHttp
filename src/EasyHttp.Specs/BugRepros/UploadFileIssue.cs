@@ -21,7 +21,7 @@ namespace EasyHttp.Specs.BugRepros
 
             data.Add("runTest", " Run Test ");
 
-            IList<FileData> files = new List<FileData>();
+            IList<MultiPartFileDataAbstraction> files = new List<MultiPartFileDataAbstraction>();
 
             files.Add(new FileData() {FieldName = "file", ContentType = "text/xml", Filename = filename});
 

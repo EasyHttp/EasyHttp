@@ -85,12 +85,14 @@
     <Compile Include="Http\Injection\StubbedHttpWebResponse.cs" />
     <Compile Include="Http\Abstractions\WebResponseWrapper.cs" />
     <Compile Include="Infrastructure\ConfigurationException.cs" />
+    <Compile Include="Infrastructure\MultiPartFileDataAbstraction.cs" />
     <Compile Include="Infrastructure\ObjectToUrl.cs" />
     <Compile Include="Infrastructure\ObjectToUrlSegments.cs" />
     <Compile Include="Infrastructure\ObjectToUrlParameters.cs" />
     <Compile Include="Infrastructure\FileData.cs" />
     <Compile Include="Infrastructure\HttpException.cs" />
     <Compile Include="Infrastructure\PropertyNotFoundException.cs" />
+    <Compile Include="Infrastructure\StreamData.cs" />
     <Compile Include="Infrastructure\StreamExtensions.cs" />
     <Compile Include="Infrastructure\UriComposer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
