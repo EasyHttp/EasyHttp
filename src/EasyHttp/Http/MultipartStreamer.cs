@@ -10,10 +10,10 @@ namespace EasyHttp.Http
     {
         readonly String _boundary;
         readonly String _boundaryCode;
-        readonly IList<FileData> _multipartFileData;
+        readonly IList<MultiPartFileDataAbstraction> _multipartFileData;
         readonly IDictionary<string, object> _multipartFormData;
 
-        public MultiPartStreamer(IDictionary<string, object> multipartFormData, IList<FileData> multipartFileData)
+        public MultiPartStreamer(IDictionary<string, object> multipartFormData, IList<MultiPartFileDataAbstraction> multipartFileData)
         {
             _boundaryCode = DateTime.Now.Ticks.GetHashCode() + "548130";
             _boundary = string.Format("\r\n----------------{0}", _boundaryCode);
@@ -39,7 +39,7 @@ namespace EasyHttp.Http
             {
                 foreach (var fileData in _multipartFileData)
                 {
-                    using (var file = new FileStream(fileData.Filename, FileMode.Open))
+                    using (var file = fileData.GetStream())
                     {
                         stream.WriteString(CreateFileBoundaryHeader(fileData));
 
@@ -52,7 +52,7 @@ namespace EasyHttp.Http
             stream.WriteString("--");
         }
 
-	    static void StreamFileContents(Stream file, FileData fileData, Stream requestStream)
+        static void StreamFileContents(Stream file, MultiPartFileDataAbstraction fileData, Stream requestStream)
         {
             var buffer = new byte[8192];
 
@@ -100,23 +100,23 @@ namespace EasyHttp.Http
                 foreach (var fileData in _multipartFileData)
                 {
                     contentLength += ascii.GetBytes(CreateFileBoundaryHeader(fileData)).Length;
-                    contentLength += new FileInfo(fileData.Filename).Length;
+                    contentLength += fileData.GetLength();
                     contentLength += ascii.GetBytes(_boundary).Length;
                 }
             }
 
-				contentLength += ascii.GetBytes("--").Length; // ending -- to the boundary
+            contentLength += ascii.GetBytes("--").Length; // ending -- to the boundary
 
             return contentLength;
         }
 
-        static string CreateFileBoundaryHeader(FileData fileData)
+        static string CreateFileBoundaryHeader(MultiPartFileDataAbstraction fileData)
         {
             return string.Format(
                 "\r\nContent-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\n" +
                 "Content-Type: {2}\r\n" +
                 "Content-Transfer-Encoding: {3}\r\n\r\n"
-                , fileData.FieldName, Path.GetFileName(fileData.Filename), fileData.ContentType,
+                , fileData.FieldName, fileData.GetFilenameForDisposition(), fileData.ContentType,
                 fileData.ContentTransferEncoding);
         }
 

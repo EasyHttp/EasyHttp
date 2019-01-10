@@ -2,23 +2,24 @@
 
 namespace EasyHttp.Infrastructure
 {
-    public class FileData : MultiPartFileDataAbstraction
+    public class StreamData : MultiPartFileDataAbstraction
     {
-        public string Filename { get; set; }
+        public Stream Stream { get; set; }
+        public string FileNameForDisposition { get; set; }
 
         public override Stream GetStream()
         {
-            return new FileStream(Filename, FileMode.Open, FileAccess.Read);
+            return Stream;
         }
 
         public override long GetLength()
         {
-            return new FileInfo(Filename).Length;
+            return Stream.Length;
         }
 
         public override string GetFilenameForDisposition()
         {
-            return Path.GetFileName(Filename);
+            return FileNameForDisposition;
         }
     }
 }
