@@ -115,6 +115,7 @@ namespace EasyHttp.Http
 
         public virtual bool PersistCookies { get; set; }
         public virtual bool AllowAutoRedirect { get; set; }
+        public virtual IWebProxy Proxy { get; set; }
 
         public virtual void SetBasicAuthentication(string username, string password)
         {
@@ -138,6 +139,7 @@ namespace EasyHttp.Http
             httpWebRequest.AutomaticDecompression = DisableAutomaticCompression
                                                     ? DecompressionMethods.None
                                                     : DecompressionMethods.Deflate | DecompressionMethods.GZip | DecompressionMethods.None;
+            httpWebRequest.Proxy = Proxy;
 
             ServicePointManager.Expect100Continue = Expect;
             ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
